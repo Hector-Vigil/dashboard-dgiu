@@ -1,0 +1,23 @@
+p {
+ margin: auto;
+ font-family: "Poppins", sans-serif;
+ color: #f4f4f4;
+}
+span {
+    display: flex;
+    margin-right: 10px;
+}
+// .navBar {
+//  position: fixed;
+//  top:0;
+//  width: 100%;
+//  margin: 0;
+// }
+
+.makeStyles-root-1 {
+    background-color: #27293d;
+}
+.navBarContainer {
+    display: flex;
+    justify-content: space-between;
+}

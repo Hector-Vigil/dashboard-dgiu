@@ -1,9 +1,11 @@
 import React, { Component, PureComponent } from "react";
 
 import getUsersFromDirectory from "../homepage/homepage.utils";
-import ChartExample from "../../components/chart";
+import CardCharts from "../../components/cardCharts/card-charts.component";
+
 
 import "./homepage.styles.scss";
+import TableRanking from "../../components/charts/chartRanking/table-ranking.component";
 
 class HomePage extends Component {
   constructor() {
@@ -17,8 +19,8 @@ class HomePage extends Component {
   filterInformation() {
     let filteredProvincias = [];
     this.state.users.data.map((user) => {
-      if (!filteredProvincias.includes(user.ano_de_estudio))
-        filteredProvincias.push(user.ano_de_estudio);
+      if (!filteredProvincias.includes(user.facultad_filial))
+        filteredProvincias.push(user.facultad_filial);
     });
     console.log(filteredProvincias);
   }
@@ -35,7 +37,12 @@ class HomePage extends Component {
   render() {
     return (
       <div className="container">
-        <ChartExample />
+        <CardCharts/>
+        <TableRanking/>
+        <CardCharts/>
+        <CardCharts/>
+        <CardCharts/>
+
       </div>
     );
   }
