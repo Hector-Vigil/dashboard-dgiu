@@ -1,7 +1,9 @@
-import React, { Component } from "react";
-import getUsersFromDirectory from "../homepage/homepage.utils";
+import React, { Component, PureComponent } from "react";
 
-import "./homepage.styles.css";
+import getUsersFromDirectory from "../homepage/homepage.utils";
+import ChartExample from "../../components/chart";
+
+import "./homepage.styles.scss";
 
 class HomePage extends Component {
   constructor() {
@@ -12,19 +14,30 @@ class HomePage extends Component {
     };
   }
 
+  filterInformation() {
+    let filteredProvincias = [];
+    this.state.users.data.map((user) => {
+      if (!filteredProvincias.includes(user.ano_de_estudio))
+        filteredProvincias.push(user.ano_de_estudio);
+    });
+    console.log(filteredProvincias);
+  }
+
   async componentDidMount() {
     try {
       const users = await getUsersFromDirectory();
-      const jsonUsers = await users.json();
-      this.setState({ users: jsonUsers.data });
+      this.setState({ users: users });
     } catch (error) {
       console.log(error);
     }
-
-    console.log(this.state.users);
+    this.filterInformation();
   }
   render() {
-    return <div></div>;
+    return (
+      <div className="container">
+        <ChartExample />
+      </div>
+    );
   }
 }
 

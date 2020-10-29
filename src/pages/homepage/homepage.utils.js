@@ -7,7 +7,8 @@ const getUsersFromDirectory = async () => {
       "Content-Type": "application/json",
     },
   });
-  return users;
+  const jsonUsers = await users.json();
+  return jsonUsers;
 };
 
 export default getUsersFromDirectory;
