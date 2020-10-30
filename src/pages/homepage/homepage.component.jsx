@@ -1,11 +1,9 @@
 import React, { Component, PureComponent } from "react";
-
 import getUsersFromDirectory from "../homepage/homepage.utils";
 import CardCharts from "../../components/cardCharts/card-charts.component";
-
-
 import "./homepage.styles.scss";
 import TableRanking from "../../components/charts/chartRanking/table-ranking.component";
+import Chart from "../../components/charts/chartFacultades/chart";
 
 class HomePage extends Component {
   constructor() {
@@ -37,12 +35,11 @@ class HomePage extends Component {
   render() {
     return (
       <div className="container">
-        <CardCharts/>
-        <TableRanking/>
-        <CardCharts/>
-        <CardCharts/>
-        <CardCharts/>
-
+        <CardCharts><Chart title = "Table 1"/></CardCharts>   
+        <CardCharts><TableRanking title = "Table 2"/></CardCharts>  
+        <CardCharts><Chart title = "Table 3"/></CardCharts>  
+        <CardCharts><Chart title = "Table 4"/></CardCharts> 
+        <CardCharts><Chart title = "Table 5"/></CardCharts> 
       </div>
     );
   }

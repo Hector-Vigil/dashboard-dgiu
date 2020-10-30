@@ -4,8 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import ChartExample from "../charts/chartFacultades/chart";
-import TableRanking from "../charts/chartRanking/table-ranking.component";
 import "./card-charts.styles.scss"
 
 const useStyles = makeStyles({
@@ -28,18 +26,20 @@ const useStyles = makeStyles({
     },
   });
   
-  export default function CardCharts() {
+  export default function CardCharts(props) {
     const classes = useStyles();
-    const bull = <span className={classes.bullet}>•</span>;
+  
   
     return (
       <Card className={classes.root} color="primary">
         <CardContent>
           <Typography className={classes.title} color="textSecondary" gutterBottom>
-            Word of the Day
-            <span><ChartExample/></span>
+            
+            <p className="title">{props.children.props.title}</p>
+           { props.children}
           </Typography>
         </CardContent>
       </Card>
     );
+    
   }

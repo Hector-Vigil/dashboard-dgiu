@@ -22,10 +22,11 @@ const NavBar = () => {
 
   return (
     <div className="navBar">
+        <hr/>    
       <div className={classes.root}>
-      <AppBar position="static" color="transparent">
+      <AppBar position="static" color="transparent" style={{boxShadow:"none"}}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title}>  
            <div className="navBarContainer">
              <span><NavBarLogo/></span>
              <p>DASHBOARD</p>  
