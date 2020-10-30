@@ -1,48 +1,29 @@
-import React, { Component, PureComponent } from "react";
-import getUsersFromDirectory from "../homepage/homepage.utils";
+import React from "react";
 import CardCharts from "../../components/cardCharts/card-charts.component";
 import "./homepage.styles.scss";
-import TableRanking from "../../components/charts/chartRanking/table-ranking.component";
-import Chart from "../../components/charts/chartFacultades/chart";
+import TableRanking from "../../components/charts/tableRanking/table-ranking.component";
+import GenericChart from "../../components/charts/genericChart/generic-chart.component";
 
-class HomePage extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      users: {},
-    };
-  }
-
-  filterInformation() {
-    let filteredProvincias = [];
-    this.state.users.data.map((user) => {
-      if (!filteredProvincias.includes(user.facultad_filial))
-        filteredProvincias.push(user.facultad_filial);
-    });
-    console.log(filteredProvincias);
-  }
-
-  async componentDidMount() {
-    try {
-      const users = await getUsersFromDirectory();
-      this.setState({ users: users });
-    } catch (error) {
-      console.log(error);
-    }
-    this.filterInformation();
-  }
-  render() {
-    return (
-      <div className="container">
-        <CardCharts><Chart title = "Table 1"/></CardCharts>   
-        <CardCharts><TableRanking title = "Table 2"/></CardCharts>  
-        <CardCharts><Chart title = "Table 3"/></CardCharts>  
-        <CardCharts><Chart title = "Table 4"/></CardCharts> 
-        <CardCharts><Chart title = "Table 5"/></CardCharts> 
-      </div>
-    );
-  }
-}
+const HomePage = () => {
+  return (
+    <div className="container">
+      <CardCharts title="Table 1">
+        <GenericChart />
+      </CardCharts>
+      <CardCharts title="Table 2">
+        <TableRanking />
+      </CardCharts>
+      <CardCharts title="Table 3">
+        <GenericChart />
+      </CardCharts>
+      <CardCharts title="Table 4">
+        <GenericChart />
+      </CardCharts>
+      <CardCharts title="Table 5">
+        <GenericChart />
+      </CardCharts>
+    </div>
+  );
+};
 
 export default HomePage;
