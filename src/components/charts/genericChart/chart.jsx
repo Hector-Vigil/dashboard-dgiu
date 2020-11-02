@@ -1,5 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import normalizeProvinces from './chartUtils';
 
 const width = () => (global.screen.width * 50) / 100;
 
@@ -7,7 +8,7 @@ const Chart = ({ data }) => {
   const { counter } = data;
   const information = data
     ? Object.keys(counter).map((element) => ({
-        name: element,
+        name: normalizeProvinces[element],
         uv: counter[element],
         amt: 2100,
       }))
@@ -30,8 +31,8 @@ const Chart = ({ data }) => {
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-      <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+      <Bar dataKey="pv" stackId="a" fill="blue" />
+      <Bar dataKey="uv" stackId="a" fill="red" />
     </BarChart>
   );
 };

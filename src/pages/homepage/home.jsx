@@ -22,7 +22,7 @@ const HomePage = () => {
   const fetchProvinces = async () => {
     setLoadingProvinces(true);
     try {
-      const { data } = await axios.get('http://localhost:3300/provincia');
+      const { data } = await axios.get('http://localhost:3300/pais');
       setProvinces(data);
     } catch (error) {
       // eslint-disable-next-line no-console
