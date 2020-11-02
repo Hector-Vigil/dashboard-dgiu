@@ -1,14 +1,14 @@
-import "./App.css";
-import React from "react";
-import HomePage from "./pages/homepage/homepage.component";
-import NavBar from "./components/navbar/navbar.component";
-import "./App.styles.scss"
+import './App.css';
+import React from 'react';
+import HomePage from './pages/homepage/home';
+import NavBar from './components/navbar/navbar';
+import './App.styles.scss';
 
 const App = () => {
   return (
     <div className="App">
-      <NavBar/>
-      <HomePage/>
+      <NavBar />
+      <HomePage />
     </div>
   );
 };

@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from "react";
-import Axios from "axios";
-import Chart from "./chart";
+/* eslint-disable no-use-before-define */
+import React, { useEffect, useState } from 'react';
+import Axios from 'axios';
+import * as log from 'loglevel';
+import Chart from './chart';
 
 const GenericChart = () => {
-  const [data, setData] = useState({});
+  const [dataToChart, setDataToChart] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getInformation = async () => {
-      try {
-        const { data } = await Axios.get("http://localhost:3300/provincia");
-        setData(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getInformation();
+    fetchData();
   }, []);
 
-  return <Chart data={data} />;
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const { data } = await Axios.get('http://localhost:3300/provincia');
+      setDataToChart(data);
+    } catch (error) {
+      log('fetch provinces error', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return <Chart data={dataToChart} loading={loading} />;
 };
 
 export default GenericChart;

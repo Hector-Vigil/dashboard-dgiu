@@ -1,13 +1,5 @@
-import React, { PureComponent } from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 /*
 const data = [
@@ -57,47 +49,37 @@ const data = [
 */
 const width = () => (global.screen.width * 50) / 100;
 
-export default class Chart extends PureComponent {
-  //
+const Chart = ({ data }) => {
+  const { counter } = data;
+  const information = data
+    ? Object.keys(counter).map((element) => ({
+        name: element,
+        uv: counter[element],
+        amt: 2100,
+      }))
+    : [];
 
-  constructor(props) {
-    super(props);
-  }
+  return (
+    <BarChart
+      width={width()}
+      height={300}
+      data={information}
+      margin={{
+        top: 20,
+        right: 30,
+        left: 20,
+        bottom: 5,
+      }}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="pv" stackId="a" fill="#8884d8" />
+      <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
+    </BarChart>
+  );
+};
 
-  render() {
-    let information = [];
-    if (this.props.data) {
-      console.log(this.props.data);
-      const { counter } = this.props.data;
-      information = Object.keys(counter).map((element) => {
-        return {
-          name: element,
-          uv: counter[element],
-          amt: 2100,
-        };
-      });
-    }
-
-    return information ? (
-      <BarChart
-        width={width()}
-        height={300}
-        data={information}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-        <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
-      </BarChart>
-    ) : null;
-  }
-}
+export default Chart;
