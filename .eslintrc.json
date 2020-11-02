@@ -14,14 +14,24 @@
     "sourceType": "module"
   },
   "plugins": ["react", "prettier", "only-warn", "jest"],
-  "extends": ["airbnb", "plugin:react/recommended", "prettier", "prettier/react", "plugin:prettier/recommended", "plugin:jest/recommended"],
+  "extends": [
+    "airbnb",
+    "plugin:react/recommended",
+    "prettier",
+    "prettier/react",
+    "plugin:prettier/recommended",
+    "plugin:jest/recommended"
+  ],
   "rules": {
-    "max-len": ["error", {
-      "code": 120,
-      "ignoreUrls": true,
-      "ignoreStrings": true,
-      "ignoreTemplateLiterals": true
-    }],
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": ["src/setupTests.js", "**/*.test.{js,jsx}"] }],
     "import/prefer-default-export": 0,
     "react/prop-types": 0,

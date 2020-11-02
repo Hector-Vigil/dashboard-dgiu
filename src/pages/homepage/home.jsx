@@ -4,7 +4,7 @@ import axios from 'axios';
 import { CircularProgress, Grid, makeStyles } from '@material-ui/core';
 import CardCharts from '../../components/cardCharts/card-charts.component';
 import { styles } from './homeStyles';
-// import TableRanking from '../../components/charts/tableRanking/table-ranking.component';
+import TableRanking from '../../components/charts/tableRanking/table-ranking.component';
 import Chart from '../../components/charts/genericChart/chart';
 
 const useStyles = makeStyles(styles);
@@ -40,9 +40,9 @@ const HomePage = () => {
           <Chart data={provinces} />
         </CardCharts>
       )}
-      {/* <CardCharts title="Table 2">
+      {/*<CardCharts title="Table 2">
         <TableRanking />
-      </CardCharts>
+      </CardCharts> 
       <CardCharts title="Table 3">
         <Chart />
       </CardCharts>
@@ -52,6 +52,14 @@ const HomePage = () => {
       <CardCharts title="Table 5">
         <Chart />
       </CardCharts> */}
+      {!loadingProvinces && provinces && (
+        <CardCharts title="Table 5">
+          <Chart data={provinces} />
+        </CardCharts>
+      )}
+      <CardCharts title="Table 2">
+        <TableRanking />
+      </CardCharts>
     </Grid>
   );
 };
