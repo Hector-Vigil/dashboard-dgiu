@@ -1,11 +1,15 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CircularProgress, Grid, makeStyles } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import CardCharts from '../../components/cardCharts/card-charts.component';
 import { styles } from './homeStyles';
 import TableRanking from '../../components/charts/tableRanking/table-ranking.component';
 import Chart from '../../components/charts/genericChart/chart';
+import Spinner from '../../components/spinner/spinner.component';
+import SpinnerComponent from '../../components/spinner/spinner.component';
+import PieChartComponent from '../../components/charts/genericChart/pie-chart.component';
+import FieldAgrupationComponent from '../../components/fieldSelection/field-agrupation.component';
 
 const useStyles = makeStyles(styles);
 
@@ -33,33 +37,29 @@ const HomePage = () => {
   };
 
   return (
-    <Grid container justify="center" wrap="wrap" style={{ marginTop: '1.5rem' }}>
-      {loadingProvinces && <CircularProgress />}
+    <Grid container justify="center" direction="row" wrap="wrap" style={{ marginTop: '1.5rem' }}>
+      {loadingProvinces && <SpinnerComponent />}
       {!loadingProvinces && provinces && (
         <CardCharts title="Table 1">
           <Chart data={provinces} />
         </CardCharts>
       )}
-      {/*<CardCharts title="Table 2">
-        <TableRanking />
-      </CardCharts> 
-      <CardCharts title="Table 3">
-        <Chart />
-      </CardCharts>
-      <CardCharts title="Table 4">
-        <Chart />
-      </CardCharts>
-      <CardCharts title="Table 5">
-        <Chart />
-      </CardCharts> */}
+      {
+        <CardCharts>
+          <PieChartComponent />
+          <FieldAgrupationComponent />
+        </CardCharts>
+      }
       {!loadingProvinces && provinces && (
         <CardCharts title="Table 5">
           <Chart data={provinces} />
         </CardCharts>
       )}
-      <CardCharts title="Table 2">
-        <TableRanking />
-      </CardCharts>
+      {
+        <CardCharts title="Table 2">
+          <TableRanking />
+        </CardCharts>
+      }
     </Grid>
   );
 };

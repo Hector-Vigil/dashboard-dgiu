@@ -67,7 +67,7 @@ const useStyles = makeStyles({
     boxShadow: 'none'
   },
   container: {
-    maxHeight: 440,
+    maxHeight: 600,
     width: width(),
     
   },

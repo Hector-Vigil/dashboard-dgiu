@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { FullscreenExit } from '@material-ui/icons';
 
 const useStyles = makeStyles({
   root: {
@@ -23,6 +24,9 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  childrenContainer: {
+    display: 'flex',   
+  }
 });
 
 export default function CardCharts({ title, children }) {
@@ -30,10 +34,10 @@ export default function CardCharts({ title, children }) {
 
   return (
     <Card className={classes.root} color="primary">
-      <CardContent>
+      <CardContent >
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           <p className="title">{title}</p>
-          {children}
+          <div className={classes.childrenContainer}>{children}</div>
         </Typography>
       </CardContent>
     </Card>
