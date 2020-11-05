@@ -24,9 +24,6 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-  childrenContainer: {
-    display: 'flex',
-  },
 });
 
 export default function CardCharts({ title, children }) {
@@ -37,7 +34,7 @@ export default function CardCharts({ title, children }) {
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
           <p className="title">{title}</p>
-          <div className={classes.childrenContainer}>{children}</div>
+          <div className>{children}</div>
         </Typography>
       </CardContent>
     </Card>
