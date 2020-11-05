@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function FieldSelector({ type }) {
+export default function FieldSelector({ type, data }) {
   const classes = useStyles();
   const [age, setAge] = React.useState('');
 
@@ -37,12 +37,12 @@ export default function FieldSelector({ type }) {
           onChange={handleChange}
           label={type}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {data &&
+            data.map((label, index) => {
+              <MenuItem key={index} value={label}>
+                {label}
+              </MenuItem>;
+            })}
         </Select>
       </FormControl>
     </div>

@@ -8,8 +8,8 @@ import TableRanking from '../../components/charts/tableRanking/table-ranking.com
 import Chart from '../../components/charts/genericChart/chart';
 import Spinner from '../../components/spinner/spinner.component';
 import SpinnerComponent from '../../components/spinner/spinner.component';
-import PieChartComponent from '../../components/charts/genericChart/pie-chart.component';
-import FieldAgrupationComponent from '../../components/fieldSelection/field-agrupation.component';
+import registeredPanel from '../../components/registeredPanel/registeredPanel';
+import RegisteredPanel from '../../components/registeredPanel/registeredPanel';
 
 const useStyles = makeStyles(styles);
 
@@ -46,8 +46,7 @@ const HomePage = () => {
       )}
       {
         <CardCharts>
-          <PieChartComponent />
-          <FieldAgrupationComponent />
+          <RegisteredPanel />
         </CardCharts>
       }
       {!loadingProvinces && provinces && (
