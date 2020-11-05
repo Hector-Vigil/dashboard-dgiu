@@ -36,6 +36,7 @@ export default function FieldSelector({ type }) {
           value={age}
           onChange={handleChange}
           label={type}
+          // style={{ backgroundColor: '#1f8af8' }}
         >
           <MenuItem value="">
             <em>None</em>
