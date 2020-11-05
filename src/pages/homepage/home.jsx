@@ -45,7 +45,7 @@ const HomePage = () => {
         </CardCharts>
       )}
       {
-        <CardCharts>
+        <CardCharts title="Filtrar Estudiantes Verificados">
           <RegisteredPanel />
         </CardCharts>
       }
