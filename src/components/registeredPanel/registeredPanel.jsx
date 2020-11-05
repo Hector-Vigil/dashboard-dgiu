@@ -17,10 +17,21 @@ const RegisteredPanel = () => {
 
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState(null);
+  const [params, setParams] = useState({
+    facultie: '',
+    courseType: '',
+    major: '',
+    year: '',
+  });
+  const [pieChartData, setPieChartData] = useState(null);
 
   useEffect(() => {
     fetchPieChartFilters();
   }, []);
+
+  useEffect(() => {
+    fetchPieChartInformation();
+  }, [params]);
 
   const fetchPieChartFilters = async () => {
     setLoading(true);
@@ -34,10 +45,45 @@ const RegisteredPanel = () => {
     }
   };
 
+  const fetchPieChartInformation = async () => {
+    try {
+      const { facultie, courseType, major, year } = params;
+      console.log('I am working');
+      console.log(params);
+      if (facultie !== '' && courseType !== '' && major !== '' && year !== '') {
+        const usersInformation = await axios.get(
+          `http://localhost:3300/active-directory-match/${facultie}/${courseType}/${major}/${year}`
+        );
+        console.log(typeof usersInformation.data);
+        const verifiedName = Object.keys(usersInformation.data)[0];
+        const notVerifiedName = Object.keys(usersInformation.data)[1];
+        setPieChartData([
+          {
+            name: verifiedName,
+            value: usersInformation.data.verified,
+          },
+          {
+            name: notVerifiedName,
+            value: usersInformation.data.notVerified,
+          },
+        ]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const autoCompleteChangeHandler = (event, newValue) => {
+    if (event.target.id.split('-')[0] === 'Facultad') setParams({ ...params, facultie: newValue });
+    if (event.target.id.split('-')[0] === 'Tipo de Curso') setParams({ ...params, courseType: newValue });
+    if (event.target.id.split('-')[0] === 'Carrera') setParams({ ...params, major: newValue });
+    if (event.target.id.split('-')[0] === 'Año de Estudio') setParams({ ...params, year: newValue });
+  };
+
   return (
     <div className={classes.container}>
-      <PieChart />
-      {!loading && filters && <FieldAgrupation filters={filters} />}
+      {pieChartData && <PieChart data={pieChartData} />}
+      {!loading && filters && <FieldAgrupation filters={filters} change={autoCompleteChangeHandler} />}
     </div>
   );
 };
