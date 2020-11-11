@@ -11,6 +11,10 @@ const useStyles = makeStyles({
     minWidth: 275,
     marginBottom: 16,
     backgroundColor: ' #27293d',
+    width: '80%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
   },
   bullet: {
     display: 'inline-block',

@@ -9,6 +9,8 @@ import { FilterSharp } from '@material-ui/icons';
 const useStyles = makeStyles({
   container: {
     display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
 });
 
@@ -48,13 +50,10 @@ const RegisteredPanel = () => {
   const fetchPieChartInformation = async () => {
     try {
       const { facultie, courseType, major, year } = params;
-      console.log('I am working');
-      console.log(params);
       if (facultie !== '' && courseType !== '' && major !== '' && year !== '') {
         const usersInformation = await axios.get(
           `http://localhost:3300/active-directory-match/${facultie}/${courseType}/${major}/${year}`
         );
-        console.log(typeof usersInformation.data);
         const verifiedName = Object.keys(usersInformation.data)[0];
         const notVerifiedName = Object.keys(usersInformation.data)[1];
         setPieChartData([
