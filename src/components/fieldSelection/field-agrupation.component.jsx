@@ -7,7 +7,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    marginTop: '16px',
+    height: '100%',
   },
 });
 

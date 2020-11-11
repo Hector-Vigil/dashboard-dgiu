@@ -8,57 +8,45 @@ import TableRanking from '../../components/charts/tableRanking/table-ranking.com
 import Chart from '../../components/charts/genericChart/chart';
 import Spinner from '../../components/spinner/spinner.component';
 import SpinnerComponent from '../../components/spinner/spinner.component';
-import registeredPanel from '../../components/registeredPanel/registeredPanel';
 import RegisteredPanel from '../../components/registeredPanel/registeredPanel';
+import RecursiveTreeView from '../../components/treeView/treeView';
 
 const useStyles = makeStyles(styles);
 
 const HomePage = () => {
   const classes = useStyles();
 
-  const [provinces, setProvinces] = useState(null);
-  const [loadingProvinces, setLoadingProvinces] = useState(false);
+  const [treeViewData, setTreeViewData] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchProvinces();
+    fetchTreeViewData();
   }, []);
 
-  const fetchProvinces = async () => {
-    setLoadingProvinces(true);
+  const fetchTreeViewData = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3300/pais');
-      setProvinces(data);
+      setLoading(true);
+      const { data } = await axios.get('http://localhost:3300/getTreeStructure');
+      setTreeViewData(data);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log('fetch provinces error', error);
+      console.log(error);
     } finally {
-      setLoadingProvinces(false);
+      setLoading(false);
     }
   };
 
   return (
     <Grid container justify="center" direction="row" wrap="wrap" style={{ marginTop: '1.5rem' }}>
-      {loadingProvinces && <SpinnerComponent />}
-      {!loadingProvinces && provinces && (
-        <CardCharts title="Table 1">
-          <Chart data={provinces} />
-        </CardCharts>
-      )}
-      {
-        <CardCharts title="Filtrar Estudiantes Verificados">
-          <RegisteredPanel />
-        </CardCharts>
-      }
-      {!loadingProvinces && provinces && (
-        <CardCharts title="Table 5">
-          <Chart data={provinces} />
-        </CardCharts>
-      )}
-      {
-        <CardCharts title="Table 2">
-          <TableRanking />
-        </CardCharts>
-      }
+      <CardCharts title="FILTRAR ESTUDIANTES VERIFICADOS">
+        <RegisteredPanel />
+      </CardCharts>
+      <CardCharts title="ESTUDIANTES REGISTRADOS POR FACULTAD">
+        {!loading && treeViewData && <RecursiveTreeView data={treeViewData} />}
+      </CardCharts>
+
+      <CardCharts title="RANKING DE FACULTADES">
+        {!loading && treeViewData && <TableRanking data={treeViewData} />}
+      </CardCharts>
     </Grid>
   );
 };
