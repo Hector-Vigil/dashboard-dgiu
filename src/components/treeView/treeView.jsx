@@ -9,30 +9,33 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 const useStyles = makeStyles({
   root: {
     height: '100%',
-    flexGrow: 1,
-    width: '100%',
+    width: '80%',
   },
   treeItem: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '100%',
+    width: '550px',
   },
   statsContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
     flexDirection: 'rows',
-    marginLeft: '20px',
-    marginRight: '8px',
-    height: '48px',
   },
 });
 
-export default function RecursiveTreeView({ data }) {
+export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
   const classes = useStyles();
-  const total = data.matchInformation ? data.matchInformation.registeredId : 2000;
+  const total = data.matchInformation ? data.matchInformation.total : 2000;
   const renderTree = (nodes) => (
     <div className={classes.treeItem}>
-      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} style={{ marginTop: '8px' }}>
+      <TreeItem
+        onClick={
+          nodes.children && nodes.children.length === 0 ? () => studentsOpenModalHandler(nodes.routeParams) : null
+        }
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={nodes.name}
+      >
         {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
       </TreeItem>
       {nodes.id !== 'root' ? (
