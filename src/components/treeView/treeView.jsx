@@ -28,11 +28,47 @@ const useStyles = makeStyles({
 });
 
 export default function RecursiveTreeView({ data }) {
+  // const progressBar = (nodes) => {
+  //   return nodes.id !== 'root' ? (
+  //     <div className={classes.statsContainer}>
+  //       <span style={{ paddingTop: '9px', width: '70px', margin: '0' }}>{`${Math.round(
+  //         (nodes.matchInformation / total) * 100
+  //       )}%(${nodes.matchInformation})`}</span>
+  //       <LinearProgress
+  //         style={{ width: '100px', height: '10px', marginTop: '15px' }}
+  //         variant="determinate"
+  //         color="secondary"
+  //         value={nodes.matchInformation ? (nodes.matchInformation / total) * 100 : 0}
+  //       />
+  //     </div>
+  //   ) : null;
+  // };
+
   const classes = useStyles();
   const total = data.matchInformation ? data.matchInformation.registeredId : 2000;
+  const [expanded, setExpanded] = React.useState([]);
+  const [selected, setSelected] = React.useState([]);
+
+  const handleToggle = (event, nodeIds) => {
+    setExpanded(nodeIds);
+  };
+
+  const handleSelect = (event, nodeIds) => {
+    setSelected(nodeIds);
+  };
+
   const renderTree = (nodes) => (
     <div className={classes.treeItem}>
-      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} style={{ marginTop: '8px' }}>
+      <TreeItem
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={nodes.name}
+        expanded={expanded}
+        selected={selected}
+        onNodeToggle={handleToggle}
+        onNodeSelect={handleSelect}
+        style={{ marginTop: '8px' }}
+      >
         {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
       </TreeItem>
       {nodes.id !== 'root' ? (
@@ -43,6 +79,7 @@ export default function RecursiveTreeView({ data }) {
           <LinearProgress
             style={{ width: '100px', height: '10px', marginTop: '15px' }}
             variant="determinate"
+            color="secondary"
             value={nodes.matchInformation ? (nodes.matchInformation / total) * 100 : 0}
           />
         </div>

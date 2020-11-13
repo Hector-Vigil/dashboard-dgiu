@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   },
 });
 
-const RegisteredPanel = () => {
+const RegisteredPanel = (data) => {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
@@ -81,7 +81,8 @@ const RegisteredPanel = () => {
 
   return (
     <div className={classes.container}>
-      {pieChartData && <PieChart data={pieChartData} />}
+      {pieChartData && pieChartData[0].value !== 0 && <PieChart data={pieChartData} />}
+      {pieChartData && pieChartData[0].value == 0 && <p>No existe</p>}
       {!loading && filters && <FieldAgrupation filters={filters} change={autoCompleteChangeHandler} />}
     </div>
   );

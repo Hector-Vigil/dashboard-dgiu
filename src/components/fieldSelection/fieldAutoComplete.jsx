@@ -11,6 +11,9 @@ const useStyles = makeStyles({
     '& label.MuiInputLabel-root': {
       color: '#f4f4f4',
     },
+    '& input.MuiInputBase-input': {
+      color: '#f4f4f4',
+    },
   },
 });
 export default function FieldAutoComplete({ type, data, id, change }) {

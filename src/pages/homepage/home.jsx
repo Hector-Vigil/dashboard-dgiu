@@ -5,8 +5,6 @@ import { Grid, makeStyles } from '@material-ui/core';
 import CardCharts from '../../components/cardCharts/card-charts.component';
 import { styles } from './homeStyles';
 import TableRanking from '../../components/charts/tableRanking/table-ranking.component';
-import Chart from '../../components/charts/genericChart/chart';
-import Spinner from '../../components/spinner/spinner.component';
 import SpinnerComponent from '../../components/spinner/spinner.component';
 import RegisteredPanel from '../../components/registeredPanel/registeredPanel';
 import RecursiveTreeView from '../../components/treeView/treeView';
@@ -41,10 +39,12 @@ const HomePage = () => {
         <RegisteredPanel />
       </CardCharts>
       <CardCharts title="ESTUDIANTES REGISTRADOS POR FACULTAD">
+        {loading && <SpinnerComponent />}
         {!loading && treeViewData && <RecursiveTreeView data={treeViewData} />}
       </CardCharts>
 
       <CardCharts title="RANKING DE FACULTADES">
+        {loading && <SpinnerComponent />}
         {!loading && treeViewData && <TableRanking data={treeViewData} />}
       </CardCharts>
     </Grid>

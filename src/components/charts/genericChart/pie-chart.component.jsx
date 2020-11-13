@@ -1,5 +1,13 @@
 import React, { PureComponent } from 'react';
-import { PieChart, Pie, Sector, Cell } from 'recharts';
+import { PieChart, Pie, Legend, Cell } from 'recharts';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+});
 
 const data = [
   { name: 'Group A', value: 400 },
@@ -8,7 +16,7 @@ const data = [
   { name: 'Group D', value: 200 },
 ];
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ['#1f8af8', '#f50057', '#FFBB28', '#FF8042'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -29,7 +37,7 @@ export default class PieChartComponent extends PureComponent {
   }
   render() {
     return (
-      <PieChart width={400} height={400}>
+      <PieChart width={400} height={400} style={{ display: 'flex', justifyContent: 'center' }}>
         <Pie
           data={this.props.data ? this.props.data : data}
           cx={200}
@@ -37,13 +45,14 @@ export default class PieChartComponent extends PureComponent {
           labelLine={false}
           label={renderCustomizedLabel}
           outerRadius={120}
-          fill="#8884d8"
-          dataKey="value"
+          dataKey={this.props.data.name}
+          legendType="square"
         >
           {this.props.data
             ? this.props.data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
             : null}
         </Pie>
+        <Legend verticalAlign="center" height={36} align="center" />
       </PieChart>
     );
   }
