@@ -1,8 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import TableRanking from '../../components/charts/tableRanking/table-ranking.component';
-
+import TableModal from '../../components/charts/tableModal/tableModal';
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -20,22 +19,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#27293d',
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-    width: 1000,
-  },
-  modalContainerVerified: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: '75%',
+    height: '50%',
     overflow: 'auto',
-    backgroundColor: 'lightgreen',
   },
-  modalContainerNotVerified: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    overflow: 'auto',
-    backgroundColor: '#f70d1a',
+  modalHeader: {
+    color: '#f4f4f4',
+    textAlign: 'center',
   },
 }));
 
@@ -47,15 +37,8 @@ export default function StudentsModal({ openModal, studentsCloseModalHandler, da
   if (data) console.log(data);
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      {data &&
-        data.map((student) => (
-          <div className={student.registered ? classes.modalContainerVerified : classes.modalContainerNotVerified}>
-            <span>{student.name}</span>
-            <span>{student.lastName}</span>
-            <span>{student.province}</span>
-            <span>{student.zone}</span>
-          </div>
-        ))}
+      <h2 className={classes.modalHeader}>Estudiantes Verificados</h2>
+      {data && <TableModal data={data} />}
       <StudentsModal />
     </div>
   );

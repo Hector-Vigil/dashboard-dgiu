@@ -51,7 +51,7 @@ const HomePage = () => {
   };
 
   return (
-    <Grid container justify="center" direction="row" wrap="wrap" style={{ marginTop: '1.5rem' }}>
+    <Grid container justify="center" direction="row" wrap="wrap" style={{ marginTop: '1.5rem', width: '100%' }}>
       <CardCharts title="FILTRAR ESTUDIANTES VERIFICADOS">
         <RegisteredPanel />
       </CardCharts>
