@@ -10,28 +10,27 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 
 const columns = [
-  { id: 'name', label: 'Posición', minWidth: 170 },
-  { id: 'code', label: 'Facultad', minWidth: 100 },
+  { id: 'name', label: 'Nombre', minWidth: 170 },
+  { id: 'lastName', label: 'Apellidos', minWidth: 100 },
 
   {
-    id: 'size',
-    label: 'Verificados',
+    id: 'province',
+    label: 'Provincia',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'density',
-    label: '(%)',
+    id: 'zone',
+    label: 'Municipio',
     minWidth: 170,
     align: 'right',
     format: (value) => value.toFixed(2),
   },
 ];
-const width = () => (global.screen.width * 75) / 100;
 
-function createData(name, code, size, density) {
-  return { name, code, size, density };
+function createData(name, lastName, province, zone) {
+  return { name, lastName, province, zone };
 }
 
 let rows = [];
@@ -48,14 +47,13 @@ const useStyles = makeStyles({
   container: {
     overflowY: 'auto',
     overflowX: 'auto',
-    margin: '10px 10px',
   },
 });
 
 const cellStyle = { color: '#f4f4f4', borderBottom: 'none', fontFamily: "'Poppins', sans-serif" };
 const pagStyle = { color: '#f4f4f4', borderBottom: 'none', fontFamily: "'Poppins', sans-serif" };
 
-export default function TableRanking({ data }) {
+export default function TableModal({ data }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -69,19 +67,8 @@ export default function TableRanking({ data }) {
     setPage(0);
   };
 
-  if (data.children) {
-    const total = data.matchInformation.total;
-    const sortedArray = data.children.sort((a, b) => {
-      return b.matchInformation - a.matchInformation;
-    });
-    rows = sortedArray.map((element, index) => {
-      return createData(
-        index + 1,
-        element.name,
-        element.matchInformation,
-        Math.round((element.matchInformation / total) * 100)
-      );
-    });
+  if (data) {
+    rows = data.map((user) => createData(user.name, user.lastName, user.province, user.zone));
   }
 
   return (

@@ -9,8 +9,7 @@ import { FilterSharp } from '@material-ui/icons';
 const useStyles = makeStyles({
   container: {
     display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 });
 

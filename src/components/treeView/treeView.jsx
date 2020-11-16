@@ -8,18 +8,21 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles({
   root: {
+    display: 'flex',
     height: '100%',
-    width: '80%',
+    width: '100%',
+    overflow: 'auto',
   },
   treeItem: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '550px',
+    width: '100%',
   },
   statsContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
-    flexDirection: 'rows',
+    flexDirection: 'row',
+    height: '22px',
   },
 });
 
@@ -35,16 +38,17 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
         key={nodes.id}
         nodeId={nodes.id}
         label={nodes.name}
+        style={{ width: '100%' }}
       >
         {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
       </TreeItem>
       {nodes.id !== 'root' ? (
         <div className={classes.statsContainer}>
-          <span style={{ paddingTop: '9px', width: '70px', margin: '0' }}>{`${Math.round(
+          <span style={{ height: '20px', width: '70px', margin: '0' }}>{`${Math.round(
             (nodes.matchInformation / total) * 100
           )}%(${nodes.matchInformation})`}</span>
           <LinearProgress
-            style={{ width: '100px', height: '10px', marginTop: '15px' }}
+            style={{ width: '100px', height: '10px', marginTop: '6px' }}
             variant="determinate"
             value={nodes.matchInformation ? (nodes.matchInformation / total) * 100 : 0}
           />
