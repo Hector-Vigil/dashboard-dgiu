@@ -23,25 +23,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function RecursiveTreeView({ data }) {
-  // const progressBar = (nodes) => {
-  //   return nodes.id !== 'root' ? (
-  //     <div className={classes.statsContainer}>
-  //       <span style={{ paddingTop: '9px', width: '70px', margin: '0' }}>{`${Math.round(
-  //         (nodes.matchInformation / total) * 100
-  //       )}%(${nodes.matchInformation})`}</span>
-  //       <LinearProgress
-  //         style={{ width: '100px', height: '10px', marginTop: '15px' }}
-  //         variant="determinate"
-  //         color="secondary"
-  //         value={nodes.matchInformation ? (nodes.matchInformation / total) * 100 : 0}
-  //       />
-  //     </div>
-  //   ) : null;
-  // };
-
+export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
+ 
   const classes = useStyles();
   const total = data.matchInformation ? data.matchInformation.registeredId : 2000;
+ 
   const [expanded, setExpanded] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
 
@@ -54,6 +40,7 @@ export default function RecursiveTreeView({ data }) {
   };
 
   const renderTree = (nodes) => (
+    
     <div className={classes.treeItem}>
       <TreeItem
         onClick={
