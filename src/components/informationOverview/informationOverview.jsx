@@ -12,6 +12,7 @@ const useStyles = makeStyles({
   numberContainer: {
     display: "flex",
     flexDirection: "column",
+    textAlign: "left",
   },
   progressAndStatsContainer: {
     display: "flex",
@@ -45,7 +46,7 @@ const InformationOverview = () => {
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
               <Typography style={{ fontSize: 30 }}>2500</Typography>
-              <span>Total</span>
+              <span>TOTAL</span>
             </div>
             <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
           </div>
@@ -69,7 +70,7 @@ const InformationOverview = () => {
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
               <Typography style={{ fontSize: 30 }}>2500</Typography>
-              <span>Total</span>
+              <span>CURSO DIURNO</span>
             </div>
             <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
           </div>
@@ -93,7 +94,7 @@ const InformationOverview = () => {
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
               <Typography style={{ fontSize: 30 }}>2500</Typography>
-              <span>Total</span>
+              <span>CURSO POR ENCUENTROS</span>
             </div>
             <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
           </div>
@@ -117,7 +118,7 @@ const InformationOverview = () => {
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
               <Typography style={{ fontSize: 30 }}>2500</Typography>
-              <span>Total</span>
+              <span>ENSEÑANZA A DISTANCIA</span>
             </div>
             <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
           </div>
