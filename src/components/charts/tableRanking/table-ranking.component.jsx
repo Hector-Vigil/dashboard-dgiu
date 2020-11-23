@@ -10,7 +10,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
-  { id: "name", label: "Posición", minWidth: 170 },
+  { id: "name", label: "#", minWidth: 170 },
   { id: "code", label: "Facultad", minWidth: 100 },
 
   {
@@ -46,8 +46,8 @@ const useStyles = makeStyles({
     width: "15vw",
   },
   container: {
-    overflowY: "auto",
-    overflowX: "auto",
+    overflowY: "none",
+    overflowX: "none",
     margin: "10px 10px",
   },
 });

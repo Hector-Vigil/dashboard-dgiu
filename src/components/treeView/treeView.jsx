@@ -43,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
 
     height: "22px",
   },
+  // linearProgress: {
+  //   barColorSecondary: {
+
+  //       backgroundColor: "red",
+  //   },
+  // },
 }));
 
 export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
@@ -67,11 +73,24 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
       {nodes.id !== "root" ? (
         <div className={classes.statsContainer}>
           <div
-            style={{ height: 10, width: 70, margin: 0, fontSize: "0.7rem" }}
-          >{`${Math.round((nodes.matchInformation / total) * 100)}%(${
-            nodes.matchInformation
-          })`}</div>
+            style={{
+              height: 10,
+              width: 100,
+              margin: 0,
+              fontSize: "0.7rem",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>{`${nodes.matchInformation} DE ${total}`}</div>
+            <div>{`${Math.round(
+              (nodes.matchInformation / total) * 100
+            )}%`}</div>
+          </div>
           <LinearProgress
+            // classes={{
+            //   barColorSecondary: classes.linearProgress.barColorSecondary,
+            // }}
             style={{ width: 100, height: 9, marginTop: 6 }}
             variant="determinate"
             color="secondary"

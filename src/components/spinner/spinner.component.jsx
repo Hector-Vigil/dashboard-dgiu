@@ -1,6 +1,6 @@
-import React from 'react';
-import { CircularProgress, makeStyles, withStyles } from '@material-ui/core';
-import './spinner.styles.scss';
+import React from "react";
+import { CircularProgress, makeStyles, withStyles } from "@material-ui/core";
+import "./spinner.styles.scss";
 
 // const styledSpinner = makeStyles ({
 //     colorPrimary: {
@@ -9,7 +9,9 @@ import './spinner.styles.scss';
 // })
 
 const SpinnerComponent = ({ value }) => {
-  return <CircularProgress className="spinner" color="secondary" variant="static" size="20px" value={value} />;
+  return (
+    <CircularProgress className="spinner" color="secondary" size="200px" />
+  );
 };
 
 export default SpinnerComponent;

@@ -74,6 +74,7 @@ const HomePage = () => {
         style={{ width: "80vw" }}
       >
         <CardCharts title="ESTUDIANTES REGISTRADOS POR FACULTAD">
+          {loading && <SpinnerComponent />}
           {!loading && treeViewData && studentsOpenModalHandler && (
             <RecursiveTreeView
               data={treeViewData}
@@ -90,6 +91,7 @@ const HomePage = () => {
         </CardCharts>
 
         <CardCharts title="RANKING DE FACULTADES">
+          {loading && <SpinnerComponent />}
           {!loading && treeViewData && <TableRanking data={treeViewData} />}
         </CardCharts>
       </Grid>
