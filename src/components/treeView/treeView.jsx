@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     height: "100%",
-    width: "80vw",
+    width: "55vw",
     overflow: "auto",
   },
   treeItem: {
@@ -25,14 +25,15 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     flexDirection: "row",
     position: "absolute",
-    right: 500,
     [theme.breakpoints.down("lg")]: {
-      right: 30,
+      right: 350,
     },
-    [theme.breakpoints.down("md")]: {},
+    [theme.breakpoints.down("md")]: {
+      right: 300,
+    },
     [theme.breakpoints.down("sm")]: {
       position: "relative",
-      marginLeft: 40,
+      marginLeft: 80,
     },
 
     height: "22px",

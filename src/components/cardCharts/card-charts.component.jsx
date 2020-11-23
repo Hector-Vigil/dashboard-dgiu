@@ -10,20 +10,19 @@ let style = {
     marginBottom: 16,
     backgroundColor: " #27293d",
     height: "100%",
+    paddingBottom: 0,
   },
   cardContainer: {
-    marginBottom: 16,
     backgroundColor: " #27293d",
     height: "100%",
     flexDirection: "column",
     justifyContent: "center",
+    paddingBottom: 0,
   },
   title: {
     fontSize: 14,
     color: "#f4f4f4",
-  },
-  pos: {
-    marginBottom: 12,
+    paddingBottom: 0,
   },
 };
 

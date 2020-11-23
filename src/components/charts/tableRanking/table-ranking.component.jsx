@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     boxShadow: "none",
     display: "flex",
     flexDirection: "column",
-    width: "80vw",
+    width: "15vw",
   },
   container: {
     overflowY: "auto",
@@ -142,7 +142,7 @@ export default function TableRanking({ data }) {
       </TableContainer>
       <TablePagination
         style={pagStyle}
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[4, 25, 100]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}

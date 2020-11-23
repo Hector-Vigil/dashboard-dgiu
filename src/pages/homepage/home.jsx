@@ -63,28 +63,36 @@ const HomePage = () => {
       justify="flex-end"
       direction="row"
       wrap="wrap"
-      style={{ marginTop: "1.5rem", marginRight: 50, width: "100%" }}
+      style={{ marginTop: "1.5rem", width: "100%" }}
     >
       <InformationOverview />
-      <CardCharts title="ESTUDIANTES REGISTRADOS POR FACULTAD">
-        {!loading && treeViewData && studentsOpenModalHandler && (
-          <RecursiveTreeView
-            data={treeViewData}
-            studentsOpenModalHandler={studentsOpenModalHandler}
-          />
-        )}
-        {!loading && openModal && studentsCloseModalHandler && modalData && (
-          <StudentsModal
-            openModal={openModal}
-            studentsCloseModalHandler={studentsCloseModalHandler}
-            data={modalData}
-          />
-        )}
-      </CardCharts>
+      <Grid
+        container
+        justify="space-between"
+        direction="row"
+        wrap="wrap"
+        style={{ width: "80vw" }}
+      >
+        <CardCharts title="ESTUDIANTES REGISTRADOS POR FACULTAD">
+          {!loading && treeViewData && studentsOpenModalHandler && (
+            <RecursiveTreeView
+              data={treeViewData}
+              studentsOpenModalHandler={studentsOpenModalHandler}
+            />
+          )}
+          {!loading && openModal && studentsCloseModalHandler && modalData && (
+            <StudentsModal
+              openModal={openModal}
+              studentsCloseModalHandler={studentsCloseModalHandler}
+              data={modalData}
+            />
+          )}
+        </CardCharts>
 
-      <CardCharts title="RANKING DE FACULTADES">
-        {!loading && treeViewData && <TableRanking data={treeViewData} />}
-      </CardCharts>
+        <CardCharts title="RANKING DE FACULTADES">
+          {!loading && treeViewData && <TableRanking data={treeViewData} />}
+        </CardCharts>
+      </Grid>
     </Grid>
   );
 };
