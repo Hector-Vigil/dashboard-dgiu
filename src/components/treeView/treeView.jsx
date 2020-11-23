@@ -5,6 +5,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,19 +13,24 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     width: "80vw",
     overflow: "auto",
+    fontFamily: "'Poppins', sans-serif",
   },
   treeItem: {
     display: "flex",
     flexWrap: "wrap",
     width: "100%",
+    paddingBottom: "0.5rem",
     justifyContent: "space-between",
+    fontFamily: "'Poppins', sans-serif",
   },
+
   statsContainer: {
-    display: "flex",
+    // display: "flex",
     marginLeft: 10,
     justifyContent: "flex-end",
     flexDirection: "row",
     position: "absolute",
+    // flexWrap: "wrap",
     right: 500,
     [theme.breakpoints.down("lg")]: {
       right: 30,
@@ -60,12 +66,15 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
       </TreeItem>
       {nodes.id !== "root" ? (
         <div className={classes.statsContainer}>
-          <span style={{ height: 20, width: 70, margin: 0 }}>{`${Math.round(
-            (nodes.matchInformation / total) * 100
-          )}%(${nodes.matchInformation})`}</span>
+          <div
+            style={{ height: 10, width: 70, margin: 0, fontSize: "0.7rem" }}
+          >{`${Math.round((nodes.matchInformation / total) * 100)}%(${
+            nodes.matchInformation
+          })`}</div>
           <LinearProgress
-            style={{ width: 100, height: 10, marginTop: 6 }}
+            style={{ width: 100, height: 9, marginTop: 6 }}
             variant="determinate"
+            color="secondary"
             value={
               nodes.matchInformation
                 ? (nodes.matchInformation / total) * 100

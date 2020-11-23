@@ -10,6 +10,7 @@ let style = {
     marginBottom: 16,
     backgroundColor: " #27293d",
     height: "100%",
+    fontFamily: "'Poppins', sans-serif",
   },
   cardContainer: {
     marginBottom: 16,

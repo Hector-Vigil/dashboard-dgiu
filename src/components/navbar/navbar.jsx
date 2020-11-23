@@ -19,9 +19,12 @@ const NavBar = () => {
 
   return (
     <div className="navBar">
-      <hr />
       <div className={classes.root}>
-        <AppBar position="fixed" color="primary" style={{ boxShadow: "none" }}>
+        <AppBar
+          position="fixed"
+          style={{ backgroundColor: "#1f1f2f", boxShadow: "none" }}
+        >
+          <hr />
           <Toolbar>
             <Typography variant="h6" className={classes.title}>
               <div className="navBarContainer">
