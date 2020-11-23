@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector, Cell } from 'recharts';
+import { Grid, makeStyles } from '@material-ui/core';
 
 const data = [
   { name: 'Group A', value: 400 },
@@ -29,22 +30,26 @@ export default class PieChartComponent extends PureComponent {
   }
   render() {
     return (
-      <PieChart width={400} height={400}>
-        <Pie
-          data={this.props.data ? this.props.data : data}
-          cx={200}
-          cy={200}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={120}
-          fill="#8884d8"
-          dataKey="value"
-        >
-          {this.props.data
-            ? this.props.data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
-            : null}
-        </Pie>
-      </PieChart>
+      <Grid>
+        <PieChart width={400} height={400}>
+          <Pie
+            data={this.props.data ? this.props.data : data}
+            cx={200}
+            cy={200}
+            labelLine={false}
+            label={renderCustomizedLabel}
+            outerRadius={120}
+            fill="#8884d8"
+            dataKey="value"
+          >
+            {this.props.data
+              ? this.props.data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))
+              : null}
+          </Pie>
+        </PieChart>
+      </Grid>
     );
   }
 }

@@ -8,6 +8,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: '100%',
+    width: '40%',
+    minWidth: 250,
     marginRight: '30px',
   },
 });

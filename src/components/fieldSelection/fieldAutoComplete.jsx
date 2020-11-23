@@ -20,7 +20,7 @@ export default function FieldAutoComplete({ type, data, id, change }) {
       id={id}
       options={data}
       getOptionLabel={(option) => option}
-      style={{ width: 300, marginTop: '35px' }}
+      style={{ width: '100%', marginTop: 35 }}
       onChange={(event, newValue) => change(event, newValue)}
       renderInput={(params) => <TextField classes={classes} {...params} label={type} variant="outlined" />}
     />
