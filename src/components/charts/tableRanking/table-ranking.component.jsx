@@ -1,30 +1,30 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
-  { id: 'name', label: 'Posición', minWidth: 170 },
-  { id: 'code', label: 'Facultad', minWidth: 100 },
+  { id: "name", label: "Posición", minWidth: 170 },
+  { id: "code", label: "Facultad", minWidth: 100 },
 
   {
-    id: 'size',
-    label: 'Verificados',
+    id: "size",
+    label: "Verificados",
     minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
+    align: "right",
+    format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: 'density',
-    label: '(%)',
+    id: "density",
+    label: "(%)",
     minWidth: 170,
-    align: 'right',
+    align: "right",
     format: (value) => value.toFixed(2),
   },
 ];
@@ -38,22 +38,30 @@ let rows = [];
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: '#27293d',
-    color: '#f4f4f4',
-    boxShadow: 'none',
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
+    backgroundColor: "#27293d",
+    color: "#f4f4f4",
+    boxShadow: "none",
+    display: "flex",
+    flexDirection: "column",
+    width: "80vw",
   },
   container: {
-    overflowY: 'auto',
-    overflowX: 'auto',
-    margin: '10px 10px',
+    overflowY: "auto",
+    overflowX: "auto",
+    margin: "10px 10px",
   },
 });
 
-const cellStyle = { color: '#f4f4f4', borderBottom: 'none', fontFamily: "'Poppins', sans-serif" };
-const pagStyle = { color: '#f4f4f4', borderBottom: 'none', fontFamily: "'Poppins', sans-serif" };
+const cellStyle = {
+  color: "#f4f4f4",
+  borderBottom: "none",
+  fontFamily: "'Poppins', sans-serif",
+};
+const pagStyle = {
+  color: "#f4f4f4",
+  borderBottom: "none",
+  fontFamily: "'Poppins', sans-serif",
+};
 
 export default function TableRanking({ data }) {
   const classes = useStyles();
@@ -96,9 +104,9 @@ export default function TableRanking({ data }) {
                   align={column.align}
                   style={{
                     width: column.minWidth,
-                    backgroundColor: '#1f8af8',
-                    color: '#f4f4f4',
-                    borderBottom: 'none',
+                    backgroundColor: "#1f8af8",
+                    color: "#f4f4f4",
+                    borderBottom: "none",
                   }}
                 >
                   {column.label}
@@ -107,20 +115,28 @@ export default function TableRanking({ data }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align} style={cellStyle}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={cellStyle}
+                        >
+                          {column.format && typeof value === "number"
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>

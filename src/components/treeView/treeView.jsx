@@ -1,34 +1,49 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TreeView from '@material-ui/lab/TreeView';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TreeItem from '@material-ui/lab/TreeItem';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import TreeView from "@material-ui/lab/TreeView";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import TreeItem from "@material-ui/lab/TreeItem";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    height: '100%',
-    width: '100%',
-    overflow: 'auto',
+    display: "flex",
+    height: "100%",
+    width: "80vw",
+    overflow: "auto",
   },
   treeItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
+    display: "flex",
+    flexWrap: "wrap",
+    width: "100%",
+    justifyContent: "space-between",
   },
   statsContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
-    height: '22px',
+    display: "flex",
+    marginLeft: 10,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+    position: "absolute",
+    right: 500,
+    [theme.breakpoints.down("lg")]: {
+      right: 30,
+    },
+    [theme.breakpoints.down("md")]: {},
+    [theme.breakpoints.down("sm")]: {
+      position: "relative",
+      marginLeft: 40,
+    },
+
+    height: "22px",
   },
-});
+}));
 
 export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
   const classes = useStyles();
-  const total = data.matchInformation ? data.matchInformation.registeredId : 2000;
+  const total = data.matchInformation
+    ? data.matchInformation.registeredId
+    : 2000;
 
   const [expanded, setExpanded] = React.useState([]);
   const [selected, setSelected] = React.useState([]);
@@ -45,7 +60,9 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
     <div className={classes.treeItem}>
       <TreeItem
         onClick={
-          nodes.children && nodes.children.length === 0 ? () => studentsOpenModalHandler(nodes.routeParams) : null
+          nodes.children && nodes.children.length === 0
+            ? () => studentsOpenModalHandler(nodes.routeParams)
+            : null
         }
         key={nodes.id}
         nodeId={nodes.id}
@@ -54,20 +71,26 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
         selected={selected}
         onNodeToggle={handleToggle}
         onNodeSelect={handleSelect}
-        style={{ marginTop: '8px', width: '100%' }}
+        style={{ marginTop: "8px", width: "100%" }}
       >
-        {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node) => renderTree(node))
+          : null}
       </TreeItem>
-      {nodes.id !== 'root' ? (
+      {nodes.id !== "root" ? (
         <div className={classes.statsContainer}>
-          <span style={{ height: '20px', width: '70px', margin: '0' }}>{`${Math.round(
+          <span style={{ height: 20, width: 70, margin: 0 }}>{`${Math.round(
             (nodes.matchInformation / total) * 100
           )}%(${nodes.matchInformation})`}</span>
           <LinearProgress
-            style={{ width: '100px', height: '10px', marginTop: '6px' }}
+            style={{ width: 100, height: 10, marginTop: 6 }}
             variant="determinate"
             color="secondary"
-            value={nodes.matchInformation ? (nodes.matchInformation / total) * 100 : 0}
+            value={
+              nodes.matchInformation
+                ? (nodes.matchInformation / total) * 100
+                : 0
+            }
           />
         </div>
       ) : null}
@@ -78,7 +101,7 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
     <TreeView
       className={classes.root}
       defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={['root']}
+      defaultExpanded={["root"]}
       defaultExpandIcon={<ChevronRightIcon />}
     >
       {data ? renderTree(data) : null}
