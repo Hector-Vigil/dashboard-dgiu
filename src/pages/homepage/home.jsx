@@ -60,12 +60,16 @@ const HomePage = () => {
   return (
     <Grid
       container
-      justify="flex-end"
+      justify="center"
       direction="row"
       wrap="wrap"
       style={{ marginTop: "1.5rem", width: "100%" }}
     >
       <InformationOverview />
+      <CardCharts title="RANKING DE FACULTADES">
+        {loading && <SpinnerComponent />}
+        {!loading && treeViewData && <TableRanking data={treeViewData} />}
+      </CardCharts>
       <Grid
         container
         justify="space-between"
@@ -90,10 +94,10 @@ const HomePage = () => {
           )}
         </CardCharts>
 
-        <CardCharts title="RANKING DE FACULTADES">
+        {/* <CardCharts title="RANKING DE FACULTADES">
           {loading && <SpinnerComponent />}
           {!loading && treeViewData && <TableRanking data={treeViewData} />}
-        </CardCharts>
+        </CardCharts> */}
       </Grid>
     </Grid>
   );

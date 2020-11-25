@@ -10,25 +10,25 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
-  { id: "name", label: "#", minWidth: 170 },
+  { id: "name", label: "#", minWidth: 50 },
   { id: "code", label: "Facultad", minWidth: 100 },
 
   {
     id: "size",
-    label: "Verificados",
-    minWidth: 170,
+    label: "✔",
+    minWidth: 50,
     align: "right",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "density",
     label: "(%)",
-    minWidth: 170,
+    minWidth: 50,
     align: "right",
     format: (value) => value.toFixed(2),
   },
 ];
-const width = () => (global.screen.width * 75) / 100;
+// const width = () => (global.screen.width * 50) / 100;
 
 function createData(name, code, size, density) {
   return { name, code, size, density };
@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     boxShadow: "none",
     display: "flex",
     flexDirection: "column",
-    width: "15vw",
+    width: "38vw",
   },
   container: {
     overflowY: "none",
@@ -55,6 +55,9 @@ const useStyles = makeStyles({
 const cellStyle = {
   color: "#f4f4f4",
   borderBottom: "none",
+  textAlign: "left",
+  padding: "0.5rem",
+  paddingRight: "0",
   fontFamily: "'Poppins', sans-serif",
 };
 const pagStyle = {
@@ -66,7 +69,7 @@ const pagStyle = {
 export default function TableRanking({ data }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -107,6 +110,9 @@ export default function TableRanking({ data }) {
                     backgroundColor: "#1f8af8",
                     color: "#f4f4f4",
                     borderBottom: "none",
+                    padding: "0.5rem",
+                    paddingRight: "0",
+                    textAlign: "left",
                   }}
                 >
                   {column.label}
@@ -142,7 +148,7 @@ export default function TableRanking({ data }) {
       </TableContainer>
       <TablePagination
         style={pagStyle}
-        rowsPerPageOptions={[4, 25, 100]}
+        rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}

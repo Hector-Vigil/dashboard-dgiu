@@ -3,6 +3,8 @@ import { Grid, makeStyles, Typography } from "@material-ui/core";
 import CardChart from "../../components/cardCharts/card-charts.component";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import CheckRoundedIcon from "@material-ui/icons/CheckRounded";
+import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
 
 const useStyles = makeStyles({
   numberAndIconContainer: {
@@ -24,6 +26,7 @@ const useStyles = makeStyles({
   },
   container: {
     width: "15vw",
+    minWidth: "160px",
   },
   root: {
     colorPrimary: "red",
@@ -35,16 +38,21 @@ const InformationOverview = () => {
   return (
     <Grid
       container
-      justify="space-between"
+      justify="space-around"
       direction="row"
+      spacing="5"
       wrap="wrap"
-      style={{ width: "80vw", marginTop: 50, height: "30%" }}
+      style={{ width: "50vw", marginTop: 50, marginRight: 25, height: "30%" }}
     >
       <CardChart>
         <div className={classes.container}>
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
-              <Typography style={{ fontSize: 30 }}>2500</Typography>
+              <Typography
+                style={{ fontSize: 30, fontFamily: "'Poppins',sans-serif" }}
+              >
+                2500
+              </Typography>
               <span>Total</span>
             </div>
             <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
@@ -68,10 +76,21 @@ const InformationOverview = () => {
         <div className={classes.container}>
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
-              <Typography style={{ fontSize: 30 }}>2500</Typography>
+              <Typography
+                style={{ fontSize: 30, fontFamily: "'Poppins',sans-serif" }}
+              >
+                2500
+              </Typography>
               <span>Total</span>
             </div>
-            <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
+            <PermIdentityOutlinedIcon
+              fontSize="large"
+              style={{ paddingTop: 4, position: "relative", left: "2.8rem" }}
+            />
+            <CheckRoundedIcon
+              fontSize="medium"
+              style={{ paddingTop: 4, position: "relative", top: "1.2rem" }}
+            />
           </div>
           <div className={classes.progressAndStatsContainer}>
             <div>
@@ -92,10 +111,21 @@ const InformationOverview = () => {
         <div className={classes.container}>
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
-              <Typography style={{ fontSize: 30 }}>2500</Typography>
+              <Typography
+                style={{ fontSize: 30, fontFamily: "'Poppins',sans-serif" }}
+              >
+                2500
+              </Typography>
               <span>Total</span>
             </div>
-            <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
+            <PermIdentityOutlinedIcon
+              fontSize="large"
+              style={{ paddingTop: 4, position: "relative", left: "2.8rem" }}
+            />
+            <CheckRoundedIcon
+              fontSize="medium"
+              style={{ paddingTop: 4, position: "relative", top: "1.2rem" }}
+            />
           </div>
           <div className={classes.progressAndStatsContainer}>
             <div>
@@ -116,10 +146,21 @@ const InformationOverview = () => {
         <div className={classes.container}>
           <div className={classes.numberAndIconContainer}>
             <div className={classes.numberContainer}>
-              <Typography style={{ fontSize: 30 }}>2500</Typography>
+              <Typography
+                style={{ fontSize: 30, fontFamily: "'Poppins',sans-serif" }}
+              >
+                2500
+              </Typography>
               <span>Total</span>
             </div>
-            <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
+            <PermIdentityOutlinedIcon
+              fontSize="large"
+              style={{ paddingTop: 4, position: "relative", left: "2.8rem" }}
+            />
+            <CheckRoundedIcon
+              fontSize="medium"
+              style={{ paddingTop: 4, position: "relative", top: "1.2rem" }}
+            />
           </div>
           <div className={classes.progressAndStatsContainer}>
             <div>
