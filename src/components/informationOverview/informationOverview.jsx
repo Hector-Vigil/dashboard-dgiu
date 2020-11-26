@@ -4,6 +4,8 @@ import { Grid, makeStyles, Typography } from "@material-ui/core";
 import CardChart from "../../components/cardCharts/card-charts.component";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
+import CheckRoundedIcon from "@material-ui/icons/CheckRounded";
+import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
 
 const useStyles = makeStyles((theme) => ({
   numberAndIconContainer: {
@@ -26,12 +28,16 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     width: "15vw",
+<<<<<<< HEAD
     flexShrink: 0,
     [theme.breakpoints.down("sm")]: {
       display: "flex",
       flexDirection: "column",
       width: "60vw",
     },
+=======
+    minWidth: "160px",
+>>>>>>> 65631fd77393d10f6d467fc39e42a7a3d5c78db6
   },
   gridContainer: {
     width: "80vw",

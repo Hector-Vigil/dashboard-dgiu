@@ -28,7 +28,7 @@ const columns = [
     format: (value) => value.toFixed(2),
   },
 ];
-const width = () => (global.screen.width * 75) / 100;
+// const width = () => (global.screen.width * 50) / 100;
 
 function createData(name, code, size, density) {
   return { name, code, size, density };
@@ -69,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
 const cellStyle = {
   color: "#f4f4f4",
   borderBottom: "none",
+  textAlign: "left",
+  padding: "0.5rem",
+  paddingRight: "0",
   fontFamily: "'Poppins', sans-serif",
 };
 const pagStyle = {
@@ -121,6 +124,9 @@ export default function TableRanking({ data }) {
                     backgroundColor: "#1f8af8",
                     color: "#f4f4f4",
                     borderBottom: "none",
+                    padding: "0.5rem",
+                    paddingRight: "0",
+                    textAlign: "left",
                   }}
                 >
                   {column.label}
@@ -156,7 +162,7 @@ export default function TableRanking({ data }) {
       </TableContainer>
       <TablePagination
         style={pagStyle}
-        rowsPerPageOptions={[4, 25, 100]}
+        rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
