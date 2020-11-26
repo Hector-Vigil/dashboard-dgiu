@@ -122,15 +122,12 @@ const HomePage = () => {
     <Grid
       className={classes.container}
       container
-      justify="center"
+      justify="flex-end"
       direction="row"
       wrap="wrap"
     >
       <InformationOverview />
-      <CardCharts title="RANKING DE FACULTADES">
-        {loading && <SpinnerComponent />}
-        {!loading && treeViewData && <TableRanking data={treeViewData} />}
-      </CardCharts>
+
       <Grid
         className={classes.treeViewAndTableContainer}
         container
