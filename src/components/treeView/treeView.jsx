@@ -47,16 +47,31 @@ const useStyles = makeStyles((theme) => ({
 
     height: "22px",
   },
-  // linearProgress: {
-  //   barColorSecondary: {
-
-  //       backgroundColor: "red",
-  //   },
-  // },
+  colorPrimary: {
+    backgroundColor: "#f2f4c0",
+  },
+  barColorPrimary: {
+    backgroundColor: "#f6830f",
+  },
 }));
 
 export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
   const classes = useStyles();
+
+  const getLinearProgressColor = (count, total) => {
+    if ((count / total) * 100 <= 35) return "secondary";
+    return "primary";
+  };
+
+  const getLinearProgressColorMiddle = (count, total) => {
+    if ((count / total) * 100 > 0 && (count / total) * 100 < 7)
+      return {
+        colorPrimary: classes.colorPrimary,
+        barColorPrimary: classes.barColorPrimary,
+      };
+    return { classes };
+  };
+
   const total = data.matchInformation ? data.matchInformation.total : 2000;
   const renderTree = (nodes) => (
     <div className={classes.treeItem}>
@@ -92,17 +107,18 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
             )}%`}</div>
           </div>
           <LinearProgress
-            // classes={{
-            //   barColorSecondary: classes.linearProgress.barColorSecondary,
-            // }}
             style={{ width: 100, height: 8, marginTop: 6 }}
             variant="determinate"
-            color="secondary"
             value={
               nodes.matchInformation
                 ? (nodes.matchInformation / total) * 100
                 : 0
             }
+            color={getLinearProgressColor(nodes.matchInformation, total)}
+            classes={getLinearProgressColorMiddle(
+              nodes.matchInformation,
+              total
+            )}
           />
         </div>
       ) : null}

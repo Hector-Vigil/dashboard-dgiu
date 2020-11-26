@@ -121,7 +121,7 @@ export default function TableRanking({ data }) {
                   align={column.align}
                   style={{
                     width: column.minWidth,
-                    backgroundColor: "#1f8af8",
+                    backgroundColor: "#056676",
                     color: "#f4f4f4",
                     borderBottom: "none",
                     padding: "0.5rem",

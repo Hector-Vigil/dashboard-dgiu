@@ -1,11 +1,10 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Grid, makeStyles, Typography, withStyles } from "@material-ui/core";
 import CardChart from "../../components/cardCharts/card-charts.component";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import CheckRoundedIcon from "@material-ui/icons/CheckRounded";
-import PermIdentityOutlinedIcon from "@material-ui/icons/PermIdentityOutlined";
+import { VerifiedUserRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   numberAndIconContainer: {
@@ -44,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
   },
+  colorPrimary: {
+    backgroundColor: "#f2f4c0",
+  },
+  barColorPrimary: {
+    backgroundColor: "#f6830f",
+  },
 }));
 
 const InformationOverview = () => {
@@ -62,7 +67,7 @@ const InformationOverview = () => {
       );
       setCourseData(data);
     } catch (error) {
-      console, log(error);
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -103,10 +108,17 @@ const InformationOverview = () => {
       total: courseData["Enseñanza a Distancia"].total,
     };
   }
-
   const getLinearProgressColor = (count, total) => {
-    if ((count / total) * 100 < 50) return "secondary";
+    if ((count / total) * 100 <= 35) return "secondary";
     return "primary";
+  };
+  const getLinearProgressColorMiddle = (count, total) => {
+    if ((count / total) * 100 > 35 && (count / total) * 100 < 70)
+      return {
+        colorPrimary: classes.colorPrimary,
+        barColorPrimary: classes.barColorPrimary,
+      };
+    return { classes };
   };
   return (
     !loading &&
@@ -139,6 +151,10 @@ const InformationOverview = () => {
                     courseTotal.count,
                     courseTotal.total
                   )}
+                  classes={getLinearProgressColorMiddle(
+                    courseTotal.count,
+                    courseTotal.total
+                  )}
                 />
               </div>
               <div className={classes.statsContainer}>
@@ -159,7 +175,7 @@ const InformationOverview = () => {
                 </Typography>
                 <span style={{ fontSize: 12 }}>CURSO DIURNO</span>
               </div>
-              <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
+              <VerifiedUserRounded fontSize="large" style={{ paddingTop: 4 }} />
             </div>
             <div className={classes.progressAndStatsContainer}>
               <div>
@@ -168,6 +184,10 @@ const InformationOverview = () => {
                   value={(courseDaily.count / courseDaily.total) * 100}
                   style={{ height: 10, marginTop: 6 }}
                   color={getLinearProgressColor(
+                    courseDaily.count,
+                    courseDaily.total
+                  )}
+                  classes={getLinearProgressColorMiddle(
                     courseDaily.count,
                     courseDaily.total
                   )}
@@ -191,7 +211,7 @@ const InformationOverview = () => {
                 </Typography>
                 <span style={{ fontSize: 12 }}>CURSO POR ENCUENTROS</span>
               </div>
-              <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
+              <VerifiedUserRounded fontSize="large" style={{ paddingTop: 4 }} />
             </div>
             <div className={classes.progressAndStatsContainer}>
               <div>
@@ -200,6 +220,10 @@ const InformationOverview = () => {
                   variant="determinate"
                   value={(courseSesions.count / courseSesions.total) * 100}
                   color={getLinearProgressColor(
+                    courseSesions.count,
+                    courseSesions.total
+                  )}
+                  classes={getLinearProgressColorMiddle(
                     courseSesions.count,
                     courseSesions.total
                   )}
@@ -226,7 +250,7 @@ const InformationOverview = () => {
                 </Typography>
                 <span style={{ fontSize: 12 }}>ENSEÑANZA A DISTANCIA</span>
               </div>
-              <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
+              <VerifiedUserRounded fontSize="large" style={{ paddingTop: 4 }} />
             </div>
             <div className={classes.progressAndStatsContainer}>
               <div>
@@ -235,6 +259,10 @@ const InformationOverview = () => {
                   variant="determinate"
                   value={(courseDistances.count / courseDistances.total) * 100}
                   color={getLinearProgressColor(
+                    courseDistances.count,
+                    courseDistances.total
+                  )}
+                  classes={getLinearProgressColorMiddle(
                     courseDistances.count,
                     courseDistances.total
                   )}

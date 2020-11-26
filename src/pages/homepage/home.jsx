@@ -15,6 +15,7 @@ import RegisteredPanel from "../../components/registeredPanel/registeredPanel";
 import RecursiveTreeView from "../../components/treeView/treeView";
 import StudentsModal from "../../components/studentsModal/studentsModal";
 import InformationOverview from "../../components/informationOverview/informationOverview";
+import ColorProgressBar from "../../components/progressBar/colorProgressBar.component";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -127,7 +128,6 @@ const HomePage = () => {
       wrap="wrap"
     >
       <InformationOverview />
-
       <Grid
         className={classes.treeViewAndTableContainer}
         container
