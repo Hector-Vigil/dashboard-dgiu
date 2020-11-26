@@ -9,7 +9,6 @@ let style = {
   root: {
     marginBottom: 16,
     backgroundColor: " #27293d",
-    height: "100%",
     fontFamily: "'Poppins', sans-serif",
     paddingBottom: 0,
   },

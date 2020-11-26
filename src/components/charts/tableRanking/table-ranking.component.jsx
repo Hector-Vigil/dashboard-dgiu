@@ -10,21 +10,21 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
-  { id: "name", label: "#", minWidth: 170 },
-  { id: "code", label: "Facultad", minWidth: 100 },
+  { id: "name", label: "#", minWidth: 50 },
+  { id: "code", label: "Facultad", minWidth: 50 },
 
   {
     id: "size",
-    label: "Verificados",
-    minWidth: 170,
-    align: "right",
+    label: "✔",
+    minWidth: 50,
+    align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "density",
     label: "(%)",
-    minWidth: 170,
-    align: "right",
+    minWidth: 50,
+    align: "center",
     format: (value) => value.toFixed(2),
   },
 ];
@@ -36,21 +36,35 @@ function createData(name, code, size, density) {
 
 let rows = [];
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#27293d",
     color: "#f4f4f4",
     boxShadow: "none",
     display: "flex",
     flexDirection: "column",
-    width: "15vw",
+    width: "100%",
+    height: 438,
   },
   container: {
     overflowY: "none",
     overflowX: "none",
     margin: "10px 10px",
   },
-});
+  "@global": {
+    "*::-webkit-scrollbar": {
+      width: 10,
+      height: 10,
+    },
+    "*::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "*::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.1)",
+      outline: "1px solid slategrey",
+    },
+  },
+}));
 
 const cellStyle = {
   color: "#f4f4f4",
@@ -66,7 +80,7 @@ const pagStyle = {
 export default function TableRanking({ data }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(4);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

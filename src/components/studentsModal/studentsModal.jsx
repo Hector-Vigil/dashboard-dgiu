@@ -1,7 +1,7 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import TableModal from '../../components/charts/tableModal/tableModal';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
+import TableModal from "../../components/charts/tableModal/tableModal";
 function getModalStyle() {
   const top = 50;
   const left = 50;
@@ -15,21 +15,25 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'absolute',
-    backgroundColor: '#27293d',
-    border: '2px solid #000',
+    position: "absolute",
+    backgroundColor: "#27293d",
+    border: "2px solid #000",
     boxShadow: theme.shadows[5],
-    width: '75%',
-    height: '50%',
-    overflow: 'auto',
+    width: "75%",
+    height: "50%",
+    overflow: "auto",
   },
   modalHeader: {
-    color: '#f4f4f4',
-    textAlign: 'center',
+    color: "#f4f4f4",
+    textAlign: "center",
   },
 }));
 
-export default function StudentsModal({ openModal, studentsCloseModalHandler, data }) {
+export default function StudentsModal({
+  openModal,
+  studentsCloseModalHandler,
+  data,
+}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);

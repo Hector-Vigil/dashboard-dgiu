@@ -10,18 +10,21 @@ import { Typography } from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    height: "100%",
-    width: "55vw",
+    width: "100%",
     overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
+    flexShrink: 0,
+    height: 438,
   },
   treeItem: {
     display: "flex",
-    flexWrap: "wrap",
     width: "100%",
     paddingBottom: "0.5rem",
     justifyContent: "space-between",
     fontFamily: "'Poppins', sans-serif",
+    [theme.breakpoints.down("xs")]: {
+      flexWrap: "wrap",
+    },
   },
 
   statsContainer: {
@@ -29,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 10,
     justifyContent: "flex-end",
     flexDirection: "row",
-    position: "absolute",
+    //position: "absolute",
     [theme.breakpoints.down("lg")]: {
       right: 350,
     },
@@ -38,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down("sm")]: {
       position: "relative",
-      marginLeft: 80,
+      right: 0,
+      marginBottom: 5,
     },
 
     height: "22px",
@@ -65,6 +69,7 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
         key={nodes.id}
         nodeId={nodes.id}
         label={nodes.name}
+        style={{ width: "100%", textAlign: "left" }}
       >
         {Array.isArray(nodes.children)
           ? nodes.children.map((node) => renderTree(node))
@@ -75,7 +80,6 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
           <div
             style={{
               height: 10,
-              width: 100,
               margin: 0,
               fontSize: "0.7rem",
               display: "flex",
@@ -91,7 +95,7 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
             // classes={{
             //   barColorSecondary: classes.linearProgress.barColorSecondary,
             // }}
-            style={{ width: 100, height: 9, marginTop: 6 }}
+            style={{ width: 100, height: 8, marginTop: 6 }}
             variant="determinate"
             color="secondary"
             value={
