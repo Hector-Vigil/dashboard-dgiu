@@ -15,7 +15,8 @@ import RegisteredPanel from "../../components/registeredPanel/registeredPanel";
 import RecursiveTreeView from "../../components/treeView/treeView";
 import StudentsModal from "../../components/studentsModal/studentsModal";
 import InformationOverview from "../../components/informationOverview/informationOverview";
-import ColorProgressBar from "../../components/progressBar/colorProgressBar.component";
+import SideBar from "../../components/sideBar/sideBar";
+import PieChart from "../../components/charts/genericChart/pie-chart.component";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -45,12 +46,18 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
     },
   },
+  pieChartAndLinearChartContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "80vw",
+  },
 }));
 
 const HomePage = () => {
   const classes = useStyles();
 
   const [treeViewData, setTreeViewData] = useState({});
+  const [pieChartData, setPieChartData] = useState(null);
   const [modalData, setModalData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -58,6 +65,22 @@ const HomePage = () => {
   useEffect(() => {
     fetchTreeViewData();
   }, []);
+
+  useEffect(() => {
+    fetchPieChartData();
+  }, []);
+
+  const fetchPieChartData = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get("http://localhost:3300/getGroupStats");
+      setPieChartData(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchTreeViewData = async () => {
     try {
@@ -127,7 +150,11 @@ const HomePage = () => {
       direction="row"
       wrap="wrap"
     >
-      <InformationOverview />
+      <Grid container justify="space-between" wrap="wrap">
+        <SideBar />
+        <InformationOverview />
+      </Grid>
+
       <Grid
         className={classes.treeViewAndTableContainer}
         container
@@ -163,6 +190,14 @@ const HomePage = () => {
             {loading && <SpinnerComponent />}
             {!loading && treeViewData && <TableRanking data={treeViewData} />}
           </CardCharts>
+        </Grid>
+        <Grid className={classes.pieChartAndLinearChartContainer}>
+          <Grid style={{ width: "48%" }}>
+            <CardCharts>
+              {!loading && pieChartData && <PieChart data={pieChartData} />}
+            </CardCharts>
+          </Grid>
+          <Grid style={{ width: "48%" }}></Grid>
         </Grid>
       </Grid>
     </Grid>

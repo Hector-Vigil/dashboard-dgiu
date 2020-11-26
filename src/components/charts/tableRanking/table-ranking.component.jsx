@@ -15,14 +15,14 @@ const columns = [
 
   {
     id: "size",
-    label: "✔",
+    label: " ✔ ",
     minWidth: 50,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "density",
-    label: "(%)",
+    label: " (%) ",
     minWidth: 50,
     align: "center",
     format: (value) => value.toFixed(2),
@@ -121,7 +121,7 @@ export default function TableRanking({ data }) {
                   align={column.align}
                   style={{
                     width: column.minWidth,
-                    backgroundColor: "#056676",
+                    backgroundColor: "#1f8af8",
                     color: "#f4f4f4",
                     borderBottom: "none",
                     padding: "0.5rem",
