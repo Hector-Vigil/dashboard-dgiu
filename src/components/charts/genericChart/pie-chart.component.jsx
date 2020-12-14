@@ -1,6 +1,13 @@
 import React, { PureComponent } from "react";
-import { PieChart, Pie, Sector, Cell } from "recharts";
-import { Grid, makeStyles } from "@material-ui/core";
+import {
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { makeStyles } from "@material-ui/core";
 
 const data = [
   { name: "Group A", value: 400 },
@@ -9,7 +16,24 @@ const data = [
   { name: "Group D", value: 200 },
 ];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = [
+  "#00bcd4",
+  "#ec0101",
+  "#fecd1a",
+  "#f9813a",
+  "#892cdc",
+  "#d54062",
+  "#81b214",
+];
+
+// let style = {
+//   colorLight: {
+//     color: "#3b3f51",
+//   },
+//   colorDark: {
+//     color: "#f4f4f4",
+//   },
+// };
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -29,7 +53,7 @@ const renderCustomizedLabel = ({
     <text
       x={x}
       y={y}
-      fill="white"
+      fill="#f4f4f4"
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
     >
@@ -44,29 +68,37 @@ export default class PieChartComponent extends PureComponent {
   }
   render() {
     return (
-      <Grid>
-        <PieChart width={500} height={500}>
-          <Pie
-            data={this.props.data}
-            cx={200}
-            cy={200}
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius={120}
-            fill="#8884d8"
-            dataKey="value"
+      <div style={{ width: "100%", height: 450 }}>
+        <ResponsiveContainer>
+          <PieChart
+            style={
+              this.props.darkMode
+                ? {
+                    color: "#f4f4f4",
+                  }
+                : { color: "#3b3f51" }
+            }
           >
-            {this.props.data
-              ? this.props.data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))
-              : null}
-          </Pie>
-        </PieChart>
-      </Grid>
+            <Pie
+              data={this.props.data}
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={120}
+              fill="#8884d8"
+              stroke={this.props.darkMode ? "#f4f4f4" : "#3b3f51"}
+              dataKey="value"
+            >
+              {this.props.data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Legend wrapperStyle={{ width: "100%" }} />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
     );
   }
 }
