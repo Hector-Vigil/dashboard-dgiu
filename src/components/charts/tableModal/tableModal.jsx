@@ -43,8 +43,16 @@ function createData(name, lastName, province, zone, verified) {
 let rows = [];
 
 const useStyles = makeStyles({
-  root: {
+  rootDark: {
     backgroundColor: "#27293d",
+    color: "#f4f4f4",
+    boxShadow: "none",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+  },
+  rootLight: {
+    backgroundColor: "#fff",
     color: "#f4f4f4",
     boxShadow: "none",
     display: "flex",
@@ -57,18 +65,35 @@ const useStyles = makeStyles({
   },
 });
 
-const cellStyle = {
+const cellStyleDark = {
+  color: "#f4f4f4",
+  borderBottom: "none",
+  textAlign: "left",
+  padding: "0.5rem",
+  paddingRight: "0",
+  fontFamily: "'Poppins', sans-serif",
+};
+const cellStyleLight = {
+  color: "#3b3f51",
+  borderBottom: "none",
+  textAlign: "left",
+  padding: "0.5rem",
+  paddingRight: "0",
+  fontFamily: "'Poppins', sans-serif",
+};
+
+const pagStyleDark = {
   color: "#f4f4f4",
   borderBottom: "none",
   fontFamily: "'Poppins', sans-serif",
 };
-const pagStyle = {
-  color: "#f4f4f4",
+const pagStyleLight = {
+  color: "#3b3f51",
   borderBottom: "none",
   fontFamily: "'Poppins', sans-serif",
 };
 
-export default function TableModal({ data }) {
+export default function TableModal({ data, darkMode }) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -106,7 +131,7 @@ export default function TableModal({ data }) {
   }
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={darkMode ? classes.rootDark : classes.rootLight}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -118,6 +143,7 @@ export default function TableModal({ data }) {
                   style={{
                     width: column.minWidth,
                     backgroundColor: "#1f8af8",
+                    fontFamily: "'Poppins', sans-serif",
                     color: "#f4f4f4",
                     borderBottom: "none",
                   }}
@@ -139,7 +165,7 @@ export default function TableModal({ data }) {
                         <TableCell
                           key={column.id}
                           align={column.align}
-                          style={cellStyle}
+                          style={darkMode ? cellStyleDark : cellStyleLight}
                         >
                           {column.format && typeof value === "number"
                             ? column.format(value)
@@ -154,7 +180,7 @@ export default function TableModal({ data }) {
         </Table>
       </TableContainer>
       <TablePagination
-        style={pagStyle}
+        style={darkMode ? pagStyleDark : pagStyleLight}
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={rows.length}

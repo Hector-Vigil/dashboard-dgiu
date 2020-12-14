@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     flexShrink: 0,
   },
-  drawerPaper: {
+  drawerPaperDark: {
     display: "flex",
     width: 200,
     height: 170,
@@ -43,12 +43,35 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: " #27293d",
     color: "#f4f4f4",
   },
-  listItemIcon: {
+  drawerPaperLight: {
+    display: "flex",
+    width: 200,
+    height: 170,
+    marginTop: 74,
+    marginRight: 20,
+    marginLeft: 20,
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 54,
+      marginLeft: 0,
+      width: "100%",
+      alignContent: "center",
+    },
+    backgroundColor: "#fff",
+    color: "#3b3f51",
+  },
+  listItemIconDark: {
     color: "#f4f4f4",
+  },
+  listItemIconLight: {
+    color: "#3b3f51",
   },
 }));
 
+<<<<<<< HEAD
 export default function PermanentDrawerLeft({ open }) {
+=======
+export default function PermanentDrawerLeft({ open, darkMode }) {
+>>>>>>> 1f17a6f3ab79ecc96a0b0371a5c7cff67dff5639
   const classes = useStyles();
 
   return (
@@ -56,16 +79,32 @@ export default function PermanentDrawerLeft({ open }) {
       <Drawer
         className={classes.drawer}
         variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
+        classes={
+          darkMode
+            ? {
+                paper: classes.drawerPaperDark,
+              }
+            : { paper: classes.drawerPaperLight }
+        }
         anchor="left"
         open={open}
       >
         <List>
-          <a href="/" style={{ textDecoration: "none", color: "#f4f4f4" }}>
+          <a
+            href="/"
+            style={{
+              textDecoration: "none",
+              color: darkMode ? "#f4f4f4" : "#3b3f51",
+            }}
+          >
             <ListItem button key="Estudiantes">
-              <ListItemIcon className={classes.listItemIcon}>
+              <ListItemIcon
+                className={
+                  darkMode
+                    ? classes.listItemIconDark
+                    : classes.listItemIconLight
+                }
+              >
                 <SchoolIcon />
               </ListItemIcon>
               <ListItemText primary="Estudiantes" />
@@ -74,10 +113,19 @@ export default function PermanentDrawerLeft({ open }) {
           <a
             href="http://directoriounico.umcc.cu/filemanager/"
             target="_blank"
-            style={{ textDecoration: "none", color: "#f4f4f4" }}
+            style={{
+              textDecoration: "none",
+              color: darkMode ? "#f4f4f4" : "#3b3f51",
+            }}
           >
             <ListItem button key="FileManager">
-              <ListItemIcon className={classes.listItemIcon}>
+              <ListItemIcon
+                className={
+                  darkMode
+                    ? classes.listItemIconDark
+                    : classes.listItemIconLight
+                }
+              >
                 <CloudUploadIcon />
               </ListItemIcon>
               <ListItemText primary="FileManager" />
@@ -86,10 +134,19 @@ export default function PermanentDrawerLeft({ open }) {
           <a
             href="http://directoriounico.umcc.cu/api/"
             target="_blank"
-            style={{ textDecoration: "none", color: "#f4f4f4" }}
+            style={{
+              textDecoration: "none",
+              color: darkMode ? "#f4f4f4" : "#3b3f51",
+            }}
           >
             <ListItem button key="API-REST">
-              <ListItemIcon className={classes.listItemIcon}>
+              <ListItemIcon
+                className={
+                  darkMode
+                    ? classes.listItemIconDark
+                    : classes.listItemIconLight
+                }
+              >
                 <SettingsIcon />
               </ListItemIcon>
               <ListItemText primary="API-REST" />

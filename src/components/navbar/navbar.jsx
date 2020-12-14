@@ -6,6 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import NavBarLogo from "../navbar-logo/navbar-logo.component";
 import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
+import Brightness7RoundedIcon from "@material-ui/icons/Brightness7Rounded";
+import Brightness4RoundedIcon from "@material-ui/icons/Brightness4Rounded";
 
 import "./navbar.styles.scss";
 import { MenuItem } from "@material-ui/core";
@@ -16,9 +18,16 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     justifyContent: "start",
   },
+  modeIconContainer: {
+    position: "absolute",
+    top: "0.5rem",
+    right: "5rem",
+    display: "flex",
+    justifyContent: "center",
+  },
 }));
 
-const NavBar = ({ handler }) => {
+const NavBar = ({ handler, handlerMode, darkMode }) => {
   const classes = useStyles();
 
   return (
@@ -47,8 +56,17 @@ const NavBar = ({ handler }) => {
               </Typography>
 
               <IconButton
-                aria-label="open drawer"
+                className={classes.modeIconContainer}
                 style={{ color: "#f4f4f4" }}
+                onClick={() => handlerMode()}
+              >
+                {darkMode && <Brightness7RoundedIcon />}
+                {!darkMode && <Brightness4RoundedIcon />}
+              </IconButton>
+
+              <IconButton
+                style={{ color: "#f4f4f4" }}
+                aria-label="open drawer"
                 onClick={() => handler()}
               >
                 <MenuIcon />

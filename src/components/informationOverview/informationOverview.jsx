@@ -12,20 +12,46 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     height: 73,
   },
-  numberContainer: {
+  numberContainerDark: {
     display: "flex",
     flexDirection: "column",
     textAlign: "left",
   },
-  progressAndStatsContainer: {
+  numberContainerLight: {
+    display: "flex",
+    color: "#3b3f51",
+    flexDirection: "column",
+    textAlign: "left",
+  },
+  progressAndStatsContainerDark: {
     display: "flex",
     flexDirection: "column",
     paddingTop: 10,
   },
-  statsContainer: {
+  progressAndStatsContainerLight: {
+    display: "flex",
+    color: "#3b3f51",
+    flexDirection: "column",
+    paddingTop: 10,
+  },
+  statsContainerDark: {
     display: "flex",
     justifyContent: "space-between",
   },
+  statsContainerLight: {
+    display: "flex",
+    color: "#3b3f51",
+    justifyContent: "space-between",
+  },
+
+  iconDark: {
+    color: "#f4f4f4",
+  },
+
+  iconLight: {
+    color: "#3b3f51",
+  },
+
   container: {
     width: "15vw",
     flexShrink: 0,
@@ -35,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
       width: "60vw",
     },
   },
-  gridContainer: {
+  gridContainerDark: {
     width: "80vw",
     marginTop: 50,
     marginRight: 20,
@@ -43,6 +69,24 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: "center",
     },
   },
+  gridContainerLight: {
+    width: "80vw",
+    color: "#3b3f51",
+    marginTop: 50,
+    marginRight: 20,
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
+  },
+
+  colorDark: {
+    color: "#f4f4f4",
+  },
+
+  colorLight: {
+    color: "#3b3f51",
+  },
+
   colorPrimary: {
     backgroundColor: "#f2f4c0",
   },
@@ -51,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InformationOverview = () => {
+const InformationOverview = ({ darkMode }) => {
   const [courseData, setCourseData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -124,24 +168,55 @@ const InformationOverview = () => {
     !loading &&
     courseData && (
       <Grid
-        className={classes.gridContainer}
+        className={
+          darkMode ? classes.gridContainerDark : classes.gridContainerLight
+        }
         container
         justify="space-between"
         direction="row"
         wrap="wrap"
       >
-        <CardChart>
+        <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div className={classes.numberAndIconContainer}>
-              <div className={classes.numberContainer}>
-                <Typography style={{ fontSize: 30 }}>
+            <div
+              className={
+                darkMode
+                  ? classes.numberAndIconContainerDark
+                  : classes.numberContainerLight
+              }
+            >
+              <div
+                className={
+                  darkMode
+                    ? classes.numberContainerDark
+                    : classes.numberContainerLight
+                }
+              >
+                <Typography
+                  classes={
+                    darkMode
+                      ? { root: classes.colorDark }
+                      : { root: classes.colorLight }
+                  }
+                  style={{ fontSize: 30 }}
+                >
                   {courseTotal.count}
                 </Typography>
                 <span style={{ fontSize: 12 }}>TOTAL</span>
               </div>
-              <PeopleAltIcon fontSize="large" style={{ paddingTop: 4 }} />
+              <PeopleAltIcon
+                className={darkMode ? classes.iconDark : classes.iconLight}
+                fontSize="large"
+                style={{ paddingTop: 4 }}
+              />
             </div>
-            <div className={classes.progressAndStatsContainer}>
+            <div
+              className={
+                darkMode
+                  ? classes.progressAndStatsContainerDark
+                  : classes.progressAndStatsContainerLight
+              }
+            >
               <div>
                 <LinearProgress
                   style={{ height: 10, marginTop: 6 }}
@@ -157,7 +232,13 @@ const InformationOverview = () => {
                   )}
                 />
               </div>
-              <div className={classes.statsContainer}>
+              <div
+                className={
+                  darkMode
+                    ? classes.statsContainerDark
+                    : classes.statsContainerLight
+                }
+              >
                 <span>{`de ${courseTotal.total}`}</span>
                 <span style={{ margin: "0 0" }}>
                   {Math.round((courseTotal.count / courseTotal.total) * 100)}%
@@ -166,18 +247,47 @@ const InformationOverview = () => {
             </div>
           </div>
         </CardChart>
-        <CardChart>
+        <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div className={classes.numberAndIconContainer}>
-              <div className={classes.numberContainer}>
-                <Typography style={{ fontSize: 30 }}>
+            <div
+              className={
+                darkMode
+                  ? classes.numberAndIconContainerDark
+                  : classes.numberContainerLight
+              }
+            >
+              <div
+                className={
+                  darkMode
+                    ? classes.numberContainerDark
+                    : classes.numberContainerLight
+                }
+              >
+                <Typography
+                  classes={
+                    darkMode
+                      ? { root: classes.colorDark }
+                      : { root: classes.colorLight }
+                  }
+                  style={{ fontSize: 30 }}
+                >
                   {courseDaily.count}
                 </Typography>
                 <span style={{ fontSize: 12 }}>CURSO DIURNO</span>
               </div>
-              <VerifiedUserRounded fontSize="large" style={{ paddingTop: 4 }} />
+              <VerifiedUserRounded
+                className={darkMode ? classes.iconDark : classes.iconLight}
+                fontSize="large"
+                style={{ paddingTop: 4 }}
+              />
             </div>
-            <div className={classes.progressAndStatsContainer}>
+            <div
+              className={
+                darkMode
+                  ? classes.progressAndStatsContainerDark
+                  : classes.progressAndStatsContainerLight
+              }
+            >
               <div>
                 <LinearProgress
                   variant="determinate"
@@ -193,7 +303,13 @@ const InformationOverview = () => {
                   )}
                 />
               </div>
-              <div className={classes.statsContainer}>
+              <div
+                className={
+                  darkMode
+                    ? classes.statsContainerDark
+                    : classes.statsContainerLight
+                }
+              >
                 <span>{`de ${courseDaily.total}`}</span>
                 <span style={{ margin: "0 0" }}>
                   {Math.round((courseDaily.count / courseDaily.total) * 100)}%
@@ -202,18 +318,47 @@ const InformationOverview = () => {
             </div>
           </div>
         </CardChart>
-        <CardChart>
+        <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div className={classes.numberAndIconContainer}>
-              <div className={classes.numberContainer}>
-                <Typography style={{ fontSize: 30 }}>
+            <div
+              className={
+                darkMode
+                  ? classes.numberAndIconContainerDark
+                  : classes.numberContainerLight
+              }
+            >
+              <div
+                className={
+                  darkMode
+                    ? classes.numberContainerDark
+                    : classes.numberContainerLight
+                }
+              >
+                <Typography
+                  classes={
+                    darkMode
+                      ? { root: classes.colorDark }
+                      : { root: classes.colorLight }
+                  }
+                  style={{ fontSize: 30 }}
+                >
                   {courseSesions.count}
                 </Typography>
                 <span style={{ fontSize: 12 }}>CURSO POR ENCUENTROS</span>
               </div>
-              <VerifiedUserRounded fontSize="large" style={{ paddingTop: 4 }} />
+              <VerifiedUserRounded
+                className={darkMode ? classes.iconDark : classes.iconLight}
+                fontSize="large"
+                style={{ paddingTop: 4 }}
+              />
             </div>
-            <div className={classes.progressAndStatsContainer}>
+            <div
+              className={
+                darkMode
+                  ? classes.progressAndStatsContainerDark
+                  : classes.progressAndStatsContainerLight
+              }
+            >
               <div>
                 <LinearProgress
                   style={{ height: 10, marginTop: 6 }}
@@ -229,7 +374,13 @@ const InformationOverview = () => {
                   )}
                 />
               </div>
-              <div className={classes.statsContainer}>
+              <div
+                className={
+                  darkMode
+                    ? classes.statsContainerDark
+                    : classes.statsContainerLight
+                }
+              >
                 <span>{`de ${courseSesions.total}`}</span>
                 <span style={{ margin: "0 0" }}>
                   {Math.round(
@@ -241,18 +392,47 @@ const InformationOverview = () => {
             </div>
           </div>
         </CardChart>
-        <CardChart>
+        <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div className={classes.numberAndIconContainer}>
-              <div className={classes.numberContainer}>
-                <Typography style={{ fontSize: 30 }}>
+            <div
+              className={
+                darkMode
+                  ? classes.numberAndIconContainerDark
+                  : classes.numberContainerLight
+              }
+            >
+              <div
+                className={
+                  darkMode
+                    ? classes.numberContainerDark
+                    : classes.numberContainerLight
+                }
+              >
+                <Typography
+                  classes={
+                    darkMode
+                      ? { root: classes.colorDark }
+                      : { root: classes.colorLight }
+                  }
+                  style={{ fontSize: 30 }}
+                >
                   {courseDistances.count}
                 </Typography>
                 <span style={{ fontSize: 12 }}>ENSEÑANZA A DISTANCIA</span>
               </div>
-              <VerifiedUserRounded fontSize="large" style={{ paddingTop: 4 }} />
+              <VerifiedUserRounded
+                className={darkMode ? classes.iconDark : classes.iconLight}
+                fontSize="large"
+                style={{ paddingTop: 4 }}
+              />
             </div>
-            <div className={classes.progressAndStatsContainer}>
+            <div
+              className={
+                darkMode
+                  ? classes.progressAndStatsContainerDark
+                  : classes.progressAndStatsContainerLight
+              }
+            >
               <div>
                 <LinearProgress
                   style={{ height: 10, marginTop: 6 }}
@@ -268,7 +448,13 @@ const InformationOverview = () => {
                   )}
                 />
               </div>
-              <div className={classes.statsContainer}>
+              <div
+                className={
+                  darkMode
+                    ? classes.statsContainerDark
+                    : classes.statsContainerLight
+                }
+              >
                 <span>{`de ${courseDistances.total}`}</span>
                 <span style={{ margin: "0 0" }}>
                   {Math.round(

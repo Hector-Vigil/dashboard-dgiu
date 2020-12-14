@@ -15,9 +15,20 @@ const useStyles = makeStyles((theme) => ({
     flexShrink: 0,
     height: 458,
   },
-  treeItem: {
+  treeItemDark: {
     display: "flex",
     width: "100%",
+    paddingBottom: "0.5rem",
+    justifyContent: "space-between",
+    fontFamily: "'Poppins', sans-serif",
+    [theme.breakpoints.down("xs")]: {
+      flexWrap: "wrap",
+    },
+  },
+  treeItemLight: {
+    display: "flex",
+    width: "100%",
+    color: "#3b3f51",
     paddingBottom: "0.5rem",
     justifyContent: "space-between",
     fontFamily: "'Poppins', sans-serif",
@@ -59,6 +70,7 @@ export default function RecursiveTreeView({
   studentsOpenModalHandler,
   expanded,
   nodes,
+  darkMode,
 }) {
   const classes = useStyles();
 
@@ -77,7 +89,7 @@ export default function RecursiveTreeView({
 
   const renderTree = (nodes) => (
     <div
-      className={classes.treeItem}
+      className={darkMode ? classes.treeItemDark : classes.treeItemLight}
       onClick={
         nodes.children && nodes.children.length === 0
           ? () => studentsOpenModalHandler(nodes.routeParams)

@@ -6,7 +6,6 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
@@ -36,9 +35,18 @@ function createData(name, code, size, density, id, facultyParent) {
 let rows = [];
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  rootDark: {
     backgroundColor: "#27293d",
     color: "#f4f4f4",
+    boxShadow: "none",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: 438,
+  },
+  rootLight: {
+    backgroundColor: "#fff",
+    color: "black",
     boxShadow: "none",
     display: "flex",
     flexDirection: "column",
@@ -70,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cellStyle = {
+const cellStyleDark = {
   color: "#f4f4f4",
   borderBottom: "none",
   textAlign: "left",
@@ -78,13 +86,16 @@ const cellStyle = {
   paddingRight: "0",
   fontFamily: "'Poppins', sans-serif",
 };
-const pagStyle = {
-  color: "#f4f4f4",
+const cellStyleLight = {
+  color: "#3b3f51",
   borderBottom: "none",
+  textAlign: "left",
+  padding: "0.5rem",
+  paddingRight: "0",
   fontFamily: "'Poppins', sans-serif",
 };
 
-export default function TableRanking({ data, expanded }) {
+export default function TableRanking({ data, expanded, darkMode }) {
   const classes = useStyles();
 
   rows = data.map((element, index) => {
@@ -109,7 +120,7 @@ export default function TableRanking({ data, expanded }) {
   });
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={darkMode ? classes.rootDark : classes.rootLight}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -121,6 +132,7 @@ export default function TableRanking({ data, expanded }) {
                   style={{
                     width: column.minWidth,
                     backgroundColor: "#1f8af8",
+                    fontFamily: "'Poppins', sans-serif",
                     color: "#f4f4f4",
                     borderBottom: "none",
                     padding: "0.5rem",
@@ -149,7 +161,7 @@ export default function TableRanking({ data, expanded }) {
                       <TableCell
                         key={column.id}
                         align={column.align}
-                        style={cellStyle}
+                        style={darkMode ? cellStyleDark : cellStyleLight}
                       >
                         {column.format && typeof value === "number"
                           ? column.format(value)

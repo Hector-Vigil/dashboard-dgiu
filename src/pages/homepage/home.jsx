@@ -74,19 +74,29 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
     },
   },
-  cssLabel: {
+  cssLabelDark: {
     color: "#f4f4f4",
     "&.Mui-focused": {
       color: "#23A5EB",
     },
   },
-  cssOutlinedInput: {
+  cssLabelLight: {
+    color: "#3b3f51",
+    "&.Mui-focused": {
+      color: "#23A5EB",
+    },
+  },
+  cssOutlinedInputLight: {
+    color: "#3b3f51",
+    height: "30%",
+  },
+  cssOutlinedInputDark: {
     color: "#f4f4f4",
     height: "30%",
   },
 }));
 
-const HomePage = ({ open }) => {
+const HomePage = ({ open, darkMode }) => {
   const classes = useStyles();
   //State
   const [treeViewData, setTreeViewData] = useState({});
@@ -225,14 +235,6 @@ const HomePage = ({ open }) => {
         const nodes = [...expandedChildren, nodeId, parentId];
         setExpandedChildren(nodes);
       }
-    } else {
-      if (expandedChildren.includes(nodeId)) {
-        const nodes = expandedChildren.filter((id) => id !== nodeId);
-        setExpandedChildren(nodes);
-      } else {
-        const nodes = [...expandedChildren, nodeId];
-        setExpandedChildren(nodes);
-      }
     }
   };
 
@@ -279,16 +281,32 @@ const HomePage = ({ open }) => {
           label="Buscar..."
           type="search"
           variant="outlined"
-          InputLabelProps={{
-            classes: {
-              root: classes.cssLabel,
-            },
-          }}
-          InputProps={{
-            classes: {
-              root: classes.cssOutlinedInput,
-            },
-          }}
+          InputLabelProps={
+            darkMode
+              ? {
+                  classes: {
+                    root: classes.cssLabelDark,
+                  },
+                }
+              : {
+                  classes: {
+                    root: classes.cssLabelLight,
+                  },
+                }
+          }
+          InputProps={
+            darkMode
+              ? {
+                  classes: {
+                    root: classes.cssOutlinedInputDark,
+                  },
+                }
+              : {
+                  classes: {
+                    root: classes.cssOutlinedInputLight,
+                  },
+                }
+          }
           onChange={(event) => filterMajorHandler(event)}
         />
       </div>
@@ -333,9 +351,9 @@ const HomePage = ({ open }) => {
     >
       <Grid className={classes.sideBarAndInformationContainer} container>
         <Grid style={{ width: 200, height: 170 }}>
-          {open && <SideBar open={open} />}
+          {open && <SideBar darkMode={darkMode} open={open} />}
         </Grid>
-        <InformationOverview />
+        <InformationOverview darkMode={darkMode} />
       </Grid>
 
       <Grid
@@ -347,13 +365,14 @@ const HomePage = ({ open }) => {
         style={{ width: "80vw" }}
       >
         <Grid className={classes.treeViewContainer}>
-          <CardCharts title={treeViewTittle}>
+          <CardCharts title={treeViewTittle} darkMode={darkMode}>
             {loading && <SpinnerComponent />}
             {!loading &&
               treeViewData &&
               studentsOpenModalHandler &&
               expandedChildren && (
                 <RecursiveTreeView
+                  darkMode={darkMode}
                   data={treeViewData}
                   studentsOpenModalHandler={studentsOpenModalHandler}
                   expanded={expandChildHandler}
@@ -365,6 +384,7 @@ const HomePage = ({ open }) => {
               studentsCloseModalHandler &&
               modalData && (
                 <StudentsModal
+                  darkMode={darkMode}
                   openModal={openModal}
                   studentsCloseModalHandler={studentsCloseModalHandler}
                   data={modalData}
@@ -374,10 +394,11 @@ const HomePage = ({ open }) => {
         </Grid>
 
         <Grid className={classes.tableContainer}>
-          <CardCharts title={tableRankingTittle}>
+          <CardCharts title={tableRankingTittle} darkMode={darkMode}>
             {loading && <SpinnerComponent />}
             {!loading && majorsAndFacultiesData && (
               <TableRanking
+                darkMode={darkMode}
                 data={majorsAndFacultiesData}
                 expanded={expandMajorHandler}
               />
@@ -386,18 +407,18 @@ const HomePage = ({ open }) => {
         </Grid>
         <Grid className={classes.pieChartAndLinearChartContainer}>
           <Grid className={classes.pieChartGroupsContainer}>
-            <CardCharts title={pieChartGroupsTittle}>
+            <CardCharts title={pieChartGroupsTittle} darkMode={darkMode}>
               {loading && <SpinnerComponent />}
               {!loading && pieChartGroupsData && (
-                <PieChart data={pieChartGroupsData} />
+                <PieChart data={pieChartGroupsData} darkMode={darkMode} />
               )}
             </CardCharts>
           </Grid>
           <Grid className={classes.pieChartCentersContainer}>
-            <CardCharts title={pieChartCentersTittle}>
+            <CardCharts title={pieChartCentersTittle} darkMode={darkMode}>
               {loading && <SpinnerComponent />}
               {!loading && pieChartCentersData && (
-                <PieChart data={pieChartCentersData} />
+                <PieChart data={pieChartCentersData} darkMode={darkMode} />
               )}
             </CardCharts>
           </Grid>
