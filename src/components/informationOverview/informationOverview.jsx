@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   numberAndIconContainer: {
     display: "flex",
     justifyContent: "space-between",
+    height: 73,
   },
   numberContainer: {
     display: "flex",
@@ -38,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     width: "80vw",
     marginTop: 50,
     marginRight: 20,
-    height: "30%",
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
     },

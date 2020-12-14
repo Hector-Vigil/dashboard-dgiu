@@ -1,57 +1,72 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
-  { id: 'name', label: 'Nombre', minWidth: 170 },
-  { id: 'lastName', label: 'Apellidos', minWidth: 100 },
+  { id: "name", label: "Nombre", minWidth: 50 },
+  { id: "lastName", label: "Apellidos", minWidth: 50 },
 
   {
-    id: 'province',
-    label: 'Provincia',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
+    id: "province",
+    label: "Provincia",
+    minWidth: 50,
+    align: "left",
+    format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: 'zone',
-    label: 'Municipio',
-    minWidth: 170,
-    align: 'right',
+    id: "zone",
+    label: "Municipio",
+    minWidth: 50,
+    align: "left",
+    format: (value) => value.toFixed(2),
+  },
+  {
+    id: "verified",
+    label: "Verificado",
+    minWidth: 50,
+    align: "left",
     format: (value) => value.toFixed(2),
   },
 ];
 
-function createData(name, lastName, province, zone) {
-  return { name, lastName, province, zone };
+function createData(name, lastName, province, zone, verified) {
+  return { name, lastName, province, zone, verified };
 }
 
 let rows = [];
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: '#27293d',
-    color: '#f4f4f4',
-    boxShadow: 'none',
-    display: 'flex',
-    flexDirection: 'column',
-    width: '100%',
+    backgroundColor: "#27293d",
+    color: "#f4f4f4",
+    boxShadow: "none",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
   },
   container: {
-    overflowY: 'auto',
-    overflowX: 'auto',
+    overflowY: "auto",
+    overflowX: "auto",
   },
 });
 
-const cellStyle = { color: '#f4f4f4', borderBottom: 'none', fontFamily: "'Poppins', sans-serif" };
-const pagStyle = { color: '#f4f4f4', borderBottom: 'none', fontFamily: "'Poppins', sans-serif" };
+const cellStyle = {
+  color: "#f4f4f4",
+  borderBottom: "none",
+  fontFamily: "'Poppins', sans-serif",
+};
+const pagStyle = {
+  color: "#f4f4f4",
+  borderBottom: "none",
+  fontFamily: "'Poppins', sans-serif",
+};
 
 export default function TableModal({ data }) {
   const classes = useStyles();
@@ -68,7 +83,26 @@ export default function TableModal({ data }) {
   };
 
   if (data) {
-    rows = data.map((user) => createData(user.name, user.lastName, user.province, user.zone));
+    rows = data.map((user) => {
+      const verified = (
+        <span style={{ color: "green", fontSize: 24, alignContent: "center" }}>
+          ✔
+        </span>
+      );
+      const notVerified = (
+        <span style={{ color: "red", fontSize: 24, alignContent: "center" }}>
+          ✖
+        </span>
+      );
+
+      return createData(
+        user.name,
+        user.lastName,
+        user.province,
+        user.zone,
+        user.registered ? verified : notVerified
+      );
+    });
   }
 
   return (
@@ -83,9 +117,9 @@ export default function TableModal({ data }) {
                   align={column.align}
                   style={{
                     width: column.minWidth,
-                    backgroundColor: '#1f8af8',
-                    color: '#f4f4f4',
-                    borderBottom: 'none',
+                    backgroundColor: "#1f8af8",
+                    color: "#f4f4f4",
+                    borderBottom: "none",
                   }}
                 >
                   {column.label}
@@ -94,20 +128,28 @@ export default function TableModal({ data }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align} style={cellStyle}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={cellStyle}
+                        >
+                          {column.format && typeof value === "number"
+                            ? column.format(value)
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>

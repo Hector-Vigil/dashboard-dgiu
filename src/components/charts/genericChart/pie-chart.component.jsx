@@ -1,5 +1,12 @@
 import React, { PureComponent } from "react";
-import { PieChart, Pie, Sector, Cell } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { Grid, makeStyles } from "@material-ui/core";
 
 const data = [
@@ -9,7 +16,15 @@ const data = [
   { name: "Group D", value: 200 },
 ];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "red",
+  "green",
+  "blue",
+];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -44,29 +59,28 @@ export default class PieChartComponent extends PureComponent {
   }
   render() {
     return (
-      <Grid>
-        <PieChart width={500} height={500}>
-          <Pie
-            data={this.props.data}
-            cx={200}
-            cy={200}
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius={120}
-            fill="#8884d8"
-            dataKey="value"
-          >
-            {this.props.data
-              ? this.props.data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))
-              : null}
-          </Pie>
-        </PieChart>
-      </Grid>
+      <div style={{ width: "100%", height: 450 }}>
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie
+              data={this.props.data}
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={120}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {this.props.data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Legend wrapperStyle={{ width: "100%" }} />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
     );
   }
 }

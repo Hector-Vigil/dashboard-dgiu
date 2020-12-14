@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 import HomePage from "./pages/homepage/home";
 import NavBar from "./components/navbar/navbar";
 import "./App.styles.scss";
@@ -15,12 +15,17 @@ const theme = createMuiTheme({
     },
   },
 });
+
 const App = () => {
+  const [showSideBar, setShowSideBar] = useState(false);
+
+  const sideBarHandler = () => setShowSideBar(!showSideBar);
+
   return (
     <div className="App">
       <MuiThemeProvider theme={theme}>
-        <NavBar />
-        <HomePage />
+        {sideBarHandler && <NavBar handler={sideBarHandler} />}
+        <HomePage open={showSideBar} />
       </MuiThemeProvider>
     </div>
   );

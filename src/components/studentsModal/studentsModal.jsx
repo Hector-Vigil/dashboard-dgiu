@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   modalHeader: {
     color: "#f4f4f4",
     textAlign: "center",
+    fontWeight: "lighter",
   },
 }));
 
@@ -41,7 +42,7 @@ export default function StudentsModal({
   if (data) console.log(data);
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <h2 className={classes.modalHeader}>Estudiantes Verificados</h2>
+      <h2 className={classes.modalHeader}>ESTUDIANTES</h2>
       {data && <TableModal data={data} />}
       <StudentsModal />
     </div>

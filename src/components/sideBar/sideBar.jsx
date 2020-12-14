@@ -30,12 +30,14 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     display: "flex",
     width: 200,
-    height: 160,
+    height: 170,
     marginTop: 74,
     marginRight: 20,
     marginLeft: 20,
     [theme.breakpoints.down("sm")]: {
-      width: "80vw",
+      marginTop: 54,
+      marginLeft: 0,
+      width: "100%",
       alignContent: "center",
     },
     backgroundColor: " #27293d",
@@ -46,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PermanentDrawerLeft() {
+export default function PermanentDrawerLeft({ open }) {
   const classes = useStyles();
 
   return (
@@ -58,6 +60,7 @@ export default function PermanentDrawerLeft() {
           paper: classes.drawerPaper,
         }}
         anchor="left"
+        open={open}
       >
         <List>
           <a href="/" style={{ textDecoration: "none", color: "#f4f4f4" }}>

@@ -5,7 +5,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import TreeItem from "@material-ui/lab/TreeItem";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
     flexShrink: 0,
-    height: 438,
+    height: 458,
   },
   treeItem: {
     display: "flex",
@@ -55,7 +54,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
+export default function RecursiveTreeView({
+  data,
+  studentsOpenModalHandler,
+  expanded,
+  nodes,
+}) {
   const classes = useStyles();
 
   const getLinearProgressColor = (count, total) => {
@@ -64,23 +68,24 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
   };
 
   const getLinearProgressColorMiddle = (count, total) => {
-    if ((count / total) * 100 > 0 && (count / total) * 100 < 7)
+    if ((count / total) * 100 > 35 && (count / total) * 100 < 100)
       return {
         colorPrimary: classes.colorPrimary,
         barColorPrimary: classes.barColorPrimary,
       };
-    return { classes };
   };
 
-  const total = data.matchInformation ? data.matchInformation.total : 2000;
   const renderTree = (nodes) => (
-    <div className={classes.treeItem}>
+    <div
+      className={classes.treeItem}
+      onClick={
+        nodes.children && nodes.children.length === 0
+          ? () => studentsOpenModalHandler(nodes.routeParams)
+          : null
+      }
+    >
       <TreeItem
-        onClick={
-          nodes.children && nodes.children.length === 0
-            ? () => studentsOpenModalHandler(nodes.routeParams)
-            : null
-        }
+        onClick={() => expanded(nodes.id)}
         key={nodes.id}
         nodeId={nodes.id}
         label={nodes.name}
@@ -101,9 +106,9 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
               justifyContent: "space-between",
             }}
           >
-            <div>{`${nodes.matchInformation} DE ${total}`}</div>
+            <div>{`${nodes.matchInformation} DE ${nodes.total}`}</div>
             <div>{`${Math.round(
-              (nodes.matchInformation / total) * 100
+              (nodes.matchInformation / nodes.total) * 100
             )}%`}</div>
           </div>
           <LinearProgress
@@ -111,13 +116,13 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
             variant="determinate"
             value={
               nodes.matchInformation
-                ? (nodes.matchInformation / total) * 100
+                ? (nodes.matchInformation / nodes.total) * 100
                 : 0
             }
-            color={getLinearProgressColor(nodes.matchInformation, total)}
+            color={getLinearProgressColor(nodes.matchInformation, nodes.total)}
             classes={getLinearProgressColorMiddle(
               nodes.matchInformation,
-              total
+              nodes.total
             )}
           />
         </div>
@@ -129,7 +134,7 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
     <TreeView
       className={classes.root}
       defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={["root"]}
+      expanded={nodes}
       defaultExpandIcon={<ChevronRightIcon />}
     >
       {data ? renderTree(data) : null}

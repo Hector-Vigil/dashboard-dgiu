@@ -11,7 +11,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
   { id: "name", label: "#", minWidth: 50 },
-  { id: "code", label: "Facultad", minWidth: 50 },
+  { id: "code", label: "Carrera", minWidth: 50 },
 
   {
     id: "size",
@@ -25,13 +25,12 @@ const columns = [
     label: " (%) ",
     minWidth: 50,
     align: "center",
-    format: (value) => value.toFixed(2),
   },
 ];
 // const width = () => (global.screen.width * 50) / 100;
 
-function createData(name, code, size, density) {
-  return { name, code, size, density };
+function createData(name, code, size, density, id, facultyParent) {
+  return { name, code, size, density, id, facultyParent };
 }
 
 let rows = [];
@@ -50,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "none",
     overflowX: "none",
     margin: "10px 10px",
+  },
+  tableCell: {
+    hover: {
+      cursor: "pointer",
+    },
   },
   "@global": {
     "*::-webkit-scrollbar": {
@@ -80,34 +84,29 @@ const pagStyle = {
   fontFamily: "'Poppins', sans-serif",
 };
 
-export default function TableRanking({ data }) {
+export default function TableRanking({ data, expanded }) {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(4);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  if (data.children) {
-    const total = data.matchInformation.total;
-    const sortedArray = data.children.sort((a, b) => {
-      return b.matchInformation - a.matchInformation;
-    });
-    rows = sortedArray.map((element, index) => {
-      return createData(
-        index + 1,
-        element.name,
-        element.matchInformation,
-        Math.round((element.matchInformation / total) * 100)
-      );
-    });
-  }
+  rows = data.map((element, index) => {
+    const major = (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <span style={{ fontWeight: "bold" }}>{element.name}</span>
+        <span
+          style={{ fontStyle: "italic", fontSize: 12, fontWeight: "lighter" }}
+        >
+          {element.faculty}
+        </span>
+      </div>
+    );
+    return createData(
+      index + 1,
+      major,
+      element.matchInformation,
+      Math.round((element.matchInformation / element.total) * 100),
+      element.id,
+      element.facultyParent
+    );
+  });
 
   return (
     <Paper className={classes.root}>
@@ -135,41 +134,35 @@ export default function TableRanking({ data }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={cellStyle}
-                        >
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+            {rows.map((row) => {
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.id}
+                  onClick={() => expanded(row.id, row.facultyParent)}
+                >
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={cellStyle}
+                      >
+                        {column.format && typeof value === "number"
+                          ? column.format(value)
+                          : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        style={pagStyle}
-        rowsPerPageOptions={[5, 10, 15]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
     </Paper>
   );
 }
