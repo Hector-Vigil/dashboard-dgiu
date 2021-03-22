@@ -36,14 +36,11 @@ const useStyles = makeStyles((theme) => ({
     color: "#f4f4f4",
     textAlign: "center",
     fontWeight: "lighter",
-<<<<<<< HEAD
-=======
   },
   modalHeaderLight: {
     color: "#3b3f51",
     textAlign: "center",
     fontWeight: "normal",
->>>>>>> 1f17a6f3ab79ecc96a0b0371a5c7cff67dff5639
   },
 }));
 
@@ -59,11 +56,6 @@ export default function StudentsModal({
 
   if (data) console.log(data);
   const body = (
-<<<<<<< HEAD
-    <div style={modalStyle} className={classes.paper}>
-      <h2 className={classes.modalHeader}>ESTUDIANTES</h2>
-      {data && <TableModal data={data} />}
-=======
     <div
       style={modalStyle}
       className={darkMode ? classes.paperDark : classes.paperLight}
@@ -76,7 +68,6 @@ export default function StudentsModal({
         ESTUDIANTES
       </h2>
       {data && <TableModal darkMode={darkMode} data={data} />}
->>>>>>> 1f17a6f3ab79ecc96a0b0371a5c7cff67dff5639
       <StudentsModal />
     </div>
   );

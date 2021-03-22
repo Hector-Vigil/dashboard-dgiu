@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
   numberContainerLight: {
     display: "flex",
-    color: "#3b3f51",
     flexDirection: "column",
     textAlign: "left",
+    color: "#3b3f51",
   },
   progressAndStatsContainerDark: {
     display: "flex",
@@ -71,9 +71,10 @@ const useStyles = makeStyles((theme) => ({
   },
   gridContainerLight: {
     width: "80vw",
-    color: "#3b3f51",
     marginTop: 50,
     marginRight: 20,
+    color: "#3b3f51",
+
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
     },
@@ -178,13 +179,7 @@ const InformationOverview = ({ darkMode }) => {
       >
         <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div
-              className={
-                darkMode
-                  ? classes.numberAndIconContainerDark
-                  : classes.numberContainerLight
-              }
-            >
+            <div className={classes.numberAndIconContainer}>
               <div
                 className={
                   darkMode
@@ -249,13 +244,7 @@ const InformationOverview = ({ darkMode }) => {
         </CardChart>
         <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div
-              className={
-                darkMode
-                  ? classes.numberAndIconContainerDark
-                  : classes.numberContainerLight
-              }
-            >
+            <div className={classes.numberAndIconContainer}>
               <div
                 className={
                   darkMode
@@ -320,13 +309,7 @@ const InformationOverview = ({ darkMode }) => {
         </CardChart>
         <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div
-              className={
-                darkMode
-                  ? classes.numberAndIconContainerDark
-                  : classes.numberContainerLight
-              }
-            >
+            <div className={classes.numberAndIconContainer}>
               <div
                 className={
                   darkMode
@@ -394,13 +377,7 @@ const InformationOverview = ({ darkMode }) => {
         </CardChart>
         <CardChart darkMode={darkMode}>
           <div className={classes.container}>
-            <div
-              className={
-                darkMode
-                  ? classes.numberAndIconContainerDark
-                  : classes.numberContainerLight
-              }
-            >
+            <div className={classes.numberAndIconContainer}>
               <div
                 className={
                   darkMode

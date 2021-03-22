@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
   statsContainer: {
     // display: "flex",
-    marginLeft: 10,
+    marginRight: 5,
     justifyContent: "flex-end",
     flexDirection: "row",
     //position: "absolute",

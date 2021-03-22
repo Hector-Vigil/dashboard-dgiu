@@ -67,11 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-<<<<<<< HEAD
-export default function PermanentDrawerLeft({ open }) {
-=======
 export default function PermanentDrawerLeft({ open, darkMode }) {
->>>>>>> 1f17a6f3ab79ecc96a0b0371a5c7cff67dff5639
   const classes = useStyles();
 
   return (

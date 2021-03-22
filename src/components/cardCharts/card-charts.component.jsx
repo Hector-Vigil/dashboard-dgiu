@@ -12,7 +12,7 @@ let style = {
     fontFamily: "'Poppins', sans-serif",
     paddingBottom: 0,
   },
-  rootLigt: {
+  rootLight: {
     marginBottom: 16,
     backgroundColor: " #fff",
     fontFamily: "'Poppins', sans-serif",
@@ -25,7 +25,7 @@ let style = {
     justifyContent: "center",
     paddingBottom: 0,
   },
-  cardContainerLigt: {
+  cardContainerLight: {
     backgroundColor: " #fff",
     height: "100%",
     flexDirection: "column",

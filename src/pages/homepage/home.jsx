@@ -2,10 +2,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import ListIcon from "@material-ui/icons/List";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import FormatAlignLeftIcon from "@material-ui/icons/FormatAlignLeft";
+import FormatAlignCenterIcon from "@material-ui/icons/FormatAlignCenter";
+import FormatAlignRightIcon from "@material-ui/icons/FormatAlignRight";
+import FormatAlignJustifyIcon from "@material-ui/icons/FormatAlignJustify";
 
 import CardCharts from "../../components/cardCharts/card-charts.component";
 import TableRanking from "../../components/charts/tableRanking/table-ranking.component";
@@ -108,6 +114,7 @@ const HomePage = ({ open, darkMode }) => {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [expandedChildren, setExpandedChildren] = useState(["root"]);
+  const [selectedOrganization, setSelectedOrganization] = useState("Fac");
   //Fectching data
   useEffect(() => {
     fetchTreeViewData();
@@ -135,6 +142,12 @@ const HomePage = ({ open, darkMode }) => {
       setMajorsData(sortedArray);
       setMajorsAndFacultiesData(sortedArray);
     }
+  };
+
+  const filterTreeViewHandler = (event) => {
+    const selected = event.target.value;
+    console.log(selected);
+    setSelectedOrganization(selected);
   };
 
   const filterMajorHandler = (event) => {
@@ -235,6 +248,14 @@ const HomePage = ({ open, darkMode }) => {
         const nodes = [...expandedChildren, nodeId, parentId];
         setExpandedChildren(nodes);
       }
+    } else {
+      if (expandedChildren.includes(nodeId)) {
+        const nodes = expandedChildren.filter((id) => id !== nodeId);
+        setExpandedChildren(nodes);
+      } else {
+        const nodes = [...expandedChildren, nodeId];
+        setExpandedChildren(nodes);
+      }
     }
   };
 
@@ -248,7 +269,7 @@ const HomePage = ({ open, darkMode }) => {
       }}
     >
       <AccountTreeIcon style={{ margin: "0px 5px" }} fontSize="large" />
-      <span style={{ margin: "0px 5px" }}>ORGANIZACIONES ESTUDIANTILES</span>
+      <span>ORGANIZACIONES ESTUDIANTILES</span>
     </div>
   );
 
