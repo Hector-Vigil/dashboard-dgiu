@@ -1,14 +1,19 @@
-import API_URL from '../../config/config.utils';
-
-const getUsersFromDirectory = async () => {
-  const users = await fetch(`${API_URL}/getData.php?f=json&t=SIGENU`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+const getMajors = (studentsData, treeLevel, tableData) => {
+  if (treeLevel === 1) {
+    studentsData.forEach((level) => {
+      tableData.push({
+        name: level.name,
+        faculty: level.faculty,
+        matchInformation: level.matchInformation,
+        total: level.total,
+        id: level.id,
+        facultyParent: level.facultyParent,
+      });
+    });
+  }
+  studentsData.forEach((level) => {
+    getMajors(level.children, treeLevel + 1, tableData);
   });
-  const jsonUsers = await users.json();
-  return jsonUsers;
 };
 
-export default getUsersFromDirectory;
+export default getMajors;

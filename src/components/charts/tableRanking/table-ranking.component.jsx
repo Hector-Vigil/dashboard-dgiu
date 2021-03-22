@@ -6,94 +6,121 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
-  { id: "name", label: "Posición", minWidth: 170 },
-  { id: "code", label: "Facultad", minWidth: 100 },
+  { id: "name", label: "#", minWidth: 50 },
+  { id: "code", label: "Carrera", minWidth: 50 },
 
   {
     id: "size",
-    label: "Verificados",
-    minWidth: 170,
-    align: "right",
+    label: " ✔ ",
+    minWidth: 50,
+    align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "density",
-    label: "(%)",
-    minWidth: 170,
-    align: "right",
-    format: (value) => value.toFixed(2),
+    label: " (%) ",
+    minWidth: 50,
+    align: "center",
   },
 ];
-const width = () => (global.screen.width * 75) / 100;
+// const width = () => (global.screen.width * 50) / 100;
 
-function createData(name, code, size, density) {
-  return { name, code, size, density };
+function createData(name, code, size, density, id, facultyParent) {
+  return { name, code, size, density, id, facultyParent };
 }
 
 let rows = [];
 
-const useStyles = makeStyles({
-  root: {
+const useStyles = makeStyles((theme) => ({
+  rootDark: {
     backgroundColor: "#27293d",
     color: "#f4f4f4",
     boxShadow: "none",
     display: "flex",
     flexDirection: "column",
-    width: "80vw",
+    width: "100%",
+    height: 438,
+  },
+  rootLight: {
+    backgroundColor: "#fff",
+    color: "black",
+    boxShadow: "none",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: 438,
   },
   container: {
-    overflowY: "auto",
-    overflowX: "auto",
+    overflowY: "none",
+    overflowX: "none",
     margin: "10px 10px",
   },
-});
+  tableCell: {
+    hover: {
+      cursor: "pointer",
+    },
+  },
+  "@global": {
+    "*::-webkit-scrollbar": {
+      width: 10,
+      height: 10,
+    },
+    "*::-webkit-scrollbar-track": {
+      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+    },
+    "*::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(0,0,0,.1)",
+      outline: "1px solid slategrey",
+    },
+  },
+}));
 
-const cellStyle = {
+const cellStyleDark = {
   color: "#f4f4f4",
   borderBottom: "none",
+  textAlign: "left",
+  padding: "0.5rem",
+  paddingRight: "0",
   fontFamily: "'Poppins', sans-serif",
 };
-const pagStyle = {
-  color: "#f4f4f4",
+const cellStyleLight = {
+  color: "#3b3f51",
   borderBottom: "none",
+  textAlign: "left",
+  padding: "0.5rem",
+  paddingRight: "0",
   fontFamily: "'Poppins', sans-serif",
 };
 
-export default function TableRanking({ data }) {
+export default function TableRanking({ data, expanded, darkMode }) {
   const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  if (data.children) {
-    const total = data.matchInformation.total;
-    const sortedArray = data.children.sort((a, b) => {
-      return b.matchInformation - a.matchInformation;
-    });
-    rows = sortedArray.map((element, index) => {
-      return createData(
-        index + 1,
-        element.name,
-        element.matchInformation,
-        Math.round((element.matchInformation / total) * 100)
-      );
-    });
-  }
+  rows = data.map((element, index) => {
+    const major = (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <span style={{ fontWeight: "bold" }}>{element.name}</span>
+        <span
+          style={{ fontStyle: "italic", fontSize: 12, fontWeight: "lighter" }}
+        >
+          {element.faculty}
+        </span>
+      </div>
+    );
+    return createData(
+      index + 1,
+      major,
+      element.matchInformation,
+      Math.round((element.matchInformation / element.total) * 100),
+      element.id,
+      element.facultyParent
+    );
+  });
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={darkMode ? classes.rootDark : classes.rootLight}>
       <TableContainer className={classes.container}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -105,8 +132,12 @@ export default function TableRanking({ data }) {
                   style={{
                     width: column.minWidth,
                     backgroundColor: "#1f8af8",
+                    fontFamily: "'Poppins', sans-serif",
                     color: "#f4f4f4",
                     borderBottom: "none",
+                    padding: "0.5rem",
+                    paddingRight: "0",
+                    textAlign: "left",
                   }}
                 >
                   {column.label}
@@ -115,41 +146,35 @@ export default function TableRanking({ data }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell
-                          key={column.id}
-                          align={column.align}
-                          style={cellStyle}
-                        >
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
+            {rows.map((row) => {
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.id}
+                  onClick={() => expanded(row.id, row.facultyParent)}
+                >
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    return (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={darkMode ? cellStyleDark : cellStyleLight}
+                      >
+                        {column.format && typeof value === "number"
+                          ? column.format(value)
+                          : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        style={pagStyle}
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
     </Paper>
   );
 }

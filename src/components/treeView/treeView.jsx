@@ -9,69 +9,99 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    height: "100%",
-    width: "80vw",
-    overflow: "auto",
-  },
-  treeItem: {
-    display: "flex",
-    flexWrap: "wrap",
     width: "100%",
-    justifyContent: "space-between",
+    overflow: "auto",
+    fontFamily: "'Poppins', sans-serif",
+    flexShrink: 0,
+    height: 458,
   },
-  statsContainer: {
+  treeItemDark: {
     display: "flex",
-    marginLeft: 10,
+    width: "100%",
+    paddingBottom: "0.5rem",
+    justifyContent: "space-between",
+    fontFamily: "'Poppins', sans-serif",
+    [theme.breakpoints.down("xs")]: {
+      flexWrap: "wrap",
+    },
+  },
+  treeItemLight: {
+    display: "flex",
+    width: "100%",
+    color: "#3b3f51",
+    paddingBottom: "0.5rem",
+    justifyContent: "space-between",
+    fontFamily: "'Poppins', sans-serif",
+    [theme.breakpoints.down("xs")]: {
+      flexWrap: "wrap",
+    },
+  },
+
+  statsContainer: {
+    // display: "flex",
+    marginRight: 5,
     justifyContent: "flex-end",
     flexDirection: "row",
-    position: "absolute",
-    right: 500,
+    //position: "absolute",
     [theme.breakpoints.down("lg")]: {
-      right: 30,
+      right: 350,
     },
-    [theme.breakpoints.down("md")]: {},
+    [theme.breakpoints.down("md")]: {
+      right: 300,
+    },
     [theme.breakpoints.down("sm")]: {
       position: "relative",
-      marginLeft: 40,
+      right: 0,
+      marginBottom: 5,
     },
 
     height: "22px",
   },
+  colorPrimary: {
+    backgroundColor: "#f2f4c0",
+  },
+  barColorPrimary: {
+    backgroundColor: "#f6830f",
+  },
 }));
 
-export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
+export default function RecursiveTreeView({
+  data,
+  studentsOpenModalHandler,
+  expanded,
+  nodes,
+  darkMode,
+}) {
   const classes = useStyles();
-  const total = data.matchInformation
-    ? data.matchInformation.registeredId
-    : 2000;
 
-  const [expanded, setExpanded] = React.useState([]);
-  const [selected, setSelected] = React.useState([]);
-
-  const handleToggle = (event, nodeIds) => {
-    setExpanded(nodeIds);
+  const getLinearProgressColor = (count, total) => {
+    if ((count / total) * 100 <= 35) return "secondary";
+    return "primary";
   };
 
-  const handleSelect = (event, nodeIds) => {
-    setSelected(nodeIds);
+  const getLinearProgressColorMiddle = (count, total) => {
+    if ((count / total) * 100 > 35 && (count / total) * 100 < 100)
+      return {
+        colorPrimary: classes.colorPrimary,
+        barColorPrimary: classes.barColorPrimary,
+      };
   };
 
   const renderTree = (nodes) => (
-    <div className={classes.treeItem}>
+    <div
+      className={darkMode ? classes.treeItemDark : classes.treeItemLight}
+      onClick={
+        nodes.children && nodes.children.length === 0
+          ? () => studentsOpenModalHandler(nodes.routeParams)
+          : null
+      }
+    >
       <TreeItem
-        onClick={
-          nodes.children && nodes.children.length === 0
-            ? () => studentsOpenModalHandler(nodes.routeParams)
-            : null
-        }
+        onClick={() => expanded(nodes.id)}
         key={nodes.id}
         nodeId={nodes.id}
         label={nodes.name}
-        expanded={expanded}
-        selected={selected}
-        onNodeToggle={handleToggle}
-        onNodeSelect={handleSelect}
-        style={{ marginTop: "8px", width: "100%" }}
+        style={{ width: "100%", textAlign: "left" }}
       >
         {Array.isArray(nodes.children)
           ? nodes.children.map((node) => renderTree(node))
@@ -79,18 +109,34 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
       </TreeItem>
       {nodes.id !== "root" ? (
         <div className={classes.statsContainer}>
-          <span style={{ height: 20, width: 70, margin: 0 }}>{`${Math.round(
-            (nodes.matchInformation / total) * 100
-          )}%(${nodes.matchInformation})`}</span>
+          <div
+            style={{
+              height: 10,
+              margin: 0,
+              fontSize: "0.7rem",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>{`${nodes.matchInformation} DE ${nodes.total}`}</div>
+            <div>{`${Math.round(
+              (nodes.matchInformation / nodes.total) * 100
+            )}%`}</div>
+          </div>
           <LinearProgress
-            style={{ width: 100, height: 10, marginTop: 6 }}
+            style={{ width: 100, height: 8, marginTop: 6 }}
             variant="determinate"
             color="secondary"
             value={
               nodes.matchInformation
-                ? (nodes.matchInformation / total) * 100
+                ? (nodes.matchInformation / nodes.total) * 100
                 : 0
             }
+            color={getLinearProgressColor(nodes.matchInformation, nodes.total)}
+            classes={getLinearProgressColorMiddle(
+              nodes.matchInformation,
+              nodes.total
+            )}
           />
         </div>
       ) : null}
@@ -101,7 +147,7 @@ export default function RecursiveTreeView({ data, studentsOpenModalHandler }) {
     <TreeView
       className={classes.root}
       defaultCollapseIcon={<ExpandMoreIcon />}
-      defaultExpanded={["root"]}
+      expanded={nodes}
       defaultExpandIcon={<ChevronRightIcon />}
     >
       {data ? renderTree(data) : null}
