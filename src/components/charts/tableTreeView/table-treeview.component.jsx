@@ -9,12 +9,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
 const columns = [
-	{ id: "rank", label: "#", minWidth: 50 },
-	{ id: "careerName_faculty", label: "Carrera/Facultad", minWidth: 50 },
-
+	{ id: "parameter", label: "Nombre", minWidth: 50, align: "left" },
 	{
-		id: "verified",
-		label: " ✔ ",
+		id: "activeTotal",
+		label: "Activos",
+		minWidth: 50,
+		align: "center",
+		// format: (value) => value.toLocaleString("en-US"),
+	},
+	{
+		id: "total",
+		label: "Total",
 		minWidth: 50,
 		align: "center",
 		// format: (value) => value.toLocaleString("en-US"),
@@ -26,10 +31,11 @@ const columns = [
 		align: "center",
 	},
 ];
+
 // const width = () => (global.screen.width * 50) / 100;
 
-function createData(rank, careerName_faculty, verified, percent) {
-	return { rank, careerName_faculty, verified, percent };
+function createData(parameter, activeTotal, total, percent) {
+	return { parameter, activeTotal, total, percent };
 }
 
 let rows = [];
@@ -46,43 +52,25 @@ const useStyles = makeStyles((theme) => ({
 	},
 	container: {
 		overflowY: "none",
+		scrollbars: "none",
 		overflowX: "none",
 		margin: "10px 10px",
-	},
-	tableCell: {
-		hover: {
-			cursor: "pointer",
-		},
 	},
 }));
 
 export default function TableRankingPrintMode({ data }) {
 	const classes = useStyles();
 
-	rows = data.map((element, index) => {
-		const major = (
-			<div style={{ display: "flex", flexDirection: "column" }}>
-				<span style={{ fontWeight: "bold" }}>{element.name}</span>
-				<span
-					style={{
-						fontStyle: "italic",
-						fontSize: 12,
-						fontWeight: "lighter",
-					}}
-				>
-					{element.faculty}
-				</span>
-			</div>
-		);
+	rows = data.map((element) => {
 		return createData(
-			index + 1,
-			major,
+			element.name,
 			element.matchInformation,
+			element.total,
 			Math.round((element.matchInformation / element.total) * 100)
-			// element.id,
-			// element.facultyParent
 		);
 	});
+
+	// const columns = columnsFunction(data.name);
 
 	return (
 		<Paper className={classes.rootLight}>
@@ -100,6 +88,7 @@ export default function TableRankingPrintMode({ data }) {
 										fontFamily:
 											"'Times New Roman', Times, serif",
 										color: "black",
+										fontWeight: "bold",
 										fontSize: 12,
 										borderBottom: "none",
 									}}
@@ -125,10 +114,10 @@ export default function TableRankingPrintMode({ data }) {
 												style={{
 													color: "black",
 													borderBottom: "none",
-													textAlign: "left",
-													padding: "0.3rem 2rem",
+													padding: "0.2rem 2rem",
+													textAlign:
+														"" + column.align,
 													fontSize: 11,
-													paddingRight: "0",
 													fontFamily:
 														"'Times New Roman', Times, serif",
 												}}

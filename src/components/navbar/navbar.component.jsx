@@ -16,19 +16,24 @@ const useStyles = makeStyles(() => ({
 	root: {
 		flexGrow: 1,
 		display: "flex",
-		justifyContent: "start",
+		justifyContent: "space-between",
+	},
+	iconsContainer: {
+		display: "flex",
+		justifyContent: "space-between",
 	},
 	modeIconContainer: {
-		position: "absolute",
-		top: "0.5rem",
-		right: "5rem",
+		// position: "absolute",
+		// top: "0.5rem",
+		// right: "5rem",
 		display: "flex",
 		justifyContent: "center",
 	},
+
 	modePrintIconContainer: {
-		position: "absolute",
-		top: "0.5rem",
-		right: "8rem",
+		// position: "absolute",
+		// top: "0.5rem",
+		// right: "8rem",
 		display: "flex",
 		justifyContent: "center",
 	},
@@ -45,7 +50,7 @@ const NavBar = ({ handler, handleDarkMode, darkMode, handlePrintMode }) => {
 					style={{ backgroundColor: "#1f1f2f", boxShadow: "none" }}
 				>
 					<hr />
-					<Toolbar>
+					<Toolbar className={classes.root}>
 						<div
 							style={{
 								display: "flex",
@@ -61,31 +66,45 @@ const NavBar = ({ handler, handleDarkMode, darkMode, handlePrintMode }) => {
 									<p>DASHBOARD</p>
 								</div>
 							</Typography>
+							<span></span>
+							<div className={classes.iconsContainer}>
+								<IconButton
+									className={classes.modePrintIconContainer}
+									style={{ color: "#f4f4f4" }}
+									onClick={() => handlePrintMode()}
+								>
+									<PrintOutlinedIcon />
+								</IconButton>
 
-							<IconButton
-								className={classes.modePrintIconContainer}
-								style={{ color: "#f4f4f4" }}
-								onClick={() => handlePrintMode()}
-							>
-								<PrintOutlinedIcon />
-							</IconButton>
+								<IconButton
+									className={classes.modeIconContainer}
+									style={{ color: "#f4f4f4" }}
+									onClick={() => handleDarkMode()}
+								>
+									{darkMode && (
+										<Brightness7RoundedIcon
+											className={
+												classes.modeIconContainer
+											}
+										/>
+									)}
+									{!darkMode && (
+										<Brightness4RoundedIcon
+											className={
+												classes.modeIconContainer
+											}
+										/>
+									)}
+								</IconButton>
 
-							<IconButton
-								className={classes.modeIconContainer}
-								style={{ color: "#f4f4f4" }}
-								onClick={() => handleDarkMode()}
-							>
-								{darkMode && <Brightness7RoundedIcon />}
-								{!darkMode && <Brightness4RoundedIcon />}
-							</IconButton>
-
-							<IconButton
-								style={{ color: "#f4f4f4" }}
-								aria-label="open drawer"
-								onClick={() => handler()}
-							>
-								<MenuIcon />
-							</IconButton>
+								<IconButton
+									style={{ color: "#f4f4f4" }}
+									aria-label="open drawer"
+									onClick={() => handler()}
+								>
+									<MenuIcon />
+								</IconButton>
+							</div>
 						</div>
 					</Toolbar>
 				</AppBar>

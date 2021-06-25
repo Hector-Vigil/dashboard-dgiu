@@ -123,6 +123,8 @@ export default function StudentsModal({
 	studentsCloseModalHandler,
 	data,
 	darkMode,
+	nodeRoutes,
+	nodeParams,
 }) {
 	const classes = useStyles();
 	// getModalStyle is not a pure function, we roll the style only on the first render
@@ -153,7 +155,11 @@ export default function StudentsModal({
 					}
 					onClick={() =>
 						ReactDOM.render(
-							<PrintStudentModalPage data={data} />,
+							<PrintStudentModalPage
+								nodeRoutes={nodeRoutes}
+								nodeParams={nodeParams}
+								data={data}
+							/>,
 							document.getElementById("root")
 						)
 					}

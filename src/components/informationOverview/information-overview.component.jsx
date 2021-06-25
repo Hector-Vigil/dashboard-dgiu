@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const InformationOverview = ({ darkMode }) => {
+const InformationOverview = ({ darkMode, print }) => {
 	const [courseData, setCourseData] = useState(null);
 	const [loading, setLoading] = useState(false);
 

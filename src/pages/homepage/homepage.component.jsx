@@ -74,10 +74,12 @@ const useStyles = makeStyles((theme) => ({
 		width: "80vw",
 	},
 	pieChartAndLinearChartContainerPrintMode: {
-		marginTop: "2rem",
+		marginTop: "12rem",
 		display: "flex",
+		alignItems: "flex-start",
+		justifyContent: "center",
 		flexDirection: "column",
-		flexWrap: "wrap",
+		// padding,
 	},
 	pieChartGroupsContainer: {
 		width: "48%",
@@ -93,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	pieChartCentersContainerPrintMode: {
 		width: "48%",
-		marginTop: "22rem",
+		// marginTop: "22rem",
 		[theme.breakpoints.down("sm")]: {
 			width: "100%",
 		},
@@ -418,17 +420,21 @@ const HomePage = ({ open, darkMode, print }) => {
 			direction="row"
 			wrap="wrap"
 		>
-			<Grid className={classes.sideBarAndInformationContainer} container>
+			<Grid
+				className={classes.sideBarAndInformationContainer}
+				container
+				justify={print == true ? "flex-start" : "flex-end"}
+			>
 				<Grid
 					style={
 						print == false
 							? { width: 200, height: 170 }
-							: { width: 150 }
+							: { display: "none" }
 					}
 				>
 					{open && <SideBar darkMode={darkMode} open={open} />}
 				</Grid>
-				<InformationOverview darkMode={darkMode} />
+				<InformationOverview darkMode={darkMode} print={print} />
 			</Grid>
 
 			<Grid
@@ -439,10 +445,7 @@ const HomePage = ({ open, darkMode, print }) => {
 				wrap="wrap"
 				style={{ width: "80vw" }}
 			>
-				<Grid
-					className={classes.treeViewContainer}
-					style={print == true ? { display: "none" } : null}
-				>
+				<Grid className={classes.treeViewContainer}>
 					<CardCharts title={treeViewTittle} darkMode={darkMode}>
 						{loading && <SpinnerComponent />}
 						{!loading &&
@@ -452,6 +455,7 @@ const HomePage = ({ open, darkMode, print }) => {
 								<RecursiveTreeView
 									darkMode={darkMode}
 									data={treeViewData}
+									printMode={print}
 									studentsOpenModalHandler={
 										studentsOpenModalHandler
 									}
@@ -471,6 +475,8 @@ const HomePage = ({ open, darkMode, print }) => {
 										studentsCloseModalHandler
 									}
 									data={modalData}
+									nodeRoutes={treeViewData}
+									nodeParams={expandedChildren}
 								/>
 							)}
 					</CardCharts>

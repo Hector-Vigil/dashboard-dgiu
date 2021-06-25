@@ -12,8 +12,14 @@ class PrintStudentModalPage extends React.Component {
 		ReactDOM.render(<App />, document.getElementById("root"));
 	}
 	render() {
-		const { data } = this.props;
-		return <TableModalPrintMode data={data} />;
+		const { data, nodeRoutes, nodeParams } = this.props;
+		return (
+			<TableModalPrintMode
+				data={data}
+				nodeRoutes={nodeRoutes}
+				nodeParams={nodeParams}
+			/>
+		);
 	}
 }
 export default PrintStudentModalPage;
