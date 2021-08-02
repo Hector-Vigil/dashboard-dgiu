@@ -13,6 +13,7 @@ import AccountTreeIcon from "@material-ui/icons/AccountTree";
 // import FormatAlignRightIcon from "@material-ui/icons/FormatAlignRight";
 // import FormatAlignJustifyIcon from "@material-ui/icons/FormatAlignJustify";
 
+import { connect } from "react-redux";
 import CardCharts from "../../components/cardCharts/card-charts.component";
 import TableRanking from "../../components/charts/tableRanking/table-ranking.component";
 import TableRankingPrintMode from "../../components/charts/tableRanking/table-ranking-print-mode.component";
@@ -27,9 +28,6 @@ import SideBar from "../../components/sideBar/sidebar.component";
 import PieChart from "../../components/charts/genericChart/pie-chart.component";
 
 import getMajors from "./homepageUtils";
-
-import { connect } from 'react-redux';
-
 
 /// ///////////////////////////////////////////////////////////////////////////////////////////
 /// ///////////////////// ESTILOS /////////////////////////////////////////////////////////////
@@ -145,34 +143,8 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
   const [selectedOrganization, setSelectedOrganization] = useState("Fac");
 
   /// /////////////////FETCHING DATA///////////////////////////////////
-  useEffect(() => {
-    fetchTreeViewData();
-  }, []);
 
-  useEffect(() => {
-    fetchPieChartGroupsData();
-  }, []);
-
-  useEffect(() => {
-    fetchPieChartCentersData();
-  }, []);
-
-  useEffect(() => {
-    buildTableData();
-  }, [treeViewData]);
-
-  const buildTableData = () => {
-    if (treeViewData.children) {
-      const tableData = [];
-      getMajors(treeViewData.children, 0, tableData);
-      const sortedArray = tableData.sort((a, b) => {
-        return b.matchInformation - a.matchInformation;
-      });
-      setMajorsData(sortedArray);
-      setMajorsAndFacultiesData(sortedArray);
-    }
-  };
-
+  
   const filterTreeViewHandler = (event) => {
     const selected = event.target.value;
     console.log(selected);
@@ -198,46 +170,6 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
           .includes(majorName)
     );
     setMajorsAndFacultiesData(filteredMajor);
-  };
-
-  const fetchPieChartCentersData = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        "http://localhost:3300/centers-information"
-      );
-      setPieChartCentersData(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchPieChartGroupsData = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get("http://localhost:3300/getGroupStats");
-      setPieChartGroupsData(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchTreeViewData = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        "http://localhost:3300/getTreeStructure"
-      );
-      setTreeViewData(data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const modalDataHandler = async (faculty, coursetype, major, year) => {
@@ -444,18 +376,14 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
       >
         <Grid className={classes.treeViewContainer}>
           <CardCharts title={treeViewTittle} darkMode={darkMode}>
-            {loading && <SpinnerComponent />}
-            { studentsOpenModalHandler &&
-              expandedChildren && (
-                <RecursiveTreeView
-                  darkMode={darkMode}
-                  printMode={print}
-                  studentsOpenModalHandler={studentsOpenModalHandler}
-                  // print={print}
-                  expanded={expandChildHandler}
-                  nodes={expandedChildren}
-                />
-              )}
+            <RecursiveTreeView
+              darkMode={darkMode}
+              printMode={print}
+              studentsOpenModalHandler={studentsOpenModalHandler}
+              // print={print}
+              expanded={expandChildHandler}
+              nodes={expandedChildren}
+            />
             {!loading &&
               openModal &&
               studentsCloseModalHandler &&
@@ -475,14 +403,7 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
         <Grid className={classes.tableContainer}>
           {print == false ? (
             <CardCharts title={tableRankingTittle} darkMode={darkMode}>
-              {loading && <SpinnerComponent />}
-              {!loading && majorsAndFacultiesData && (
-                <TableRanking
-                  darkMode={darkMode}
-                  data={majorsAndFacultiesData}
-                  expanded={expandMajorHandler}
-                />
-              )}
+              <TableRanking darkMode={darkMode} expanded={expandMajorHandler} />
             </CardCharts>
           ) : (
             <CardCharts title={tableRankingTittlePrintMode} darkMode={darkMode}>
@@ -500,10 +421,7 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
         >
           <Grid className={classes.pieChartGroupsContainer}>
             <CardCharts title={pieChartGroupsTittle} darkMode={darkMode}>
-              {loading && <SpinnerComponent />}
-              {!loading && pieChartGroupsData && (
-                <PieChart data={pieChartGroupsData} darkMode={darkMode} />
-              )}
+                <PieChart darkMode={darkMode} type="groups"/>
             </CardCharts>
           </Grid>
           <Grid
@@ -514,10 +432,7 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
             }
           >
             <CardCharts title={pieChartCentersTittle} darkMode={darkMode}>
-              {loading && <SpinnerComponent />}
-              {!loading && pieChartCentersData && (
-                <PieChart data={pieChartCentersData} darkMode={darkMode} />
-              )}
+                <PieChart darkMode={darkMode} type="centers" />
             </CardCharts>
           </Grid>
         </Grid>
@@ -526,8 +441,8 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
   );
 };
 
-const mapStateToProps = state => ({
-	showSideBar: state.homepage.showSideBar,
-})
+const mapStateToProps = (state) => ({
+  showSideBar: state.homepage.showSideBar,
+});
 
 export default connect(mapStateToProps)(HomePage);

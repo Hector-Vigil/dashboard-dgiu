@@ -7,6 +7,13 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import SpinnerComponent from "../../spinner/spinner.component";
+
+import getMajors from "../../../pages/homepage/homepageUtils";
+
+import {QueryClient, useQuery} from 'react-query'
+
+import { fetchTreeViewData } from '../../../api';
 
 const columns = [
   { id: "name", label: "#", minWidth: 50 },
@@ -95,10 +102,31 @@ const cellStyleLight = {
   fontFamily: "'Poppins', sans-serif",
 };
 
-export default function TableRanking({ data, expanded, darkMode }) {
+const buildTableData = (data) => {
+  if (data.children) {
+    const tableData = [];
+    getMajors(data.children, 0, tableData);
+    const sortedArray = tableData.sort((a, b) => {
+      return b.matchInformation - a.matchInformation;
+    });
+    return sortedArray;
+  }
+};
+
+export default function TableRanking({ expanded, darkMode }) {
   const classes = useStyles();
 
-  rows = data.map((element, index) => {
+  const queryClient = new QueryClient();
+
+  const {isLoading, isError, data, error} = useQuery('tableData', fetchTreeViewData);
+
+  if (isLoading) return <SpinnerComponent />;
+
+  if (isError) console.log(error);
+
+  const tableData = buildTableData(data);
+
+  rows = tableData.map((element, index) => {
     const major = (
       <div style={{ display: "flex", flexDirection: "column" }}>
         <span style={{ fontWeight: "bold" }}>{element.name}</span>
