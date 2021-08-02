@@ -1,7 +1,9 @@
 import "./App.css";
 import React, { useState, useRef } from "react";
 import HomePage from "./pages/homepage/homepage.component";
+import StatusPage from "./pages/homepage/statuspage.component";
 import NavBar from "./components/navbar/navbar.component";
+import {Route, Switch} from 'react-router-dom';
 import "./App.styles.scss";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
@@ -104,6 +106,10 @@ class App extends React.Component {
                   handlePrintMode={handlePrintMode}
                 />
               )}
+          { /* <Switch>
+              <Route exact path="/" component={HomePage}></Route>
+              <Route exact path="/status" component={StatusPage}></Route>
+          </Switch> */ }
           <HomePage darkMode={darkMode} print={printMode} open={showSideBar} />
         </MuiThemeProvider>
       </div>

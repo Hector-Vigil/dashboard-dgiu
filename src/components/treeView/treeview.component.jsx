@@ -90,7 +90,10 @@ export default function RecursiveTreeView({
 
   const queryClient = useQueryClient();
 
-  const { isLoading, isError, error, data } = useQuery("fetchData", fetchTreeViewData);
+  const { isLoading, isError, error, data } = useQuery(
+    "fetchData",
+    fetchTreeViewData
+  );
 
   const getLinearProgressColor = (count, total) => {
     if ((count / total) * 100 <= 35) return "secondary";
@@ -219,18 +222,14 @@ export default function RecursiveTreeView({
 
   if (isLoading) return <SpinnerComponent />;
 
-  if(isError) return <span>{error}</span>;
+  if (isError) return <span>{error}</span>;
 
-  return printMode == false ? (
-    <TreeView
-      className={classes.root}
-      defaultCollapseIcon={<ExpandMoreIcon />}
-      expanded={nodes}
-      defaultExpandIcon={<ChevronRightIcon />}
-    >
-      {data ? renderTree(data) : null}
-    </TreeView>
-  ) : treedata ? (
-    renderTable(treedata)
-  ) : null;
+  return (<TreeView
+    className={classes.root}
+    defaultCollapseIcon={<ExpandMoreIcon />}
+    expanded={nodes}
+    defaultExpandIcon={<ChevronRightIcon />}
+  >
+    {data ? renderTree(data) : null}
+  </TreeView>);
 }

@@ -4,6 +4,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "react-query";
 import store from "./store";
+import { BrowserRouter } from 'react-router-dom';
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
@@ -12,7 +13,9 @@ const queryClient = new QueryClient();
 ReactDOM.render(
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </QueryClientProvider>
   </Provider>,
   document.getElementById("root")
