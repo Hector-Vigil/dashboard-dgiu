@@ -1,0 +1,5 @@
+const APP_ACTIONS = {
+  TOGGLE_SIDEBAR: "TOGGLE_SIDEBAR",
+};
+
+export default APP_ACTIONS;

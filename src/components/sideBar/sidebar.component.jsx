@@ -83,7 +83,7 @@ export default function PermanentDrawerLeft({ open, darkMode }) {
             : { paper: classes.drawerPaperLight }
         }
         anchor="left"
-        open={open}
+        // open={open}
       >
         <List>
           <a
