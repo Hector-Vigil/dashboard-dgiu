@@ -1,12 +1,14 @@
 import "./App.css";
 import React, { useState, useRef } from "react";
+import { Route, Switch } from "react-router-dom";
+
+import { connect } from "react-redux";
+
 import HomePage from "./pages/homepage/homepage.component";
-import StatusPage from "./pages/homepage/statuspage.component";
+import StatusPage from "./pages/statuspage.component";
 import NavBar from "./components/navbar/navbar.component";
-import {Route, Switch} from 'react-router-dom';
 import "./App.styles.scss";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-
 
 const theme = createMuiTheme({
   palette: {
@@ -31,8 +33,6 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      showSideBar: true,
-      darkMode: true,
       printMode: false,
     };
   }
@@ -54,7 +54,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { darkMode, showSideBar, printMode } = this.state;
+    const { printMode } = this.state;
     // const [showSideBar, setShowSideBar] = useState(false);
 
     // const [darkMode, setDarkMode] = useState(true);
@@ -67,21 +67,11 @@ class App extends React.Component {
 
     // const sideBarHandler = () => setShowSideBar(!showSideBar);
 
-    const handleDarkMode = () =>
-      this.setState((prevState, prevProps) => ({
-        darkMode: !prevState.darkMode,
-      }));
-
     const handlePrintMode = () =>
       this.setState((prevState, prevProps) => ({
         printMode: !prevState.printMode,
         darkMode:
           prevState.darkMode == true ? !prevState.darkMode : prevState.darkMode,
-      }));
-
-    const sideBarHandler = () =>
-      this.setState((prevState, prevProps) => ({
-        showSideBar: !prevState.showSideBar,
       }));
 
     // const classes = useStyles();
@@ -94,27 +84,21 @@ class App extends React.Component {
     // }));
 
     return (
-      <div className={darkMode ? "App" : "AppLight"}>
-        <MuiThemeProvider theme={theme}>
-          {sideBarHandler && printMode == true
-            ? false
-            : true && (
-                <NavBar
-                  darkMode={darkMode}
-                  handleDarkMode={handleDarkMode}
-                  handler={sideBarHandler}
-                  handlePrintMode={handlePrintMode}
-                />
-              )}
-          { /* <Switch>
-              <Route exact path="/" component={HomePage}></Route>
-              <Route exact path="/status" component={StatusPage}></Route>
-          </Switch> */ }
-          <HomePage darkMode={darkMode} print={printMode} open={showSideBar} />
-        </MuiThemeProvider>
-      </div>
+      <MuiThemeProvider theme={theme}>
+        <div className={this.props.darkMode ? "App" : "AppLight"}>
+          {printMode == true ? false : true && <NavBar />}
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/status" component={StatusPage} />
+          </Switch>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  darkMode: state.homepage.darkMode,
+});
+
+export default connect(mapStateToProps)(App);

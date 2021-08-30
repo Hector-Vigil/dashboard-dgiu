@@ -15,11 +15,11 @@ import MailIcon from "@material-ui/icons/Mail";
 import SchoolIcon from "@material-ui/icons/School";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import SettingsIcon from "@material-ui/icons/Settings";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    height: 160,
   },
   drawer: {
     display: "flex",
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaperDark: {
     display: "flex",
     width: 200,
-    height: 170,
+    height: 208,
     marginTop: 74,
     marginRight: 20,
     marginLeft: 20,
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   drawerPaperLight: {
     display: "flex",
     width: 200,
-    height: 170,
+    height: 208,
     marginTop: 74,
     marginRight: 20,
     marginLeft: 20,
@@ -86,8 +86,8 @@ export default function PermanentDrawerLeft({ open, darkMode }) {
         // open={open}
       >
         <List>
-          <a
-            href="/"
+          <Link
+            to="/"
             style={{
               textDecoration: "none",
               color: darkMode ? "#f4f4f4" : "#3b3f51",
@@ -105,7 +105,27 @@ export default function PermanentDrawerLeft({ open, darkMode }) {
               </ListItemIcon>
               <ListItemText primary="Estudiantes" />
             </ListItem>
-          </a>
+          </Link>
+          <Link
+            to="/status"
+            style={{
+              textDecoration: "none",
+              color: darkMode ? "#f4f4f4" : "#3b3f51",
+            }}
+          >
+            <ListItem button key="Profesores">
+              <ListItemIcon
+                className={
+                  darkMode
+                    ? classes.listItemIconDark
+                    : classes.listItemIconLight
+                }
+              >
+                <SchoolIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profesores" />
+            </ListItem>
+          </Link>
           <a
             href="http://directoriounico.umcc.cu/filemanager/"
             target="_blank"

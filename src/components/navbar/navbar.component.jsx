@@ -9,9 +9,9 @@ import Brightness7RoundedIcon from "@material-ui/icons/Brightness7Rounded";
 import Brightness4RoundedIcon from "@material-ui/icons/Brightness4Rounded";
 import PrintOutlinedIcon from "@material-ui/icons/PrintOutlined";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
-import { toggleSidebar } from "../../actions/homepage";
+import { toggleSidebar, toggleDarkMode } from "../../actions/homepage";
 
 import "./navbar.styles.scss";
 import NavBarLogo from "../navbar-logo/navbar-logo.component";
@@ -43,7 +43,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const NavBar = ({ handleDarkMode, darkMode, handlePrintMode, showSideBar, toggleSidebar }) => {
+const NavBar = ({
+  darkMode,
+  handlePrintMode,
+  showSideBar,
+  toggleSidebar,
+  toggleDarkMode,
+}) => {
   const classes = useStyles();
 
   return (
@@ -75,7 +81,7 @@ const NavBar = ({ handleDarkMode, darkMode, handlePrintMode, showSideBar, toggle
                 <IconButton
                   className={classes.modePrintIconContainer}
                   style={{ color: "#f4f4f4" }}
-                  onClick={() => handlePrintMode()}
+                  // onClick={() => handlePrintMode()}
                 >
                   <PrintOutlinedIcon />
                 </IconButton>
@@ -83,7 +89,7 @@ const NavBar = ({ handleDarkMode, darkMode, handlePrintMode, showSideBar, toggle
                 <IconButton
                   className={classes.modeIconContainer}
                   style={{ color: "#f4f4f4" }}
-                  onClick={() => handleDarkMode()}
+                  onClick={() => toggleDarkMode(!darkMode)}
                 >
                   {darkMode && (
                     <Brightness7RoundedIcon
@@ -115,10 +121,12 @@ const NavBar = ({ handleDarkMode, darkMode, handlePrintMode, showSideBar, toggle
 
 const mapStateToProps = (state) => ({
   showSideBar: state.homepage.showSideBar,
+  darkMode: state.homepage.darkMode,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   toggleSidebar: (showSideBar) => dispatch(toggleSidebar(showSideBar)),
+  toggleDarkMode: (darkMode) => dispatch(toggleDarkMode(darkMode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

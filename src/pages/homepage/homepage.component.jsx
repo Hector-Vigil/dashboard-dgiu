@@ -443,6 +443,8 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
 
 const mapStateToProps = (state) => ({
   showSideBar: state.homepage.showSideBar,
+  darkMode: state.homepage.darkMode,
+  print: state.homepage.printMode,
 });
 
 export default connect(mapStateToProps)(HomePage);
