@@ -24,11 +24,19 @@ export const fetchCourseInformation = async () => {
 export const fetchOrganizationTree = async () =>
   await (await fetch(`${API_URL}/organization-tree`)).json();
 
-export const fetchOrganizationStatitstics = async (organizations) => {
+export const fetchOrganizationStatitstics = async ({ queryKey }) => {
+  let headersList = {
+    "Content-Type": "application/x-www-form-urlencoded",
+  };
+  let d = "organizations=";
+  d += JSON.stringify(queryKey[1]);
+  let reqOptions = {
+    url: `${API_URL}/organization-statistics`,
+    method: "POST",
+    headers: headersList,
+    data: d,
+  };
 
-  const { data } = await axios.get(`${API_URL}/organization-statistics`, {
-    params: {
-      organizations,
-    }
-  });
+  const { data } = await axios.request(reqOptions);
+  console.log(data);
 };

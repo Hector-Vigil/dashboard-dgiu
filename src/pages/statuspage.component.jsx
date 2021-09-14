@@ -12,7 +12,7 @@ import { useQueryClient, useQuery } from "react-query";
 
 import CardCharts from "../components/cardCharts/card-charts.component";
 import SideBar from "../components/sideBar/sidebar.component";
-import { fetchOrganizationTree } from "../api";
+import { fetchOrganizationTree, fetchOrganizationStatitstics } from "../api";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -75,13 +75,18 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   const classes = useStyles();
   const _tempKeyValue = {};
 
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(["Rectorado"]);
 
   const queryClient = new useQueryClient();
 
   const { isLoading, isError, error, data } = useQuery(
     "fetchOrganizationData",
     fetchOrganizationTree
+  );
+
+  const c = useQuery(
+    ["fetchOrganizationStatitstics", selected],
+    fetchOrganizationStatitstics
   );
 
   const handleSelect = (event, nodeIds) => {
@@ -135,9 +140,14 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     </div>
   );
 
+  const getOrganizationValues = (nodes) => {
+    // console.log("here nodes", nodes);
+  };
+
   if (isLoading) return <h1>Loading...</h1>;
 
   createKeyValue(data);
+  getOrganizationValues(c.data);
 
   return (
     <Grid className={classes.container} container>
@@ -154,6 +164,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
             defaultExpandIcon={<ChevronRightIcon />}
             selected={selected}
             onNodeSelect={handleSelect}
+            multiSelect
           >
             {renderTree(data)}
           </TreeView>
