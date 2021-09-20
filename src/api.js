@@ -1,7 +1,6 @@
 /* eslint-disable no-return-await */
 
-import axios from 'axios';
-
+import axios from "axios";
 
 const API_URL = "http://localhost:3300";
 
@@ -36,7 +35,6 @@ export const fetchOrganizationStatitstics = async ({ queryKey }) => {
     headers: headersList,
     data: d,
   };
-
   const { data } = await axios.request(reqOptions);
-  console.log(data);
+  return data;
 };

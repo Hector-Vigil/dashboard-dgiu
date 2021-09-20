@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
@@ -75,7 +75,8 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   const classes = useStyles();
   const _tempKeyValue = {};
 
-  const [selected, setSelected] = useState(["Rectorado"]);
+  const [selected, setSelected] = useState(["root"]);
+  const [selectedIds, setSelectedIds] = useState(["root"]);
 
   const queryClient = new useQueryClient();
 
@@ -84,26 +85,26 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     fetchOrganizationTree
   );
 
-  const c = useQuery(
-    ["fetchOrganizationStatitstics", selected],
-    fetchOrganizationStatitstics
-  );
-
   const handleSelect = (event, nodeIds) => {
     const arrayToSend = [];
-    Object.keys(_tempKeyValue).forEach((key) => {
-      const elementToAdd = nodeIds.find((id) => id.toString() === key);
-      console.log(elementToAdd);
-      if (elementToAdd) arrayToSend.push(_tempKeyValue[elementToAdd]);
+    const tempValues = Object.values(_tempKeyValue);
+    const tempKeys = Object.keys(_tempKeyValue);
+    nodeIds.forEach((e) => {
+      if (e === "root") arrayToSend.push(e);
+      else {
+        const index = tempKeys.findIndex((i) => i === e);
+        arrayToSend.push(tempValues[index]);
+      }
     });
-    setSelected(nodeIds);
+    setSelectedIds(nodeIds);
+    setSelected(arrayToSend);
   };
 
   const renderTree = (nodes) => (
     <div className={darkMode ? classes.treeItemDark : classes.treeItemLight}>
       <TreeItem
         key={nodes.id}
-        nodeId={nodes.id}
+        nodeId={nodes.id.toString()}
         label={nodes.name}
         style={{ textAlign: "start" }}
       >
@@ -115,13 +116,12 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   );
 
   const createKeyValue = (nodes) => {
-    if (nodes.id === "root") {
-      _tempKeyValue[nodes.id] = nodes.name;
-    }
+    _tempKeyValue[nodes.id] = nodes.name;
+
     if (Array.isArray(nodes.children)) {
       nodes.children.map((node) => {
         _tempKeyValue[node.id] = node.name;
-        createKeyValue(node.children);
+        createKeyValue(node);
       });
     }
   };
@@ -140,14 +140,9 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     </div>
   );
 
-  const getOrganizationValues = (nodes) => {
-    // console.log("here nodes", nodes);
-  };
-
   if (isLoading) return <h1>Loading...</h1>;
 
   createKeyValue(data);
-  getOrganizationValues(c.data);
 
   return (
     <Grid className={classes.container} container>
@@ -162,15 +157,14 @@ const StatusPage = ({ darkMode, showSideBar }) => {
             multiSelect
             defaultCollapseIcon={<ExpandMoreIcon />}
             defaultExpandIcon={<ChevronRightIcon />}
-            selected={selected}
+            selected={selectedIds}
             onNodeSelect={handleSelect}
-            multiSelect
           >
             {renderTree(data)}
           </TreeView>
         </CardCharts>
-        <CardCharts title="Data" darkMode={darkMode}>
-          <h1>Hello</h1>
+        <CardCharts title="Datos" darkMode={darkMode}>
+          <OrganizationsTable selected={selected} darkMode={darkMode} />
         </CardCharts>
       </Grid>
     </Grid>
@@ -183,3 +177,39 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(StatusPage);
+
+const OrganizationsTable = ({ selected, darkMode }) => {
+  const classes = useStyles();
+  const {
+    isLoading: orgLoading,
+    isError: orgIsError,
+    error: orgError,
+    data: orgData,
+  } = useQuery(
+    ["fetchOrganizationStatitstics", selected],
+    fetchOrganizationStatitstics
+  );
+
+  if (orgLoading) return <h2>Loading...</h2>;
+  const data = Object.keys(orgData);
+
+  if (data.length)
+    return (
+      <div>
+        {data.map((element, key) => {
+          return (
+            <span
+              key={key}
+              style={darkMode ? {} : { color: "#3b3f51" }}
+            >{`${element} : ${orgData[element]}`}</span>
+          );
+        })}
+      </div>
+    );
+  else
+    return (
+      <span style={darkMode ? {} : { color: "#3b3f51" }}>
+        No hay informacion disponible
+      </span>
+    );
+};
