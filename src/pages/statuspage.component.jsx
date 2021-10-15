@@ -25,17 +25,18 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   root: {
-    display: "flex",
-    width: "100%",
+    // display: "flex",
+    // flex: 2,
+    paddingBottom: "0.5rem",
     overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
-    flexShrink: 0,
-    height: 750,
+    width: (window.visualViewport.width * 10) / 10,
+    height: window.visualViewport.height / 2,
   },
   treeItemDark: {
-    display: "flex",
-    width: "100%",
-    paddingBottom: "0.5rem",
+    // display: "flex",
+    // width: "100%",
+    paddingTop: "0.5rem",
     justifyContent: "space-between",
     fontFamily: "'Poppins', sans-serif",
     [theme.breakpoints.down("xs")]: {
@@ -43,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   treeItemLight: {
-    display: "flex",
-    width: "100%",
+    // display: "flex",
+    // width: "100%",
     color: "#3b3f51",
     paddingBottom: "0.5rem",
     justifyContent: "space-between",
@@ -159,13 +160,19 @@ const StatusPage = ({ darkMode, showSideBar }) => {
             defaultExpandIcon={<ChevronRightIcon />}
             selected={selectedIds}
             onNodeSelect={handleSelect}
+            sx={{
+              height: 240,
+              flexGrow: 1,
+              minWidth: (window.visualViewport.width * 10) / 10,
+              overflowY: "auto",
+            }}
           >
             {renderTree(data)}
           </TreeView>
         </CardCharts>
-        <CardCharts title="Datos" darkMode={darkMode}>
+        {/* <CardCharts title="Datos" darkMode={darkMode}>
           <OrganizationsTable selected={selected} darkMode={darkMode} />
-        </CardCharts>
+        </CardCharts> */}
       </Grid>
     </Grid>
   );
@@ -200,7 +207,11 @@ const OrganizationsTable = ({ selected, darkMode }) => {
           return (
             <span
               key={key}
-              style={darkMode ? {} : { color: "#3b3f51" }}
+              style={
+                darkMode
+                  ? { marginTop: 10, marginBottom: 10 }
+                  : { color: "#3b3f51", marginTop: 10, marginBottom: 10 }
+              }
             >{`${element} : ${orgData[element]}`}</span>
           );
         })}
