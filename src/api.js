@@ -23,6 +23,9 @@ export const fetchCourseInformation = async () => {
 export const fetchOrganizationTree = async () =>
   await (await fetch(`${API_URL}/organization-tree`)).json();
 
+export const fetchProfessorsList = async () =>
+  await (await fetch(`${API_URL}/professors-list`)).json();
+
 export const fetchOrganizationStatitstics = async ({ queryKey }) => {
   let headersList = {
     "Content-Type": "application/x-www-form-urlencoded",

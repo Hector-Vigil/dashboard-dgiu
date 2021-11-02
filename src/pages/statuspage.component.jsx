@@ -5,6 +5,8 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import GroupIcon from "@material-ui/icons/Group";
+import Table from "../components/table/table.component";
 
 import { connect } from "react-redux";
 
@@ -12,7 +14,11 @@ import { useQueryClient, useQuery } from "react-query";
 
 import CardCharts from "../components/cardCharts/card-charts.component";
 import SideBar from "../components/sideBar/sidebar.component";
-import { fetchOrganizationTree, fetchOrganizationStatitstics } from "../api";
+import {
+  fetchOrganizationTree,
+  fetchOrganizationStatitstics,
+  fetchProfessorsList,
+} from "../api";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "15.5rem",
     paddingRight: "15.5rem",
     width: "100%",
+
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
     },
@@ -28,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
     // display: "flex",
     // flex: 2,
     paddingBottom: "0.5rem",
-    overflow: "auto",
+    // overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
-    width: (window.visualViewport.width * 10) / 10,
+    width: (window.visualViewport.width * 7) / 10,
     height: window.visualViewport.height / 2,
   },
   treeItemDark: {
@@ -75,9 +82,44 @@ const useStyles = makeStyles((theme) => ({
 const StatusPage = ({ darkMode, showSideBar }) => {
   const classes = useStyles();
   const _tempKeyValue = {};
+  const professorsList = [];
+  const columns = [
+    {
+      field: "fullName",
+      headerName: "Nombre",
+      sortable: true,
+      width: (window.visualViewport.width * 2.5) / 10,
+      headerColor: "white",
+    },
+    {
+      field: "dept",
+      headerName: "Departamento",
+      width: (window.visualViewport.width * 2.5) / 10,
+    },
+  ];
+  const rowss = [
+    { id: 0, fullName: "keseyo", dept: "Uno ahi" },
+    { id: 1, fullName: "keseyo", dept: "Otro ahi" },
+    { id: 2, fullName: "keseyo", dept: "Otro mas ahi" },
+    { id: 45, fullName: "keseyo", dept: "Uno ahi" },
+    { id: 15432, fullName: "keseyo", dept: "Otro ahi" },
+    { id: 2763, fullName: "keseyo", dept: "Otro mas ahi" },
+    { id: 7653, fullName: "keseyo", dept: "Uno ahi" },
+    { id: 1764, fullName: "keseyo", dept: "Otro ahi" },
+    { id: 76452, fullName: "keseyo", dept: "Otro mas ahi" },
+    { id: 543245, fullName: "keseyo", dept: "Uno ahi" },
+    { id: 15543432, fullName: "keseyo", dept: "Otro ahi" },
+    { id: 2754363, fullName: "keseyo", dept: "Otro mas ahi" },
+    { id: 75432653, fullName: "keseyo", dept: "Uno ahi" },
+    { id: 17354264, fullName: "keseyo", dept: "Otro ahi" },
+    { id: 76543452, fullName: "keseyo", dept: "Otro mas ahi" },
+  ];
 
   const [selected, setSelected] = useState(["root"]);
   const [selectedIds, setSelectedIds] = useState(["root"]);
+  const [tabSelected, setTabSelected] = useState("org");
+  const [rows, setRows] = useState(rowss);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const queryClient = new useQueryClient();
 
@@ -85,6 +127,13 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     "fetchOrganizationData",
     fetchOrganizationTree
   );
+
+  const {
+    isLoading: pLoading,
+    isError: pIsError,
+    error: pError,
+    data: pData,
+  } = useQuery("", fetchProfessorsList);
 
   const handleSelect = (event, nodeIds) => {
     const arrayToSend = [];
@@ -99,6 +148,10 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     });
     setSelectedIds(nodeIds);
     setSelected(arrayToSend);
+  };
+
+  const handleSelectionChange = (selection) => {
+    setSelectedRows(selection.rows);
   };
 
   const renderTree = (nodes) => (
@@ -127,54 +180,130 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     }
   };
 
+  const getProfessorsList = (data) => {
+    console.log("here", data[0]);
+  };
+
   const treeViewTittle = (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start",
-      }}
-    >
-      <AccountTreeIcon style={{ margin: "0px 5px" }} fontSize="large" />
-      <span>ORGANIZACIONES ESTUDIANTILES</span>
+    <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          border: "white",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          flex: 1,
+          background: tabSelected === "org" ? "#242e41" : "transparent",
+        }}
+        onClick={() => setTabSelected("org")}
+      >
+        <AccountTreeIcon style={{ margin: "0px 5px" }} fontSize="large" />
+        <span>ORGANIZACIONES ESTUDIANTILES</span>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          border: "white",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          flex: 1,
+          background: tabSelected === "usr" ? "#242e41" : "transparent",
+        }}
+        onClick={() => setTabSelected("usr")}
+      >
+        <GroupIcon style={{ margin: "0px 5px" }} fontSize="large" />
+        <span>USUARIOS</span>
+      </div>
     </div>
   );
 
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading || pLoading) return <h1>Loading...</h1>;
 
   createKeyValue(data);
+  getProfessorsList(pData);
 
   return (
     <Grid className={classes.container} container>
       <Grid className={classes.sideBarContainer}>
         {showSideBar && <SideBar darkMode={darkMode} />}
       </Grid>
-      <Grid container justify="space-between">
+      <Grid
+        container
+        justify="space-between"
+        style={{
+          height: (window.visualViewport.height * 11) / 10,
+          // marginBottom: "10px",
+          // minWidth: (window.visualViewport.width * 7) / 10,
+        }}
+      >
         <CardCharts title={treeViewTittle} darkMode={darkMode}>
-          <TreeView
-            className={classes.root}
-            defaultExpanded={["root"]}
-            multiSelect
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            selected={selectedIds}
-            onNodeSelect={handleSelect}
-            sx={{
-              height: 240,
-              flexGrow: 1,
-              minWidth: (window.visualViewport.width * 10) / 10,
-              overflowY: "auto",
-            }}
-          >
-            {renderTree(data)}
-          </TreeView>
+          {tabSelected === "org" && (
+            <TreeView
+              className={classes.root}
+              defaultExpanded={["root"]}
+              multiSelect
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpandIcon={<ChevronRightIcon />}
+              selected={selectedIds}
+              onNodeSelect={handleSelect}
+              sx={{
+                flexGrow: 1,
+                overflowY: "auto",
+                minWidth: (window.visualViewport.width * 7) / 10,
+              }}
+            >
+              {renderTree(data)}
+            </TreeView>
+          )}
+          {tabSelected === "usr" && (
+            <div className={classes.root}>
+              <div style={{ width: (window.visualViewport.width * 5.88) / 10 }}>
+                <Table
+                  rows={rows}
+                  columns={columns}
+                  onSelectionChange={handleSelectionChange}
+                />
+                <span style={{ marginTop: 10 }}>Seleccion</span>
+                <Table
+                  rows={rows}
+                  columns={columns}
+                  onSelectionChange={handleSelectionChange}
+                />
+              </div>
+            </div>
+          )}
         </CardCharts>
         {/* <CardCharts title="Datos" darkMode={darkMode}>
           <OrganizationsTable selected={selected} darkMode={darkMode} />
         </CardCharts> */}
       </Grid>
+      <Grid container style={{ display: "flex", width: "100%" }}>
+        <CustomCard title={"Personal"} start={true} darkMode={darkMode} />
+        <CustomCard title={"Categoria docente"} darkMode={darkMode} />
+      </Grid>
+      <Grid container style={{ display: "flex", width: "100%" }}>
+        <CustomCard
+          title={"Categoria cientifica"}
+          start={true}
+          darkMode={darkMode}
+        />
+        <CustomCard title={"Departamento"} darkMode={darkMode} />
+      </Grid>
     </Grid>
+  );
+};
+
+const CustomCard = ({ start, title, darkMode }) => {
+  return (
+    <div style={start ? { flex: 1, marginRight: 20 } : { flex: 1 }}>
+      <CardCharts title={title} darkMode={darkMode}></CardCharts>
+    </div>
   );
 };
 
