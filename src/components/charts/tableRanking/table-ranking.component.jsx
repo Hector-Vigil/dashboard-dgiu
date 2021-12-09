@@ -11,9 +11,9 @@ import SpinnerComponent from "../../spinner/spinner.component";
 
 import getMajors from "../../../pages/homepage/homepageUtils";
 
-import {QueryClient, useQuery} from 'react-query'
+import { QueryClient, useQuery } from "react-query";
 
-import { fetchTreeViewData } from '../../../api';
+import { fetchTreeViewData } from "../../../api";
 
 const columns = [
   { id: "name", label: "#", minWidth: 50 },
@@ -118,7 +118,10 @@ export default function TableRanking({ expanded, darkMode }) {
 
   const queryClient = new QueryClient();
 
-  const {isLoading, isError, data, error} = useQuery('tableData', fetchTreeViewData);
+  const { isLoading, isError, data, error } = useQuery(
+    "tableData",
+    fetchTreeViewData
+  );
 
   if (isLoading) return <SpinnerComponent />;
 

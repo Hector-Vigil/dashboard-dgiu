@@ -144,7 +144,6 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
 
   /// /////////////////FETCHING DATA///////////////////////////////////
 
-  
   const filterTreeViewHandler = (event) => {
     const selected = event.target.value;
     console.log(selected);
@@ -421,7 +420,7 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
         >
           <Grid className={classes.pieChartGroupsContainer}>
             <CardCharts title={pieChartGroupsTittle} darkMode={darkMode}>
-                <PieChart darkMode={darkMode} type="groups"/>
+              <PieChart darkMode={darkMode} type="groups" />
             </CardCharts>
           </Grid>
           <Grid
@@ -432,7 +431,7 @@ const HomePage = ({ showSideBar, darkMode, print }) => {
             }
           >
             <CardCharts title={pieChartCentersTittle} darkMode={darkMode}>
-                <PieChart darkMode={darkMode} type="centers" />
+              <PieChart darkMode={darkMode} type="centers" />
             </CardCharts>
           </Grid>
         </Grid>

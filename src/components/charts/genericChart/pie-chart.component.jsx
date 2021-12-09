@@ -72,7 +72,6 @@ const renderCustomizedLabel = ({
 };
 
 export default function PieChartComponent(props) {
-
   const queryClient = new QueryClient();
 
   const fetchRequest =
@@ -80,10 +79,8 @@ export default function PieChartComponent(props) {
       ? fetchPieChartGroupsData
       : fetchPieChartCentersData;
 
-	const fetchRequestId =
-	props.type === "groups"
-		?  'fetchGroupsId'
-		: 'fetchCentersId';
+  const fetchRequestId =
+    props.type === "groups" ? "fetchGroupsId" : "fetchCentersId";
 
   console.log(props.type);
 

@@ -1,6 +1,6 @@
 import React from "react";
-import FieldAutoComplete from "./fieldAutoComplete";
 import { makeStyles } from "@material-ui/core/styles";
+import FieldAutoComplete from "./fieldAutoComplete";
 
 const useStyles = makeStyles({
   container: {

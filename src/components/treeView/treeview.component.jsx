@@ -224,12 +224,14 @@ export default function RecursiveTreeView({
 
   if (isError) return <span>{error}</span>;
 
-  return (<TreeView
-    className={classes.root}
-    defaultCollapseIcon={<ExpandMoreIcon />}
-    expanded={nodes}
-    defaultExpandIcon={<ChevronRightIcon />}
-  >
-    {data ? renderTree(data) : null}
-  </TreeView>);
+  return (
+    <TreeView
+      className={classes.root}
+      defaultCollapseIcon={<ExpandMoreIcon />}
+      expanded={nodes}
+      defaultExpandIcon={<ChevronRightIcon />}
+    >
+      {data ? renderTree(data) : null}
+    </TreeView>
+  );
 }
