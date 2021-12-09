@@ -27,8 +27,18 @@ const useStyless = makeStyles((theme) => ({
       minHeight: "35px",
       // color: theme.palette.text.color
     },
-    "& div.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus": {
-      outline: "transparent",
+    "& div.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, .MuiDataGrid-root .MuiDataGrid-cell:focus":
+      {
+        outline: "transparent",
+        // color: theme.palette.text.color
+      },
+    "& div.MuiPaper-root .MuiCard-root .MuiPaper-elevation1 .MuiPaper-rounded":
+      {
+        width: "100%",
+        // color: theme.palette.text.color
+      },
+    "& div.makeStyles-table-7": {
+      width: "100%",
       // color: theme.palette.text.color
     },
   },
@@ -36,16 +46,22 @@ const useStyless = makeStyles((theme) => ({
 
 const Table = ({ rows, columns, onSelectionChange, onPurge }) => {
   const classes = useStyless();
+
   return (
-    <div style={{ textAlign: "center", width: "100%" }}>
+    <div
+      style={{
+        textAlign: "center",
+        maxWidth: "100%",
+      }}
+    >
       <span className="horizontal-line" />
-      <div className={classes.header} style={{ height: 300, width: "100%" }}>
+      <div className={classes.header} style={{ height: 300 }}>
         <DataGrid
           rows={rows}
           columns={columns}
           pageSize={5}
           checkboxSelection
-          onSelectionChange={onSelectionChange}
+          onSelectionModelChange={(e) => onSelectionChange(e)}
         />
       </div>
     </div>

@@ -40,6 +40,33 @@ const useStyles = makeStyles((theme) => ({
     width: (window.visualViewport.width * 7) / 10,
     height: window.visualViewport.height / 2,
   },
+  table: {
+    // display: "flex",
+    // flex: 2,
+    paddingBottom: "0.5rem",
+    // overflow: "auto",
+    fontFamily: "'Poppins', sans-serif",
+    width: (window.visualViewport.width * 6) / 10,
+    height: window.visualViewport.height / 2,
+  },
+  labelContainer: {
+    height: 40,
+    paddingTop: 10,
+    display: "flex",
+    alignContent: "start",
+  },
+  label: {
+    border: 1,
+    borderColor: "white",
+    borderStyle: "solid",
+    borderRadius: 4,
+    margin: 10,
+    marginLeft: 0,
+    height: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+  },
   treeItemDark: {
     // display: "flex",
     // width: "100%",
@@ -88,13 +115,13 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       field: "fullName",
       headerName: "Nombre",
       sortable: true,
-      width: (window.visualViewport.width * 2.5) / 10,
+      width: (window.visualViewport.width * 2) / 10,
       headerColor: "white",
     },
     {
       field: "dept",
       headerName: "Departamento",
-      width: (window.visualViewport.width * 2.5) / 10,
+      width: (window.visualViewport.width * 2) / 10,
     },
   ];
   const rowss = [
@@ -119,7 +146,10 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   const [selectedIds, setSelectedIds] = useState(["root"]);
   const [tabSelected, setTabSelected] = useState("org");
   const [rows, setRows] = useState(rowss);
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [rowsA, setRowsA] = useState(rowss);
+  const [rowsB, setRowsB] = useState([]);
+  const [selectedRowsA, setSelectedRowsA] = useState([]);
+  const [selectedRowsB, setSelectedRowsB] = useState([]);
 
   const queryClient = new useQueryClient();
 
@@ -150,9 +180,37 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     setSelected(arrayToSend);
   };
 
-  const handleSelectionChange = (selection) => {
-    setSelectedRows(selection.rows);
+  const handleSelectionChangeA = (selection) => {
+    // console.log("here selection above", selection);
+    setSelectedRowsA(selection);
   };
+
+  const handleSelectionChangeB = (selection) => {
+    console.log("here selection below", selection);
+    setSelectedRowsB(selection);
+  };
+
+  const handleAddSelection = () => {
+    if (selectedRowsA.length) {
+      let toAdd = [];
+      let toRemove = [...rows];
+      let indexesTR = [];
+      rowsB.forEach((e) => indexesTR.push(e.id));
+      console.log("before indexes", indexesTR);
+      console.log("selection", selectedRowsA);
+      selectedRowsA.forEach((e) => indexesTR.push(e));
+      indexesTR.sort();
+      console.log("indexes", indexesTR);
+      for (let i = 0; i < indexesTR.length; i++) {
+        toRemove.splice(indexesTR[i] - i, 1);
+        toAdd.push(rows[indexesTR[indexesTR.length - 1 - i]]);
+      }
+      setRowsA(toRemove);
+      setRowsB(toAdd);
+    }
+  };
+
+  const handleRemoveSelection = () => {};
 
   const renderTree = (nodes) => (
     <div className={darkMode ? classes.treeItemDark : classes.treeItemLight}>
@@ -182,7 +240,23 @@ const StatusPage = ({ darkMode, showSideBar }) => {
 
   const getProfessorsList = (data) => {
     console.log("here", data[0]);
+    let r = [];
+    for (let i = 0; i < data.length; i++)
+      r.push({ id: i, fullName: data[i].nombre, dept: data[i].departamento });
+    if (data.length !== rowsA.length) setRows(r);
   };
+
+  useEffect(() => {
+    if (data) createKeyValue(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (pData) getProfessorsList(pData);
+  }, [pData]);
+
+  useEffect(() => {
+    setRowsA(rows);
+  }, [rows]);
 
   const treeViewTittle = (
     <div style={{ display: "flex" }}>
@@ -225,9 +299,6 @@ const StatusPage = ({ darkMode, showSideBar }) => {
 
   if (isLoading || pLoading) return <h1>Loading...</h1>;
 
-  createKeyValue(data);
-  getProfessorsList(pData);
-
   return (
     <Grid className={classes.container} container>
       <Grid className={classes.sideBarContainer}>
@@ -262,20 +333,38 @@ const StatusPage = ({ darkMode, showSideBar }) => {
             </TreeView>
           )}
           {tabSelected === "usr" && (
-            <div className={classes.root}>
-              <div style={{ width: (window.visualViewport.width * 5.88) / 10 }}>
-                <Table
-                  rows={rows}
-                  columns={columns}
-                  onSelectionChange={handleSelectionChange}
-                />
-                <span style={{ marginTop: 10 }}>Seleccion</span>
-                <Table
-                  rows={rows}
-                  columns={columns}
-                  onSelectionChange={handleSelectionChange}
-                />
+            <div
+              className={classes.table}
+              style={{ minWidth: (window.visualViewport.width * 6) / 10 }}
+            >
+              {/* <div style={{ maxWidth: (window.visualViewport.width * 6) / 10 }}> */}
+              <Table
+                rows={rowsA}
+                columns={columns}
+                onSelectionChange={handleSelectionChangeA}
+              />
+              <div className={classes.labelContainer}>
+                <label
+                  className={classes.label}
+                  style={selectedRowsA.length ? {} : { color: "darkgray" }}
+                  onClick={handleAddSelection}
+                >
+                  Agregar Seleccion
+                </label>
+                <label
+                  className={classes.label}
+                  onClick={() => console.log("eliminar seleccion")}
+                >
+                  Eliminar Seleccion
+                </label>
               </div>
+              <span style={{ marginTop: 10 }}>Seleccion</span>
+              <Table
+                rows={rowsB}
+                columns={columns}
+                onSelectionChange={handleSelectionChangeB}
+              />
+              {/* </div> */}
             </div>
           )}
         </CardCharts>
