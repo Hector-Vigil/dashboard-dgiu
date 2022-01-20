@@ -41,3 +41,19 @@ export const fetchOrganizationStatitstics = async ({ queryKey }) => {
   const { data } = await axios.request(reqOptions);
   return data;
 };
+
+export const fetchUsersSelectionStatitstics = async ({ queryKey }) => {
+  let headersList = {
+    "Content-Type": "application/x-www-form-urlencoded",
+  };
+  let d = "professors=";
+  d += JSON.stringify(queryKey[1]);
+  let reqOptions = {
+    url: `${API_URL}/users-statistics`,
+    method: "POST",
+    headers: headersList,
+    data: d,
+  };
+  const { data } = await axios.request(reqOptions);
+  return data;
+};

@@ -18,6 +18,7 @@ import {
   fetchOrganizationTree,
   fetchOrganizationStatitstics,
   fetchProfessorsList,
+  fetchUsersSelectionStatitstics
 } from "../api";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     // overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
     width: (window.visualViewport.width * 6) / 10,
-    height: window.visualViewport.height / 2,
+    height: 11 * window.visualViewport.height / 10,
   },
   labelContainer: {
     height: 40,
@@ -105,10 +106,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+const _tempKeyValue = {};
 
 const StatusPage = ({ darkMode, showSideBar }) => {
   const classes = useStyles();
-  const _tempKeyValue = {};
+  
   const professorsList = [];
   const columns = [
     {
@@ -124,29 +126,12 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       width: (window.visualViewport.width * 2) / 10,
     },
   ];
-  const rowss = [
-    { id: 0, fullName: "keseyo", dept: "Uno ahi" },
-    { id: 1, fullName: "keseyo", dept: "Otro ahi" },
-    { id: 2, fullName: "keseyo", dept: "Otro mas ahi" },
-    { id: 45, fullName: "keseyo", dept: "Uno ahi" },
-    { id: 15432, fullName: "keseyo", dept: "Otro ahi" },
-    { id: 2763, fullName: "keseyo", dept: "Otro mas ahi" },
-    { id: 7653, fullName: "keseyo", dept: "Uno ahi" },
-    { id: 1764, fullName: "keseyo", dept: "Otro ahi" },
-    { id: 76452, fullName: "keseyo", dept: "Otro mas ahi" },
-    { id: 543245, fullName: "keseyo", dept: "Uno ahi" },
-    { id: 15543432, fullName: "keseyo", dept: "Otro ahi" },
-    { id: 2754363, fullName: "keseyo", dept: "Otro mas ahi" },
-    { id: 75432653, fullName: "keseyo", dept: "Uno ahi" },
-    { id: 17354264, fullName: "keseyo", dept: "Otro ahi" },
-    { id: 76543452, fullName: "keseyo", dept: "Otro mas ahi" },
-  ];
 
   const [selected, setSelected] = useState(["root"]);
   const [selectedIds, setSelectedIds] = useState(["root"]);
   const [tabSelected, setTabSelected] = useState("org");
-  const [rows, setRows] = useState(rowss);
-  const [rowsA, setRowsA] = useState(rowss);
+  const [rows, setRows] = useState([]);
+  const [rowsA, setRowsA] = useState([]);
   const [rowsB, setRowsB] = useState([]);
   const [selectedRowsA, setSelectedRowsA] = useState([]);
   const [selectedRowsB, setSelectedRowsB] = useState([]);
@@ -159,6 +144,16 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   );
 
   const {
+    isLoading: orgLoading,
+    isError: orgIsError,
+    error: orgError,
+    data: orgData,
+  } = useQuery(
+    ["fetchOrganizationStatitstics", selected],
+    fetchOrganizationStatitstics
+  );
+
+  const {
     isLoading: pLoading,
     isError: pIsError,
     error: pError,
@@ -166,9 +161,12 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   } = useQuery("", fetchProfessorsList);
 
   const handleSelect = (event, nodeIds) => {
+    console.log('temp key values',_tempKeyValue)
     const arrayToSend = [];
     const tempValues = Object.values(_tempKeyValue);
     const tempKeys = Object.keys(_tempKeyValue);
+    console.log('temp values',Object.values(_tempKeyValue));
+    console.log('temp keys',tempKeys);
     nodeIds.forEach((e) => {
       if (e === "root") arrayToSend.push(e);
       else {
@@ -210,7 +208,31 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     }
   };
 
-  const handleRemoveSelection = () => {};
+  const handleRemoveSelection = () => {
+    if(selectedRowsB.length){
+      let toAdd = [];
+      let toRemove = [...rows];
+      let indexesTR = [];
+      rowsB.forEach((e) => indexesTR.push(e.id));
+      console.log("before indexes", indexesTR);
+      console.log("selection", selectedRowsB);
+      selectedRowsB.forEach((e) => {
+        let a = indexesTR.indexOf(e);
+        console.log('index of', a,e);
+        indexesTR.splice(a, 1);
+      });
+      indexesTR.sort();
+      console.log("indexes", indexesTR);
+      for (let i = 0; i < indexesTR.length; i++) {
+        toRemove.splice(indexesTR[i] - i, 1);
+        toAdd.push(rows[indexesTR[indexesTR.length - 1 - i]]);
+      }
+      // console.log('to add', toAdd);
+      // console.log('to remove', toRemove);
+      setRowsA(toRemove);
+      setRowsB(toAdd);
+    }
+  };
 
   const renderTree = (nodes) => (
     <div className={darkMode ? classes.treeItemDark : classes.treeItemLight}>
@@ -242,12 +264,23 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     console.log("here", data[0]);
     let r = [];
     for (let i = 0; i < data.length; i++)
-      r.push({ id: i, fullName: data[i].nombre, dept: data[i].departamento });
+      r.push({ 
+        id: i, 
+        fullName: data[i].nombre, 
+        dept: data[i].departamento,
+        categoria_docente: data[i].categoria_docente,
+        categoria_cientifica: data[i].categoria_cientifica,
+        cargo_ocupacional: data[i].cargo_ocupacional,
+        tipo_de_contrato: data[i].tipo_de_contrato
+      });
     if (data.length !== rowsA.length) setRows(r);
   };
 
   useEffect(() => {
-    if (data) createKeyValue(data);
+    if (data) {
+      console.log("temp entro");
+      createKeyValue(data);    
+    }
   }, [data]);
 
   useEffect(() => {
@@ -257,6 +290,11 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   useEffect(() => {
     setRowsA(rows);
   }, [rows]);
+  
+  useEffect(() => {
+    if(tabSelected === "usr")
+      setSelected(rowsB);
+  }, [rowsB]);
 
   const treeViewTittle = (
     <div style={{ display: "flex" }}>
@@ -308,7 +346,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         container
         justify="space-between"
         style={{
-          height: (window.visualViewport.height * 11) / 10,
+          height: (window.visualViewport.height * 14) / 10,
           // marginBottom: "10px",
           // minWidth: (window.visualViewport.width * 7) / 10,
         }}
@@ -353,7 +391,8 @@ const StatusPage = ({ darkMode, showSideBar }) => {
                 </label>
                 <label
                   className={classes.label}
-                  onClick={() => console.log("eliminar seleccion")}
+                  style={selectedRowsB.length ? {} : { color: "darkgray" }}
+                  onClick={handleRemoveSelection}
                 >
                   Eliminar Seleccion
                 </label>
@@ -372,18 +411,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
           <OrganizationsTable selected={selected} darkMode={darkMode} />
         </CardCharts> */}
       </Grid>
-      <Grid container style={{ display: "flex", width: "100%" }}>
-        <CustomCard title={"Personal"} start={true} darkMode={darkMode} />
-        <CustomCard title={"Categoria docente"} darkMode={darkMode} />
-      </Grid>
-      <Grid container style={{ display: "flex", width: "100%" }}>
-        <CustomCard
-          title={"Categoria cientifica"}
-          start={true}
-          darkMode={darkMode}
-        />
-        <CustomCard title={"Departamento"} darkMode={darkMode} />
-      </Grid>
+      <OrganizationsTable selected={selected} tab={tabSelected} darkMode={darkMode} />
     </Grid>
   );
 };
@@ -403,8 +431,8 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(StatusPage);
 
-const OrganizationsTable = ({ selected, darkMode }) => {
-  const classes = useStyles();
+const OrganizationsTable = ({ selected, tab, darkMode }) => {
+  console.log('tab',tab);
   const {
     isLoading: orgLoading,
     isError: orgIsError,
@@ -414,31 +442,46 @@ const OrganizationsTable = ({ selected, darkMode }) => {
     ["fetchOrganizationStatitstics", selected],
     fetchOrganizationStatitstics
   );
+  
+  const {
+    isLoading: usrsLoading,
+    isError: usrsIsError,
+    error: usrsError,
+    data: usrsData,
+  } = useQuery(
+    ["fetchUsersSelectionStatitstics", selected],
+    fetchUsersSelectionStatitstics
+  );
 
   if (orgLoading) return <h2>Loading...</h2>;
-  const data = Object.keys(orgData);
+  const data = orgData;
 
-  if (data.length)
+  if(usrsData) console.log('usrs data',usrsData);
+
+  if (data) {
+    console.log('tab data',data);
     return (
-      <div>
-        {data.map((element, key) => {
-          return (
-            <span
-              key={key}
-              style={
-                darkMode
-                  ? { marginTop: 10, marginBottom: 10 }
-                  : { color: "#3b3f51", marginTop: 10, marginBottom: 10 }
-              }
-            >{`${element} : ${orgData[element]}`}</span>
-          );
-        })}
+      <div style={{width:"100%"}}>
+        <Grid container style={{ display: "flex", width: "100%" }}>
+          <CustomCard title={"Personal"} start={true} darkMode={darkMode} />
+          <CustomCard title={"Categoria docente"} darkMode={darkMode} />
+        </Grid>
+        <Grid container style={{ display: "flex", width: "100%" }}>
+          <CustomCard
+            title={"Categoria cientifica"}
+            start={true}
+            darkMode={darkMode}
+          />
+          <CustomCard title={"Departamento"} darkMode={darkMode} />
+        </Grid>
       </div>
     );
-  else
+  }
+  else {
     return (
       <span style={darkMode ? {} : { color: "#3b3f51" }}>
         No hay informacion disponible
       </span>
     );
+  }
 };
