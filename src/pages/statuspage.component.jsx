@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     // overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
     width: (window.visualViewport.width * 6) / 10,
-    height: 11 * window.visualViewport.height / 10,
+    height: 8 * window.visualViewport.height / 10,
   },
   labelContainer: {
     height: 40,
@@ -191,8 +191,8 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   const handleSearch = (isA) => {
     let searchResult = [];
     let searchLC = searchText.toLowerCase();
-    rowsA.forEach(e=>{  
-      if(e.fullName.toLowerCase().indexOf(searchLC) >= 0 && !isOnTableB(e.id) && (isA?!isSelectedA(e.id):true)) {
+    rows.forEach(e=>{
+      if((e.fullName.toLowerCase().indexOf(searchLC) >= 0 || searchText.length === 0) && !isOnTableB(e.id) && (isA?!isSelectedA(e.id):true)) {
         searchResult.push(e);
       }
     })
@@ -391,29 +391,30 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         container
         justify="space-between"
         style={{
-          height: (window.visualViewport.height * 14) / 10,
-          // marginBottom: "10px",
-          // minWidth: (window.visualViewport.width * 7) / 10,
+          height: window.visualViewport.height,
         }}
       >
         <CardCharts title={treeViewTittle} darkMode={darkMode}>
           {tabSelected === "org" && (
-            <TreeView
-              className={classes.root}
-              defaultExpanded={["root"]}
-              multiSelect
-              defaultCollapseIcon={<ExpandMoreIcon />}
-              defaultExpandIcon={<ChevronRightIcon />}
-              selected={selectedIds}
-              onNodeSelect={handleSelect}
-              sx={{
-                flexGrow: 1,
-                overflowY: "auto",
-                minWidth: (window.visualViewport.width * 7) / 10,
-              }}
-            >
-              {renderTree(data)}
-            </TreeView>
+            <div style={{flexGrow: 1, overflowY: "auto", overflowX: "hidden",minHeight: (window.visualViewport.height * 9) / 10
+              }}>
+              <TreeView
+                className={classes.root}
+                defaultExpanded={["root"]}
+                multiSelect
+                defaultCollapseIcon={<ExpandMoreIcon />}
+                defaultExpandIcon={<ChevronRightIcon />}
+                selected={selectedIds}
+                onNodeSelect={handleSelect}
+                sx={{
+                  flexGrow: 1,
+                  minWidth: (window.visualViewport.width * 7) / 10,                  
+                }}
+              >
+                {renderTree(data)}
+              </TreeView>
+
+            </div>
           )}
           {tabSelected === "usr" && (
             <div
