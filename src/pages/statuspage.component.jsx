@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, Input, makeStyles } from "@material-ui/core";
 import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -135,6 +135,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   const [rowsB, setRowsB] = useState([]);
   const [selectedRowsA, setSelectedRowsA] = useState([]);
   const [selectedRowsB, setSelectedRowsB] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const queryClient = new useQueryClient();
 
@@ -142,6 +143,19 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     "fetchOrganizationData",
     fetchOrganizationTree
   );
+
+  const searchStyle = (width,nonWhite) => {
+    return {
+      height:'2rem', 
+      width:`${width}rem`, 
+      border:"white 1px solid", 
+      borderRadius:5, 
+      margin:'0.5rem', 
+      marginLeft:0, 
+      padding:"0.2rem 1rem",
+      color: nonWhite?"black":"white"
+    };
+  }
 
   const {
     isLoading: orgLoading,
@@ -159,6 +173,37 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     error: pError,
     data: pData,
   } = useQuery("", fetchProfessorsList);
+
+  const isOnTableB = (id) => {
+    for(let i = 0; i < rowsB.length; i++){
+      if(rowsB[i].id === id) return true;
+    }
+    return false;
+  }
+
+  const isSelectedA = (id) => {
+    for(let i = 0; i < selectedRowsA.length; i++){
+      if(selectedRowsA[i] === id) return true;
+    }
+    return false;
+  }
+
+  const handleSearch = (isA) => {
+    let searchResult = [];
+    let searchLC = searchText.toLowerCase();
+    rowsA.forEach(e=>{  
+      if(e.fullName.toLowerCase().indexOf(searchLC) >= 0 && !isOnTableB(e.id) && (isA?!isSelectedA(e.id):true)) {
+        searchResult.push(e);
+      }
+    })
+    if(!isA){
+      selectedRowsB.forEach(e=>{
+        searchResult.push(rows[e]);
+      })
+    }
+    searchResult.sort();
+    setRowsA(searchResult);
+  }
 
   const handleSelect = (event, nodeIds) => {
     console.log('temp key values',_tempKeyValue)
@@ -203,7 +248,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         toRemove.splice(indexesTR[i] - i, 1);
         toAdd.push(rows[indexesTR[indexesTR.length - 1 - i]]);
       }
-      setRowsA(toRemove);
+      searchText.length?handleSearch(true):setRowsA(toRemove);
       setRowsB(toAdd);
     }
   };
@@ -229,7 +274,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       }
       // console.log('to add', toAdd);
       // console.log('to remove', toRemove);
-      setRowsA(toRemove);
+      searchText.length?handleSearch(false):setRowsA(toRemove);
       setRowsB(toAdd);
     }
   };
@@ -375,7 +420,10 @@ const StatusPage = ({ darkMode, showSideBar }) => {
               className={classes.table}
               style={{ minWidth: (window.visualViewport.width * 6) / 10 }}
             >
-              {/* <div style={{ maxWidth: (window.visualViewport.width * 6) / 10 }}> */}
+              <div style={{display:'flex',flexDirection:'row'}}>
+                <Input style={searchStyle('20',false)} placeholder="Introduzca un nombre..." onChange={(e)=>setSearchText(e.target.value)}/>
+                <button style={searchStyle('5',true)} onClick={handleSearch}>Buscar</button>
+              </div>
               <Table
                 rows={rowsA}
                 columns={columns}
@@ -454,9 +502,7 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
   );
 
   if (orgLoading) return <h2>Loading...</h2>;
-  const data = orgData;
-
-  if(usrsData) console.log('usrs data',usrsData);
+  const data = tab==="usr" ? usrsData : orgData;
 
   if (data) {
     console.log('tab data',data);
