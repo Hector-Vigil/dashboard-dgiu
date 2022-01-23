@@ -465,10 +465,18 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   );
 };
 
-const CustomCard = ({ start, title, darkMode }) => {
+const CustomCard = ({ start, title, darkMode, items }) => {
   return (
     <div style={start ? { flex: 1, marginRight: 20 } : { flex: 1 }}>
-      <CardCharts title={title} darkMode={darkMode}></CardCharts>
+      <CardCharts title={title} darkMode={darkMode}>
+        <div style={{minHeight: '5rem', justifyContent:'start'}}>
+        {
+          Object.keys(items).map((e)=>
+            <p>{`${e}: ${items[e]}`}</p>
+          )
+        }
+        </div>
+      </CardCharts>
     </div>
   );
 };
@@ -502,6 +510,25 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     fetchUsersSelectionStatitstics
   );
 
+  const arrangeItems = (stats, cardName) => {
+    let r = {};
+    if(cardName === "p"){
+      r["Docente"] = (typeof stats["Docente"] === "undefined")?0:stats["Docente"];
+      r["No Docente"] = (typeof stats["No Docente"] === "undefined")?0:stats["No Docente"];
+    } else if (cardName === "cd"){
+      r["Asistente"] = (typeof stats["Asistente"] === "undefined")?0:stats["Asistente"];
+      r["Auxiliar"] = (typeof stats["Auxiliar"] === "undefined")?0:stats["Auxiliar"];
+      r["Instructor"] = (typeof stats["Instructor"] === "undefined")?0:stats["Instructor"];
+      r["Titular"] = (typeof stats["Titular"] === "undefined")?0:stats["Titular"];
+    } else if (cardName === "cc"){
+      r["Master"] = (typeof stats["Master"] === "undefined")?0:stats["Master"];
+      r["Doctor"] = (typeof stats["Doctor"] === "undefined")?0:stats["Doctor"];
+    } else if (cardName === "d"){
+
+    }
+    return r;
+  }
+
   if (orgLoading) return <h2>Loading...</h2>;
   const data = tab==="usr" ? usrsData : orgData;
 
@@ -510,16 +537,29 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     return (
       <div style={{width:"100%"}}>
         <Grid container style={{ display: "flex", width: "100%" }}>
-          <CustomCard title={"Personal"} start={true} darkMode={darkMode} />
-          <CustomCard title={"Categoria docente"} darkMode={darkMode} />
+          <CustomCard 
+            title={"Personal"} 
+            start={true} darkMode={darkMode} 
+            items={arrangeItems(data,"p")}
+          />
+          <CustomCard 
+            title={"Categoria docente"} 
+            darkMode={darkMode} 
+            items={arrangeItems(data,"cd")}
+          />
         </Grid>
         <Grid container style={{ display: "flex", width: "100%" }}>
           <CustomCard
             title={"Categoria cientifica"}
             start={true}
             darkMode={darkMode}
+            items={arrangeItems(data,"cc")}
           />
-          <CustomCard title={"Departamento"} darkMode={darkMode} />
+          <CustomCard 
+            title={"Departamento"} 
+            darkMode={darkMode} 
+            items={arrangeItems(data,"d")}
+          />
         </Grid>
       </div>
     );
