@@ -82,12 +82,10 @@ export default function PieChartComponent(props) {
   const fetchRequestId =
     props.type === "groups" ? "fetchGroupsId" : "fetchCentersId";
 
-  console.log(props.type);
-
   const { isLoading, data } = useQuery(fetchRequestId, fetchRequest);
 
-  if (isLoading) return <SpinnerComponent />;
-
+  if (!props.passedData && isLoading) return <SpinnerComponent />;
+  
   return (
     <div style={{ width: "100%", height: 350 }}>
       <ResponsiveContainer>
@@ -101,7 +99,7 @@ export default function PieChartComponent(props) {
           }
         >
           <Pie
-            data={data}
+            data={!props.passedData?data:props.passedData}
             labelLine={false}
             label={renderCustomizedLabel}
             outerRadius={120}
@@ -109,7 +107,7 @@ export default function PieChartComponent(props) {
             stroke={props.darkMode ? "#f4f4f4" : "#3b3f51"}
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {!props.passedData?data:props.passedData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}

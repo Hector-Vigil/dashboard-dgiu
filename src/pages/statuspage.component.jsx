@@ -7,6 +7,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import GroupIcon from "@material-ui/icons/Group";
 import Table from "../components/table/table.component";
+import PieChart from "../components/charts/genericChart/pie-chart.component";
 
 import { connect } from "react-redux";
 
@@ -18,7 +19,7 @@ import {
   fetchOrganizationTree,
   fetchOrganizationStatitstics,
   fetchProfessorsList,
-  fetchUsersSelectionStatitstics
+  fetchUsersSelectionStatitstics,
 } from "../api";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     // overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
     width: (window.visualViewport.width * 6) / 10,
-    height: 8 * window.visualViewport.height / 10,
+    height: (8 * window.visualViewport.height) / 10,
   },
   labelContainer: {
     height: 40,
@@ -110,7 +111,7 @@ const _tempKeyValue = {};
 
 const StatusPage = ({ darkMode, showSideBar }) => {
   const classes = useStyles();
-  
+
   const professorsList = [];
   const columns = [
     {
@@ -144,18 +145,18 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     fetchOrganizationTree
   );
 
-  const searchStyle = (width,nonWhite) => {
+  const searchStyle = (width, nonWhite) => {
     return {
-      height:'2rem', 
-      width:`${width}rem`, 
-      border:"white 1px solid", 
-      borderRadius:5, 
-      margin:'0.5rem', 
-      marginLeft:0, 
-      padding:"0.2rem 1rem",
-      color: nonWhite?"black":"white"
+      height: "2rem",
+      width: `${width}rem`,
+      border: "white 1px solid",
+      borderRadius: 5,
+      margin: "0.5rem",
+      marginLeft: 0,
+      padding: "0.2rem 1rem",
+      color: nonWhite ? "black" : "white",
     };
-  }
+  };
 
   const {
     isLoading: orgLoading,
@@ -175,43 +176,48 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   } = useQuery("", fetchProfessorsList);
 
   const isOnTableB = (id) => {
-    for(let i = 0; i < rowsB.length; i++){
-      if(rowsB[i].id === id) return true;
+    for (let i = 0; i < rowsB.length; i++) {
+      if (rowsB[i].id === id) return true;
     }
     return false;
-  }
+  };
 
   const isSelectedA = (id) => {
-    for(let i = 0; i < selectedRowsA.length; i++){
-      if(selectedRowsA[i] === id) return true;
+    for (let i = 0; i < selectedRowsA.length; i++) {
+      if (selectedRowsA[i] === id) return true;
     }
     return false;
-  }
+  };
 
   const handleSearch = (isA) => {
     let searchResult = [];
     let searchLC = searchText.toLowerCase();
-    rows.forEach(e=>{
-      if((e.fullName.toLowerCase().indexOf(searchLC) >= 0 || searchText.length === 0) && !isOnTableB(e.id) && (isA?!isSelectedA(e.id):true)) {
+    rows.forEach((e) => {
+      if (
+        (e.fullName.toLowerCase().indexOf(searchLC) >= 0 ||
+          searchText.length === 0) &&
+        !isOnTableB(e.id) &&
+        (isA ? !isSelectedA(e.id) : true)
+      ) {
         searchResult.push(e);
       }
-    })
-    if(!isA){
-      selectedRowsB.forEach(e=>{
+    });
+    if (!isA) {
+      selectedRowsB.forEach((e) => {
         searchResult.push(rows[e]);
-      })
+      });
     }
     searchResult.sort();
     setRowsA(searchResult);
-  }
+  };
 
   const handleSelect = (event, nodeIds) => {
-    console.log('temp key values',_tempKeyValue)
+    console.log("temp key values", _tempKeyValue);
     const arrayToSend = [];
     const tempValues = Object.values(_tempKeyValue);
     const tempKeys = Object.keys(_tempKeyValue);
-    console.log('temp values',Object.values(_tempKeyValue));
-    console.log('temp keys',tempKeys);
+    console.log("temp values", Object.values(_tempKeyValue));
+    console.log("temp keys", tempKeys);
     nodeIds.forEach((e) => {
       if (e === "root") arrayToSend.push(e);
       else {
@@ -242,19 +248,19 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       console.log("before indexes", indexesTR);
       console.log("selection", selectedRowsA);
       selectedRowsA.forEach((e) => indexesTR.push(e));
-      indexesTR.sort();
+      indexesTR.sort((a, b) => (parseInt(a) > parseInt(b) ? 1 : -1));
       console.log("indexes", indexesTR);
       for (let i = 0; i < indexesTR.length; i++) {
         toRemove.splice(indexesTR[i] - i, 1);
         toAdd.push(rows[indexesTR[indexesTR.length - 1 - i]]);
       }
-      searchText.length?handleSearch(true):setRowsA(toRemove);
+      searchText.length ? handleSearch(true) : setRowsA(toRemove);
       setRowsB(toAdd);
     }
   };
 
   const handleRemoveSelection = () => {
-    if(selectedRowsB.length){
+    if (selectedRowsB.length) {
       let toAdd = [];
       let toRemove = [...rows];
       let indexesTR = [];
@@ -263,10 +269,10 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       console.log("selection", selectedRowsB);
       selectedRowsB.forEach((e) => {
         let a = indexesTR.indexOf(e);
-        console.log('index of', a,e);
+        console.log("index of", a, e);
         indexesTR.splice(a, 1);
       });
-      indexesTR.sort();
+      indexesTR.sort((a, b) => (parseInt(a) > parseInt(b) ? 1 : -1));
       console.log("indexes", indexesTR);
       for (let i = 0; i < indexesTR.length; i++) {
         toRemove.splice(indexesTR[i] - i, 1);
@@ -274,7 +280,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       }
       // console.log('to add', toAdd);
       // console.log('to remove', toRemove);
-      searchText.length?handleSearch(false):setRowsA(toRemove);
+      searchText.length ? handleSearch(false) : setRowsA(toRemove);
       setRowsB(toAdd);
     }
   };
@@ -306,25 +312,23 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   };
 
   const getProfessorsList = (data) => {
-    console.log("here", data[0]);
     let r = [];
     for (let i = 0; i < data.length; i++)
-      r.push({ 
-        id: i, 
-        fullName: data[i].nombre, 
+      r.push({
+        id: i,
+        fullName: data[i].nombre,
         dept: data[i].departamento,
         categoria_docente: data[i].categoria_docente,
         categoria_cientifica: data[i].categoria_cientifica,
         cargo_ocupacional: data[i].cargo_ocupacional,
-        tipo_de_contrato: data[i].tipo_de_contrato
+        tipo_de_contrato: data[i].tipo_de_contrato,
       });
     if (data.length !== rowsA.length) setRows(r);
   };
 
   useEffect(() => {
     if (data) {
-      console.log("temp entro");
-      createKeyValue(data);    
+      createKeyValue(data);
     }
   }, [data]);
 
@@ -335,10 +339,9 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   useEffect(() => {
     setRowsA(rows);
   }, [rows]);
-  
+
   useEffect(() => {
-    if(tabSelected === "usr")
-      setSelected(rowsB);
+    if (tabSelected === "usr") setSelected(rowsB);
   }, [rowsB]);
 
   const treeViewTittle = (
@@ -396,8 +399,14 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       >
         <CardCharts title={treeViewTittle} darkMode={darkMode}>
           {tabSelected === "org" && (
-            <div style={{flexGrow: 1, overflowY: "auto", overflowX: "hidden",minHeight: (window.visualViewport.height * 9) / 10
-              }}>
+            <div
+              style={{
+                flexGrow: 1,
+                overflowY: "auto",
+                overflowX: "hidden",
+                minHeight: (window.visualViewport.height * 9) / 10,
+              }}
+            >
               <TreeView
                 className={classes.root}
                 defaultExpanded={["root"]}
@@ -408,12 +417,11 @@ const StatusPage = ({ darkMode, showSideBar }) => {
                 onNodeSelect={handleSelect}
                 sx={{
                   flexGrow: 1,
-                  minWidth: (window.visualViewport.width * 7) / 10,                  
+                  minWidth: (window.visualViewport.width * 7) / 10,
                 }}
               >
                 {renderTree(data)}
               </TreeView>
-
             </div>
           )}
           {tabSelected === "usr" && (
@@ -421,9 +429,15 @@ const StatusPage = ({ darkMode, showSideBar }) => {
               className={classes.table}
               style={{ minWidth: (window.visualViewport.width * 6) / 10 }}
             >
-              <div style={{display:'flex',flexDirection:'row'}}>
-                <Input style={searchStyle('20',false)} placeholder="Introduzca un nombre..." onChange={(e)=>setSearchText(e.target.value)}/>
-                <button style={searchStyle('5',true)} onClick={handleSearch}>Buscar</button>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <Input
+                  style={searchStyle("20", false)}
+                  placeholder="Introduzca un nombre..."
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
+                <button style={searchStyle("5", true)} onClick={handleSearch}>
+                  Buscar
+                </button>
               </div>
               <Table
                 rows={rowsA}
@@ -460,7 +474,11 @@ const StatusPage = ({ darkMode, showSideBar }) => {
           <OrganizationsTable selected={selected} darkMode={darkMode} />
         </CardCharts> */}
       </Grid>
-      <OrganizationsTable selected={selected} tab={tabSelected} darkMode={darkMode} />
+      <OrganizationsTable
+        selected={selected}
+        tab={tabSelected}
+        darkMode={darkMode}
+      />
     </Grid>
   );
 };
@@ -469,13 +487,12 @@ const CustomCard = ({ start, title, darkMode, items }) => {
   return (
     <div style={start ? { flex: 1, marginRight: 20 } : { flex: 1 }}>
       <CardCharts title={title} darkMode={darkMode}>
-        <div style={{minHeight: '5rem', justifyContent:'start'}}>
-        {
-          Object.keys(items).map((e)=>
-            <p>{`${e}: ${items[e]}`}</p>
-          )
-        }
+        <div style={{ minHeight: "5rem", justifyContent: "start" }}>
+          {items.map((e,i) => (
+            <p key={i}>{`${e.name}: ${e.value}`}</p>
+          ))}
         </div>
+        {items.length && <PieChart darkMode={darkMode} passedData={items} />}
       </CardCharts>
     </div>
   );
@@ -488,8 +505,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(StatusPage);
 
-const OrganizationsTable = ({ selected, tab, darkMode }) => {
-  console.log('tab',tab);
+const OrganizationsTable = ({ selected, tab, darkMode }) => {  
   const {
     isLoading: orgLoading,
     isError: orgIsError,
@@ -499,7 +515,7 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     ["fetchOrganizationStatitstics", selected],
     fetchOrganizationStatitstics
   );
-  
+
   const {
     isLoading: usrsLoading,
     isError: usrsIsError,
@@ -511,41 +527,68 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
   );
 
   const arrangeItems = (stats, cardName) => {
-    let r = {};
-    if(cardName === "p"){
-      r["Docente"] = (typeof stats["Docente"] === "undefined")?0:stats["Docente"];
-      r["No Docente"] = (typeof stats["No Docente"] === "undefined")?0:stats["No Docente"];
-    } else if (cardName === "cd"){
-      r["Asistente"] = (typeof stats["Asistente"] === "undefined")?0:stats["Asistente"];
-      r["Auxiliar"] = (typeof stats["Auxiliar"] === "undefined")?0:stats["Auxiliar"];
-      r["Instructor"] = (typeof stats["Instructor"] === "undefined")?0:stats["Instructor"];
-      r["Titular"] = (typeof stats["Titular"] === "undefined")?0:stats["Titular"];
-    } else if (cardName === "cc"){
-      r["Master"] = (typeof stats["Master"] === "undefined")?0:stats["Master"];
-      r["Doctor"] = (typeof stats["Doctor"] === "undefined")?0:stats["Doctor"];
-    } else if (cardName === "d"){
-
+    let r = [];
+    if (cardName === "p") {
+      console.log('stats here',stats);
+      r.push({
+        name: "Docente",
+        value: !stats["Docente"] ? 0 : stats["Docente"],
+      });
+      r.push({
+        name: "No Docente",
+        value:
+          !stats["No Docente"] ? 0 : stats["No Docente"],
+      });
+    } else if (cardName === "cd") {
+      r.push({
+        name: "Asistente",
+        value:
+          typeof stats["Asistente"] === "undefined" ? 0 : stats["Asistente"],
+      });
+      r.push({
+        name: "Auxiliar",
+        value: typeof stats["Auxiliar"] === "undefined" ? 0 : stats["Auxiliar"],
+      });
+      r.push({
+        name: "Instructor",
+        value:
+          typeof stats["Instructor"] === "undefined" ? 0 : stats["Instructor"],
+      });
+      r.push({
+        name: "Titular",
+        value: typeof stats["Titular"] === "undefined" ? 0 : stats["Titular"],
+      });
+    } else if (cardName === "cc") {
+      r.push({
+        name: "Master",
+        value: typeof stats["Master"] === "undefined" ? 0 : stats["Master"],
+      });
+      r.push({
+        name: "Doctor",
+        value: typeof stats["Doctor"] === "undefined" ? 0 : stats["Doctor"],
+      });
+    } else if (cardName === "d") {
     }
     return r;
-  }
+  };
 
   if (orgLoading) return <h2>Loading...</h2>;
-  const data = tab==="usr" ? usrsData : orgData;
+  const data = tab === "usr" ? usrsData : orgData;
 
   if (data) {
-    console.log('tab data',data);
     return (
-      <div style={{width:"100%"}}>
+      <div style={{ width: "100%" }}>
         <Grid container style={{ display: "flex", width: "100%" }}>
-          <CustomCard 
-            title={"Personal"} 
-            start={true} darkMode={darkMode} 
-            items={arrangeItems(data,"p")}
+          <CustomCard
+            title={"Personal"}
+            start={true}
+            darkMode={darkMode}
+            items={arrangeItems(data, "p")}
           />
-          <CustomCard 
-            title={"Categoria docente"} 
-            darkMode={darkMode} 
-            items={arrangeItems(data,"cd")}
+          <CustomCard
+            title={"Categoria docente"}
+            darkMode={darkMode}
+            items={arrangeItems(data, "cd")}
           />
         </Grid>
         <Grid container style={{ display: "flex", width: "100%" }}>
@@ -553,18 +596,17 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
             title={"Categoria cientifica"}
             start={true}
             darkMode={darkMode}
-            items={arrangeItems(data,"cc")}
+            items={arrangeItems(data, "cc")}
           />
-          <CustomCard 
-            title={"Departamento"} 
-            darkMode={darkMode} 
-            items={arrangeItems(data,"d")}
+          <CustomCard
+            title={"Departamento"}
+            darkMode={darkMode}
+            items={arrangeItems(data, "d")}
           />
         </Grid>
       </div>
     );
-  }
-  else {
+  } else {
     return (
       <span style={darkMode ? {} : { color: "#3b3f51" }}>
         No hay informacion disponible
