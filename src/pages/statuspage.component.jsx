@@ -568,12 +568,60 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
         value: typeof stats["Doctor"] === "undefined" ? 0 : stats["Doctor"],
       });
     } else if (cardName === "d") {
+    } else if (cardName === "g") {
+      r.push({
+        name: "Femenino",
+        value:
+          typeof stats["Femenino"] === "undefined" ? 0 : stats["Femenino"],
+      });
+      r.push({
+        name: "Masculino",
+        value: typeof stats["Masculino"] === "undefined" ? 0 : stats["Masculino"],
+      }); 
+    } else if (cardName === "cac") {
+      r.push({
+        name: "Asistente Doctor",
+        value:
+        typeof stats["Asistente Doctor"] === "undefined" ? 0 : stats["Asistente Doctor"],
+      });
+      r.push({
+        name: "Asistente Master",
+        value: typeof stats["Asistente Master"] === "undefined" ? 0 : stats["Asistente Master"],
+      });
+      r.push({
+        name: "Auxiliar Master",
+        value:
+          typeof stats["Auxiliar Master"] === "undefined" ? 0 : stats["Auxiliar Master"],
+      });
+      r.push({
+        name: "Auxiliar Doctor",
+        value: typeof stats["Auxiliar Doctor"] === "undefined" ? 0 : stats["Auxiliar Doctor"],
+      }); 
+      r.push({
+        name: "Instructor Master",
+        value:
+          typeof stats["Instructor Master"] === "undefined" ? 0 : stats["Instructor Master"],
+      });
+      r.push({
+        name: "Instructor Doctor",
+        value: typeof stats["Instructor Doctor"] === "undefined" ? 0 : stats["Instructor Doctor"],
+      });
+      r.push({
+        name: "Titular Doctor",
+        value:
+          typeof stats["Titular Doctor"] === "undefined" ? 0 : stats["Titular Doctor"],
+      });
+      // r.push({
+      //   name: "Masculino",
+      //   value: typeof stats["Masculino"] === "undefined" ? 0 : stats["Masculino"],
+      // });
     }
     return r;
   };
 
   if (orgLoading) return <h2>Loading...</h2>;
   const data = tab === "usr" ? usrsData : orgData;
+  console.log('here data',data);
 
   if (data) {
     return (
@@ -597,6 +645,19 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
             start={true}
             darkMode={darkMode}
             items={arrangeItems(data, "cc")}
+          />
+          <CustomCard
+            title={"Genero"}
+            darkMode={darkMode}
+            items={arrangeItems(data, "g")}
+          />
+        </Grid>
+        <Grid container style={{ display: "flex", width: "100%" }}>
+          <CustomCard
+            title={"Categoria academica - categoria cientifica"}
+            start={true}
+            darkMode={darkMode}
+            items={arrangeItems(data, "cac")}
           />
           <CustomCard
             title={"Departamento"}
