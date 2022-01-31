@@ -361,7 +361,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         onClick={() => setTabSelected("org")}
       >
         <AccountTreeIcon style={{ margin: "0px 5px" }} fontSize="large" />
-        <span>ORGANIZACIONES ESTUDIANTILES</span>
+        <span style={tabSelected === "org" ?{textDecoration:'underline',fontWeight:'bold'}:{}}>ORGANIZACIONES ESTUDIANTILES</span>
       </div>
       <div
         style={{
@@ -378,7 +378,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         onClick={() => setTabSelected("usr")}
       >
         <GroupIcon style={{ margin: "0px 5px" }} fontSize="large" />
-        <span>USUARIOS</span>
+        <span style={tabSelected === "org" ?{}:{textDecoration:'underline',fontWeight:'bold'}}>USUARIOS</span>
       </div>
     </div>
   );
