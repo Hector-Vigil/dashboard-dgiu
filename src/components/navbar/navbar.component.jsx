@@ -73,7 +73,7 @@ const NavBar = ({
                   <span>
                     <NavBarLogo />
                   </span>
-                  <p>DASHBOARD</p>
+                  <p>DIRECTORIO UNICO</p>
                 </div>
               </Typography>
               <span />

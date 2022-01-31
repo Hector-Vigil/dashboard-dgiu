@@ -394,7 +394,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         container
         justify="space-between"
         style={{
-          height: window.visualViewport.height,
+          minHeight: (window.visualViewport.height * 6) / 10,
         }}
       >
         <CardCharts title={treeViewTittle} darkMode={darkMode}>
@@ -404,7 +404,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
                 flexGrow: 1,
                 overflowY: "auto",
                 overflowX: "hidden",
-                minHeight: (window.visualViewport.height * 9) / 10,
+                minHeight: (window.visualViewport.height * 6) / 10,
               }}
             >
               <TreeView
