@@ -84,7 +84,7 @@ export default function PieChartComponent(props) {
 
   const { isLoading, data } = useQuery(fetchRequestId, fetchRequest);
 
-  if (!props.passedData && isLoading) return <SpinnerComponent />;
+  if (isLoading) return <SpinnerComponent />;
   
   return (
     <div style={{ width: "100%", height: 350 }}>
@@ -107,7 +107,7 @@ export default function PieChartComponent(props) {
             stroke={props.darkMode ? "#f4f4f4" : "#3b3f51"}
             dataKey="value"
           >
-            {!props.passedData?data:props.passedData.map((entry, index) => (
+            {(!props.passedData?data:props.passedData).map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}
