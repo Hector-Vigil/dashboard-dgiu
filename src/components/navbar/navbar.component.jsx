@@ -86,7 +86,7 @@ const NavBar = ({
                   <PrintOutlinedIcon />
                 </IconButton>
 
-                <IconButton
+                {/* <IconButton
                   className={classes.modeIconContainer}
                   style={{ color: "#f4f4f4" }}
                   onClick={() => toggleDarkMode(!darkMode)}
@@ -101,7 +101,7 @@ const NavBar = ({
                       className={classes.modeIconContainer}
                     />
                   )}
-                </IconButton>
+                </IconButton> */}
 
                 <IconButton
                   style={{ color: "#f4f4f4" }}
