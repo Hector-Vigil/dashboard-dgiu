@@ -627,7 +627,6 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
   if ((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading))
     return <h2>Loading...</h2>;
   const data = tab === "usr" ? usrsData : orgData;
-  console.log('here data',data);
 
   if (data) {
     return (
