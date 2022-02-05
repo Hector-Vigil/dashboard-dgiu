@@ -62,7 +62,7 @@ export default function CardCharts({ title, children, darkMode }) {
           color="textSecondary"
           gutterBottom
         >
-          <p className={!darkMode ? classes.colorLight : "title"}>{title}</p>
+          <p className={!darkMode ? classes.colorLight : "title"} style={{fontSize:18}}>{title}</p>
         </Typography>
         <div className={classes.title}>{children}</div>
       </CardContent>

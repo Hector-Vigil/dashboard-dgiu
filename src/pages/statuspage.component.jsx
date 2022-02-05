@@ -483,16 +483,16 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   );
 };
 
-const CustomCard = ({ start, title, darkMode, items }) => {
+const CustomCard = ({ start, title, darkMode, items, noPie }) => {
   return (
     <div style={start ? { flex: 1, marginRight: 20 } : { flex: 1 }}>
       <CardCharts title={title} darkMode={darkMode}>
-        <div style={{ minHeight: "5rem", justifyContent: "start" }}>
+        <div style={{ minHeight: "5rem", maxHeight: "30rem",overflowY: 'auto', justifyContent: "start" }}>
           {items.map((e,i) => (
-            <p key={i}>{`${e.name}: ${e.value}`}</p>
+            <p key={i} style={{fontSize:15}}>{`${e.name}: ${e.value}`}</p>
           ))}
         </div>
-        {items.length && <PieChart darkMode={darkMode} passedData={items} />}
+        {items.length && !noPie && <PieChart darkMode={darkMode} passedData={items} />}
       </CardCharts>
     </div>
   );
@@ -529,7 +529,6 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
   const arrangeItems = (stats, cardName) => {
     let r = [];
     if (cardName === "p") {
-      console.log('stats here',stats);
       r.push({
         name: "Docente",
         value: !stats["Docente"] ? 0 : stats["Docente"],
@@ -568,6 +567,12 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
         value: typeof stats["Doctor"] === "undefined" ? 0 : stats["Doctor"],
       });
     } else if (cardName === "d") {
+      Object.keys(stats.Departamento).forEach(e=>{
+        r.push({
+          name: e,
+          value: stats.Departamento[e]
+        });
+      })
     } else if (cardName === "g") {
       r.push({
         name: "Femenino",
@@ -619,7 +624,8 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     return r;
   };
 
-  if (orgLoading) return <h2>Loading...</h2>;
+  if ((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading))
+    return <h2>Loading...</h2>;
   const data = tab === "usr" ? usrsData : orgData;
   console.log('here data',data);
 
@@ -663,6 +669,7 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
             title={"Departamento"}
             darkMode={darkMode}
             items={arrangeItems(data, "d")}
+            noPie={true}
           />
         </Grid>
       </div>
