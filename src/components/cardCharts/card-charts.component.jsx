@@ -36,6 +36,7 @@ let style = {
     fontSize: 14,
     color: "#f4f4f4",
     paddingBottom: 0,
+    marginBottom: "20px"
   },
   colorLight: {
     color: "#3b3f51",
@@ -62,7 +63,7 @@ export default function CardCharts({ title, children, darkMode }) {
           color="textSecondary"
           gutterBottom
         >
-          <p className={!darkMode ? classes.colorLight : "title"} style={{fontSize:18}}>{title}</p>
+          <p className={!darkMode ? classes.colorLight : "title"} style={{fontSize:28}}>{title}</p>
         </Typography>
         <div className={classes.title}>{children}</div>
       </CardContent>

@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { createRef, useState, useEffect } from "react";
 import { Grid, Input, makeStyles } from "@material-ui/core";
 import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import GroupIcon from "@material-ui/icons/Group";
 import Table from "../components/table/table.component";
 import PieChart from "../components/charts/genericChart/pie-chart.component";
+import { useScreenshot, createFileName } from 'use-react-screenshot'
 
 import { connect } from "react-redux";
 
@@ -484,16 +486,66 @@ const StatusPage = ({ darkMode, showSideBar }) => {
 };
 
 const CustomCard = ({ start, title, darkMode, items, noPie }) => {
+  const ref = createRef(null);
+  const [show, setShow] = useState({display: 'none'});
+  const [image, takeScreenShot] = useScreenshot({
+    type: "image/jpeg",
+    quality: 1.0
+  });
+  const download = (image, { name = title, extension = "jpg" } = {}) => {
+    const a = document.createElement("a");
+    a.href = image;
+    a.download = createFileName(extension, name);
+    a.click();
+  };
+  const downloadScreenshot = () => takeScreenShot(ref.current).then(download);
+
   return (
-    <div style={start ? { flex: 1, marginRight: 20 } : { flex: 1 }}>
-      <CardCharts title={title} darkMode={darkMode}>
-        <div style={{ minHeight: "5rem", maxHeight: "30rem",overflowY: 'auto', justifyContent: "start" }}>
-          {items.map((e,i) => (
-            <p key={i} style={{fontSize:15}}>{`${e.name}: ${e.value}`}</p>
-          ))}
+    <div
+      style={start ? { flex: 1, marginRight: 20 } : { flex: 1 }}
+      onMouseEnter={() => {
+        setShow(true);
+      }}
+      onMouseLeave={() => {
+        setShow(false);
+      }}
+    >
+      {!noPie && show && (
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "end",
+            marginTop: "20px",
+            marginBottom: "-50px",
+            marginRight: "10px",
+          }}
+        >
+          <button onClick={downloadScreenshot}>
+            <CameraAltIcon fontSize="small" />
+          </button>
         </div>
-        {items.length && !noPie && <PieChart darkMode={darkMode} passedData={items} />}
-      </CardCharts>
+      )}
+      <div ref={ref}>
+        <CardCharts title={title} darkMode={darkMode}>
+          <div
+            style={{
+              minHeight: "5rem",
+              maxHeight: "30rem",
+              overflowY: "auto",
+              justifyContent: "start",
+              marginTop: "10px",
+            }}
+          >
+            {items.map((e, i) => (
+              <p key={i} style={{ fontSize: 15 }}>{`${e.name}: ${e.value}`}</p>
+            ))}
+          </div>
+          {items.length && !noPie && (
+            <PieChart darkMode={darkMode} passedData={items} />
+          )}
+        </CardCharts>
+      </div>
     </div>
   );
 };
