@@ -5,11 +5,13 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
+import TableChartIcon from '@material-ui/icons/TableChart';
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import GroupIcon from "@material-ui/icons/Group";
 import Table from "../components/table/table.component";
 import PieChart from "../components/charts/genericChart/pie-chart.component";
 import { useScreenshot, createFileName } from 'use-react-screenshot'
+import { exportCSVFile } from "../components/exportCSV/exportCSV";
 
 import { connect } from "react-redux";
 
@@ -492,7 +494,7 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
     type: "image/jpeg",
     quality: 1.0
   });
-  const download = (image, { name = title, extension = "jpg" } = {}) => {
+  const download = (image, { name = `${title} captura`, extension = "jpg" } = {}) => {
     const a = document.createElement("a");
     a.href = image;
     a.download = createFileName(extension, name);
@@ -521,8 +523,27 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
             marginRight: "10px",
           }}
         >
+          <button style={{marginRight:"10px"}} onClick={()=>exportCSVFile(items,title)}>
+            <TableChartIcon fontSize="small" />
+          </button>
           <button onClick={downloadScreenshot}>
             <CameraAltIcon fontSize="small" />
+          </button>
+        </div>
+      )}
+      {noPie && show && (
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "end",
+            marginTop: "20px",
+            marginBottom: "-50px",
+            marginRight: "10px",
+          }}
+        >
+          <button onClick={()=>exportCSVFile(items,title)}>
+            <TableChartIcon fontSize="small" />
           </button>
         </div>
       )}
