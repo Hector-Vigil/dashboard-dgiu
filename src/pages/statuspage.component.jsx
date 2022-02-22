@@ -234,12 +234,9 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   };
 
   const handleSelect = (event, nodeIds) => {
-    console.log("temp key values", _tempKeyValue);
     const arrayToSend = [];
     const tempValues = Object.values(_tempKeyValue);
     const tempKeys = Object.keys(_tempKeyValue);
-    console.log("temp values", Object.values(_tempKeyValue));
-    console.log("temp keys", tempKeys);
     nodeIds.forEach((e) => {
       if (e === "root") arrayToSend.push(e);
       else {
@@ -344,6 +341,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         categoria_cientifica: data[i].categoria_cientifica,
         cargo_ocupacional: data[i].cargo_ocupacional,
         tipo_de_contrato: data[i].tipo_de_contrato,
+        genero: data[i].genero,
       });
     if (data.length !== rowsA.length) setRows(r);
   };
@@ -563,7 +561,7 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
         <CardCharts title={title} darkMode={darkMode}>
           {noPie && <div style={{
               minHeight: "5rem",
-              minHeight: "22rem",
+              height: "22rem",
               overflowY: "auto",
               justifyContent: "start",
               marginTop: "10px",
