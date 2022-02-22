@@ -99,7 +99,7 @@ export default function PieChartComponent(props) {
           }
         >
           <Pie
-            data={!props.passedData?data:props.passedData}
+            data={!props.passedData ? data : props.passedData}
             labelLine={false}
             label={renderCustomizedLabel}
             outerRadius={120}
@@ -107,14 +107,24 @@ export default function PieChartComponent(props) {
             stroke={props.darkMode ? "#f4f4f4" : "#3b3f51"}
             dataKey="value"
           >
-            {(!props.passedData?data:props.passedData).map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
+            {(!props.passedData ? data : props.passedData).map(
+              (entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              )
+            )}
           </Pie>
-          <Legend wrapperStyle={{ width: "100%" }} />
+          <Legend
+            payload={(!props.passedData ? data : props.passedData).map((item, index) => ({
+              id: item.name,
+              type: "square",
+              value: `${item.name}: ${item.value}`,
+              color: COLORS[index % COLORS.length],
+            }))}
+            wrapperStyle={{ width: "100%" }}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>

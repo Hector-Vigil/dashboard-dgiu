@@ -4,13 +4,13 @@ import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import TableChartIcon from '@material-ui/icons/TableChart';
+import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import TableChartIcon from "@material-ui/icons/TableChart";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import GroupIcon from "@material-ui/icons/Group";
 import Table from "../components/table/table.component";
 import PieChart from "../components/charts/genericChart/pie-chart.component";
-import { useScreenshot, createFileName } from 'use-react-screenshot'
+import { useScreenshot, createFileName } from "use-react-screenshot";
 import { exportCSVFile } from "../components/exportCSV/exportCSV";
 
 import { connect } from "react-redux";
@@ -60,6 +60,24 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 10,
     display: "flex",
     alignContent: "start",
+  },
+  exportButtons: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "end",
+    marginTop: "20px",
+    marginBottom: "-50px",
+    marginRight: "10px",
+  },
+  headerSelector: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    border: "white",
+    borderStyle: "solid",
+    borderWidth: "1px",
+    flex: 1,
   },
   label: {
     border: 1,
@@ -351,43 +369,47 @@ const StatusPage = ({ darkMode, showSideBar }) => {
   const treeViewTittle = (
     <div style={{ display: "flex" }}>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          border: "white",
-          borderStyle: "solid",
-          borderWidth: "1px",
-          flex: 1,
-          background: tabSelected === "org" ? "#242e41" : "transparent",
+        className={classes.headerSelector}
+        style={{background: tabSelected === "org" ? "#242e41" : "transparent"}}
+        onClick={() => {
+          setSelected(['root']);
+          setTabSelected("org");
         }}
-        onClick={() => setTabSelected("org")}
       >
         <AccountTreeIcon style={{ margin: "0px 5px" }} fontSize="large" />
-        <span style={tabSelected === "org" ?{textDecoration:'underline',fontWeight:'bold'}:{}}>ORGANIZACIONES ESTUDIANTILES</span>
+        <span
+          style={
+            tabSelected === "org"
+              ? { textDecoration: "underline", fontWeight: "bold" }
+              : {}
+          }
+        >
+          ORGANIZACIONES ESTUDIANTILES
+        </span>
       </div>
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          border: "white",
-          borderStyle: "solid",
-          borderWidth: "1px",
-          flex: 1,
-          background: tabSelected === "usr" ? "#242e41" : "transparent",
+        className={classes.headerSelector}
+        style={{background: tabSelected === "org" ? "#242e41" : "transparent"}}
+        onClick={() => {
+          setSelected([]);
+          setTabSelected("usr");
         }}
-        onClick={() => setTabSelected("usr")}
       >
         <GroupIcon style={{ margin: "0px 5px" }} fontSize="large" />
-        <span style={tabSelected === "org" ?{}:{textDecoration:'underline',fontWeight:'bold'}}>USUARIOS</span>
+        <span
+          style={
+            tabSelected === "org"
+              ? {}
+              : { textDecoration: "underline", fontWeight: "bold" }
+          }
+        >
+          USUARIOS
+        </span>
       </div>
     </div>
   );
 
-  if (isLoading || pLoading) return <h1>Loading...</h1>;
+  if ((tabSelected==="usr" && pLoading)||(tabSelected!=="usr" && orgLoading)) return <h1>Loading...</h1>;
 
   return (
     <Grid className={classes.container} container>
@@ -409,6 +431,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
                 overflowY: "auto",
                 overflowX: "hidden",
                 minHeight: (window.visualViewport.height * 6) / 10,
+                minWidth: window.visualViewport.width,
               }}
             >
               <TreeView
@@ -421,7 +444,6 @@ const StatusPage = ({ darkMode, showSideBar }) => {
                 onNodeSelect={handleSelect}
                 sx={{
                   flexGrow: 1,
-                  minWidth: (window.visualViewport.width * 7) / 10,
                 }}
               >
                 {renderTree(data)}
@@ -489,12 +511,16 @@ const StatusPage = ({ darkMode, showSideBar }) => {
 
 const CustomCard = ({ start, title, darkMode, items, noPie }) => {
   const ref = createRef(null);
-  const [show, setShow] = useState({display: 'none'});
+  const [show, setShow] = useState({ display: "none" });
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
-    quality: 1.0
+    quality: 1.0,
   });
-  const download = (image, { name = `${title} captura`, extension = "jpg" } = {}) => {
+  const classes = useStyles();
+  const download = (
+    image,
+    { name = `${title} captura`, extension = "jpg" } = {}
+  ) => {
     const a = document.createElement("a");
     a.href = image;
     a.download = createFileName(extension, name);
@@ -513,17 +539,11 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
       }}
     >
       {!noPie && show && (
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            justifyContent: "end",
-            marginTop: "20px",
-            marginBottom: "-50px",
-            marginRight: "10px",
-          }}
-        >
-          <button style={{marginRight:"10px"}} onClick={()=>exportCSVFile(items,title)}>
+        <div className={classes.exportButtons}>
+          <button
+            style={{ marginRight: "10px" }}
+            onClick={() => exportCSVFile(items, title)}
+          >
             <TableChartIcon fontSize="small" />
           </button>
           <button onClick={downloadScreenshot}>
@@ -532,36 +552,26 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
         </div>
       )}
       {noPie && show && (
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            justifyContent: "end",
-            marginTop: "20px",
-            marginBottom: "-50px",
-            marginRight: "10px",
-          }}
+        <div className={classes.exportButtons}
         >
-          <button onClick={()=>exportCSVFile(items,title)}>
+          <button onClick={() => exportCSVFile(items, title)}>
             <TableChartIcon fontSize="small" />
           </button>
         </div>
       )}
       <div ref={ref}>
         <CardCharts title={title} darkMode={darkMode}>
-          <div
-            style={{
+          {noPie && <div style={{
               minHeight: "5rem",
-              maxHeight: "30rem",
+              minHeight: "22rem",
               overflowY: "auto",
               justifyContent: "start",
               marginTop: "10px",
-            }}
-          >
+            }}>
             {items.map((e, i) => (
               <p key={i} style={{ fontSize: 15 }}>{`${e.name}: ${e.value}`}</p>
             ))}
-          </div>
+          </div>}
           {items.length && !noPie && (
             <PieChart darkMode={darkMode} passedData={items} />
           )}
@@ -578,7 +588,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(StatusPage);
 
-const OrganizationsTable = ({ selected, tab, darkMode }) => {  
+const OrganizationsTable = ({ selected, tab, darkMode }) => {
   const {
     isLoading: orgLoading,
     isError: orgIsError,
@@ -608,8 +618,7 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
       });
       r.push({
         name: "No Docente",
-        value:
-          !stats["No Docente"] ? 0 : stats["No Docente"],
+        value: !stats["No Docente"] ? 0 : stats["No Docente"],
       });
     } else if (cardName === "cd") {
       r.push({
@@ -640,54 +649,71 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
         value: typeof stats["Doctor"] === "undefined" ? 0 : stats["Doctor"],
       });
     } else if (cardName === "d") {
-      Object.keys(stats.Departamento).forEach(e=>{
+      Object.keys(stats.Departamento).forEach((e) => {
         r.push({
           name: e,
-          value: stats.Departamento[e]
+          value: stats.Departamento[e],
         });
-      })
+      });
     } else if (cardName === "g") {
       r.push({
         name: "Femenino",
-        value:
-          typeof stats["Femenino"] === "undefined" ? 0 : stats["Femenino"],
+        value: typeof stats["Femenino"] === "undefined" ? 0 : stats["Femenino"],
       });
       r.push({
         name: "Masculino",
-        value: typeof stats["Masculino"] === "undefined" ? 0 : stats["Masculino"],
-      }); 
+        value:
+          typeof stats["Masculino"] === "undefined" ? 0 : stats["Masculino"],
+      });
     } else if (cardName === "cac") {
       r.push({
         name: "Asistente Doctor",
         value:
-        typeof stats["Asistente Doctor"] === "undefined" ? 0 : stats["Asistente Doctor"],
+          typeof stats["Asistente Doctor"] === "undefined"
+            ? 0
+            : stats["Asistente Doctor"],
       });
       r.push({
         name: "Asistente Master",
-        value: typeof stats["Asistente Master"] === "undefined" ? 0 : stats["Asistente Master"],
+        value:
+          typeof stats["Asistente Master"] === "undefined"
+            ? 0
+            : stats["Asistente Master"],
       });
       r.push({
         name: "Auxiliar Master",
         value:
-          typeof stats["Auxiliar Master"] === "undefined" ? 0 : stats["Auxiliar Master"],
+          typeof stats["Auxiliar Master"] === "undefined"
+            ? 0
+            : stats["Auxiliar Master"],
       });
       r.push({
         name: "Auxiliar Doctor",
-        value: typeof stats["Auxiliar Doctor"] === "undefined" ? 0 : stats["Auxiliar Doctor"],
-      }); 
+        value:
+          typeof stats["Auxiliar Doctor"] === "undefined"
+            ? 0
+            : stats["Auxiliar Doctor"],
+      });
       r.push({
         name: "Instructor Master",
         value:
-          typeof stats["Instructor Master"] === "undefined" ? 0 : stats["Instructor Master"],
+          typeof stats["Instructor Master"] === "undefined"
+            ? 0
+            : stats["Instructor Master"],
       });
       r.push({
         name: "Instructor Doctor",
-        value: typeof stats["Instructor Doctor"] === "undefined" ? 0 : stats["Instructor Doctor"],
+        value:
+          typeof stats["Instructor Doctor"] === "undefined"
+            ? 0
+            : stats["Instructor Doctor"],
       });
       r.push({
         name: "Titular Doctor",
         value:
-          typeof stats["Titular Doctor"] === "undefined" ? 0 : stats["Titular Doctor"],
+          typeof stats["Titular Doctor"] === "undefined"
+            ? 0
+            : stats["Titular Doctor"],
       });
       // r.push({
       //   name: "Masculino",
@@ -701,7 +727,7 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     return <h2>Loading...</h2>;
   const data = tab === "usr" ? usrsData : orgData;
 
-  if (data) {
+  if (data && Object.keys(data).length>0) {
     return (
       <div style={{ width: "100%" }}>
         <Grid container style={{ display: "flex", width: "100%" }}>
@@ -712,27 +738,27 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
             items={arrangeItems(data, "p")}
           />
           <CustomCard
-            title={"Categoria docente"}
+            title={"Categoría docente"}
             darkMode={darkMode}
             items={arrangeItems(data, "cd")}
           />
         </Grid>
         <Grid container style={{ display: "flex", width: "100%" }}>
           <CustomCard
-            title={"Categoria cientifica"}
+            title={"Categoria científica"}
             start={true}
             darkMode={darkMode}
             items={arrangeItems(data, "cc")}
           />
           <CustomCard
-            title={"Genero"}
+            title={"Género"}
             darkMode={darkMode}
             items={arrangeItems(data, "g")}
           />
         </Grid>
         <Grid container style={{ display: "flex", width: "100%" }}>
           <CustomCard
-            title={"Categoria academica - categoria cientifica"}
+            title={"Cat. docente - Cat. científica"}
             start={true}
             darkMode={darkMode}
             items={arrangeItems(data, "cac")}
@@ -747,10 +773,6 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
       </div>
     );
   } else {
-    return (
-      <span style={darkMode ? {} : { color: "#3b3f51" }}>
-        No hay informacion disponible
-      </span>
-    );
+    return <h3 style={{ color: "white" }}>No hay informacion disponible</h3>;
   }
 };
