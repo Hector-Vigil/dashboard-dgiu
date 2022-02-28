@@ -38,19 +38,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   root: {
-    // display: "flex",
-    // flex: 2,
     paddingBottom: "0.5rem",
-    // overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
     width: (window.visualViewport.width * 7) / 10,
     height: window.visualViewport.height / 2,
   },
   table: {
-    // display: "flex",
-    // flex: 2,
     paddingBottom: "0.5rem",
-    // overflow: "auto",
     fontFamily: "'Poppins', sans-serif",
     width: (window.visualViewport.width * 6) / 10,
     height: (8 * window.visualViewport.height) / 10,
@@ -92,8 +86,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: 10,
   },
   treeItemDark: {
-    // display: "flex",
-    // width: "100%",
     paddingTop: "0.5rem",
     justifyContent: "space-between",
     fontFamily: "'Poppins', sans-serif",
@@ -102,8 +94,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   treeItemLight: {
-    // display: "flex",
-    // width: "100%",
     color: "#3b3f51",
     paddingBottom: "0.5rem",
     justifyContent: "space-between",
@@ -297,8 +287,6 @@ const StatusPage = ({ darkMode, showSideBar }) => {
         toRemove.splice(indexesTR[i] - i, 1);
         toAdd.push(rows[indexesTR[indexesTR.length - 1 - i]]);
       }
-      // console.log('to add', toAdd);
-      // console.log('to remove', toRemove);
       searchText.length ? handleSearch(false) : setRowsA(toRemove);
       setRowsB(toAdd);
     }
@@ -407,7 +395,38 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     </div>
   );
 
-  if ((tabSelected==="usr" && pLoading)||(tabSelected!=="usr" && orgLoading)) return <h1>Loading...</h1>;
+  if (
+    ((tabSelected === "usr" && pLoading) ||
+      (tabSelected !== "usr" && orgLoading)) &&
+    typeof data === "undefined"
+  )
+    return (
+      <Grid className={classes.container} container>
+        <Grid className={classes.sideBarContainer}>
+          {showSideBar && <SideBar darkMode={darkMode} />}
+        </Grid>
+        <Grid
+          container
+          justify="space-between"
+          style={{
+            minHeight: (window.visualViewport.height * 6) / 10,
+          }}
+        >
+          <CardCharts title={treeViewTittle} darkMode={darkMode}>
+            <div
+              style={{
+                overflowY: "auto",
+                overflowX: "hidden",
+                minHeight: (window.visualViewport.height * 6) / 10,
+                minWidth: window.visualViewport.width - 540,
+              }}
+            >
+              <h1>Cargando...</h1>
+            </div>
+          </CardCharts>
+        </Grid>
+      </Grid>
+    );
 
   return (
     <Grid className={classes.container} container>
@@ -494,9 +513,6 @@ const StatusPage = ({ darkMode, showSideBar }) => {
             </div>
           )}
         </CardCharts>
-        {/* <CardCharts title="Datos" darkMode={darkMode}>
-          <OrganizationsTable selected={selected} darkMode={darkMode} />
-        </CardCharts> */}
       </Grid>
       <OrganizationsTable
         selected={selected}
@@ -509,7 +525,7 @@ const StatusPage = ({ darkMode, showSideBar }) => {
 
 const CustomCard = ({ start, title, darkMode, items, noPie }) => {
   const ref = createRef(null);
-  const [show, setShow] = useState({ display: "none" });
+  const [show, setShow] = useState(false);
   const [image, takeScreenShot] = useScreenshot({
     type: "image/jpeg",
     quality: 1.0,
@@ -713,16 +729,13 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
             ? 0
             : stats["Titular Doctor"],
       });
-      // r.push({
-      //   name: "Masculino",
-      //   value: typeof stats["Masculino"] === "undefined" ? 0 : stats["Masculino"],
-      // });
     }
     return r;
   };
 
   if ((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading))
-    return <h2>Loading...</h2>;
+    return <h2>Cargando...</h2>;
+
   const data = tab === "usr" ? usrsData : orgData;
 
   if (data && Object.keys(data).length>0) {
