@@ -733,8 +733,9 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     return r;
   };
 
-  if ((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading))
-    return <h2>Cargando...</h2>;
+  if ((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading)){     
+    return <h2 style={{color:'white', marginBottom: window.visualViewport.height * 1/5}}>Cargando...</h2>;
+  }
 
   const data = tab === "usr" ? usrsData : orgData;
 
