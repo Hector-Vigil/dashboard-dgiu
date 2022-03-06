@@ -6,6 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import TableChartIcon from "@material-ui/icons/TableChart";
+import Modal from "@material-ui/core/Modal";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import GroupIcon from "@material-ui/icons/Group";
 import Table from "../components/table/table.component";
@@ -603,6 +604,8 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(StatusPage);
 
 const OrganizationsTable = ({ selected, tab, darkMode }) => {
+  const [openModal, setOpenModal] = useState(true);
+  const [loading, setLoading] = useState(true);
   const {
     isLoading: orgLoading,
     isError: orgIsError,
@@ -621,7 +624,7 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
   } = useQuery(
     ["fetchUsersSelectionStatitstics", selected],
     fetchUsersSelectionStatitstics
-  );
+  );  
 
   const arrangeItems = (stats, cardName) => {
     let r = [];
@@ -733,15 +736,29 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     return r;
   };
 
-  if ((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading)){     
-    return <h2 style={{color:'white', marginBottom: window.visualViewport.height * 1/5}}>Cargando...</h2>;
-  }
+  useEffect(()=>{
+    setLoading((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading));
+  },[orgLoading,usrsLoading])
 
   const data = tab === "usr" ? usrsData : orgData;
 
   if (data && Object.keys(data).length>0) {
     return (
       <div style={{ width: "100%" }}>
+        {loading && (
+          <Modal open={openModal} onClose={() => setOpenModal(false)}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100%",
+            }}
+          >
+            <h1 style={{ color: "white" }}>Cargando...</h1>
+          </div>
+        </Modal>
+        )}
         <Grid container style={{ display: "flex", width: "100%" }}>
           <CustomCard
             title={"Personal"}
