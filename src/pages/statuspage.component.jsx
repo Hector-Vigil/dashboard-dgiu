@@ -357,9 +357,11 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     <div style={{ display: "flex" }}>
       <div
         className={classes.headerSelector}
-        style={{background: tabSelected === "org" ? "#242e41" : "transparent"}}
+        style={{
+          background: tabSelected === "org" ? "#242e41" : "transparent",
+        }}
         onClick={() => {
-          setSelected(['root']);
+          setSelected(["root"]);
           setTabSelected("org");
         }}
       >
@@ -376,7 +378,9 @@ const StatusPage = ({ darkMode, showSideBar }) => {
       </div>
       <div
         className={classes.headerSelector}
-        style={{background: tabSelected === "org" ? "#242e41" : "transparent"}}
+        style={{
+          background: tabSelected === "org" ? "#242e41" : "transparent",
+        }}
         onClick={() => {
           setSelected([]);
           setTabSelected("usr");
@@ -402,7 +406,11 @@ const StatusPage = ({ darkMode, showSideBar }) => {
     typeof data === "undefined"
   )
     return (
-      <Grid className={classes.container} container>
+      <Grid
+        className={classes.container}
+        style={{ minHeight: window.visualViewport.height }}
+        container
+      >
         <Grid className={classes.sideBarContainer}>
           {showSideBar && <SideBar darkMode={darkMode} />}
         </Grid>
@@ -567,8 +575,7 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
         </div>
       )}
       {noPie && show && (
-        <div className={classes.exportButtons}
-        >
+        <div className={classes.exportButtons}>
           <button onClick={() => exportCSVFile(items, title)}>
             <TableChartIcon fontSize="small" />
           </button>
@@ -576,17 +583,24 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
       )}
       <div ref={ref}>
         <CardCharts title={title} darkMode={darkMode}>
-          {noPie && <div style={{
-              minHeight: "5rem",
-              height: "22rem",
-              overflowY: "auto",
-              justifyContent: "start",
-              marginTop: "10px",
-            }}>
-            {items.map((e, i) => (
-              <p key={i} style={{ fontSize: 15 }}>{`${e.name}: ${e.value}`}</p>
-            ))}
-          </div>}
+          {noPie && (
+            <div
+              style={{
+                minHeight: "5rem",
+                height: "22rem",
+                overflowY: "auto",
+                justifyContent: "start",
+                marginTop: "10px",
+              }}
+            >
+              {items.map((e, i) => (
+                <p
+                  key={i}
+                  style={{ fontSize: 15 }}
+                >{`${e.name}: ${e.value}`}</p>
+              ))}
+            </div>
+          )}
           {items.length && !noPie && (
             <PieChart darkMode={darkMode} passedData={items} />
           )}
@@ -624,7 +638,7 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
   } = useQuery(
     ["fetchUsersSelectionStatitstics", selected],
     fetchUsersSelectionStatitstics
-  );  
+  );
 
   const arrangeItems = (stats, cardName) => {
     let r = [];
@@ -736,28 +750,28 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
     return r;
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading((tab === "org" && orgLoading) || (tab === "usr" && usrsLoading));
-  },[orgLoading,usrsLoading])
+  }, [orgLoading, usrsLoading]);
 
   const data = tab === "usr" ? usrsData : orgData;
 
-  if (data && Object.keys(data).length>0) {
+  if (data && Object.keys(data).length > 0) {
     return (
       <div style={{ width: "100%" }}>
         {loading && (
           <Modal open={openModal} onClose={() => setOpenModal(false)}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100%",
-            }}
-          >
-            <h1 style={{ color: "white" }}>Cargando...</h1>
-          </div>
-        </Modal>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100%",
+              }}
+            >
+              <h1 style={{ color: "white" }}>Cargando...</h1>
+            </div>
+          </Modal>
         )}
         <Grid container style={{ display: "flex", width: "100%" }}>
           <CustomCard
@@ -802,6 +816,10 @@ const OrganizationsTable = ({ selected, tab, darkMode }) => {
       </div>
     );
   } else {
-    return <h3 style={{ color: "white" }}>No hay informacion disponible</h3>;
+    return (
+      <div style={{ marginBottom: (window.visualViewport.height * 3) / 10 }}>
+        <h3 style={{ color: "white" }}>No hay informacion disponible</h3>;
+      </div>
+    );
   }
 };
