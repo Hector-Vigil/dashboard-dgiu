@@ -27,17 +27,11 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
   },
   modeIconContainer: {
-    // position: "absolute",
-    // top: "0.5rem",
-    // right: "5rem",
     display: "flex",
     justifyContent: "center",
   },
 
   modePrintIconContainer: {
-    // position: "absolute",
-    // top: "0.5rem",
-    // right: "8rem",
     display: "flex",
     justifyContent: "center",
   },
@@ -73,7 +67,7 @@ const NavBar = ({
                   <span>
                     <NavBarLogo />
                   </span>
-                  <p>DIRECTORIO UNICO</p>
+                  <p style={{fontSize:24, fontWeight: 700}}>DIRECTORIO UNICO</p>
                 </div>
               </Typography>
               <span />
