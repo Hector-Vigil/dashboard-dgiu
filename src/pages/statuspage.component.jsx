@@ -12,7 +12,7 @@ import GroupIcon from "@material-ui/icons/Group";
 import Table from "../components/table/table.component";
 import PieChart from "../components/charts/genericChart/pie-chart.component";
 import { useScreenshot, createFileName } from "use-react-screenshot";
-import { exportCSVFile } from "../components/exportCSV/exportCSV";
+import { exportCSVFile, exportAcSc } from "../components/exportCSV/exportCSV";
 
 import { connect } from "react-redux";
 
@@ -565,7 +565,9 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
         <div className={classes.exportButtons}>
           <button
             style={{ marginRight: "10px" }}
-            onClick={() => exportCSVFile(items, title)}
+            onClick={() => {
+              return title === "Cat. docente - Cat. científica"?exportAcSc(items,title):exportCSVFile(items, title);
+            }}
           >
             <TableChartIcon fontSize="small" />
           </button>
@@ -576,7 +578,8 @@ const CustomCard = ({ start, title, darkMode, items, noPie }) => {
       )}
       {noPie && show && (
         <div className={classes.exportButtons}>
-          <button onClick={() => exportCSVFile(items, title)}>
+          <button 
+          onClick={() => exportCSVFile(items, title)}>
             <TableChartIcon fontSize="small" />
           </button>
         </div>
